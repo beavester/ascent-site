@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ascent — Your Home Screen, Rewired</title>
+  <meta name="description" content="Ascent replaces your doomscroll reflex with your actual goals. AI-powered habit building designed for how your brain actually works.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #F8F6F1;
+      --bg-card: #FFFFFF;
+      --bg-warm: #F2EFE8;
+      --text: #1C1C1E;
+      --text-secondary: #6C6C70;
+      --text-muted: #AEAEB2;
+      --blue: #007AFF;
+      --blue-light: #E8F2FF;
+      --gold: #C5943A;
+      --gold-light: #FFF8ED;
+      --green: #34C759;
+      --border: #E5E5EA;
+      --radius: 20px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 14px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(248, 246, 241, 0.8);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    nav.scrolled { border-bottom-color: var(--border); }
+
+    .nav-logo {
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+    }
+
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 15px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .btn-app-store {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      background: var(--text);
+      color: #fff;
+      border-radius: 100px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .btn-app-store:hover { transform: translateY(-1px); opacity: 0.9; }
+    .btn-app-store svg { width: 16px; height: 16px; }
+
+    /* ─── HERO ────────────────────────────── */
+    .hero {
+      padding: 140px 40px 100px;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: var(--blue-light);
+      color: var(--blue);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: 64px;
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -3px;
+      margin-bottom: 20px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-sub {
+      font-size: 20px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      margin-bottom: 80px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 14px;
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0, 122, 255, 0.3);
+    }
+
+    .btn-ghost {
+      padding: 16px 36px;
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: 600;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--text-secondary); background: var(--bg-card); }
+
+    /* ─── PHONE GALLERY ───────────────────── */
+    .phone-gallery {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0 20px;
+    }
+
+    .phone-wrapper {
+      flex-shrink: 0;
+      width: 260px;
+      transition: transform 0.4s ease;
+    }
+    .phone-wrapper:nth-child(2) {
+      width: 320px;
+    }
+    .phone-wrapper:hover { transform: translateY(-8px); }
+    .phone-wrapper:nth-child(1) { transform: translateY(20px); }
+    .phone-wrapper:nth-child(3) { transform: translateY(20px); }
+    .phone-wrapper:nth-child(1):hover { transform: translateY(12px); }
+    .phone-wrapper:nth-child(3):hover { transform: translateY(12px); }
+
+    .phone-bezel {
+      background: #1C1C1E;
+      border-radius: 40px;
+      padding: 10px;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.12), 0 8px 16px rgba(0,0,0,0.08);
+    }
+
+    .phone-bezel img {
+      width: 100%;
+      border-radius: 32px;
+      display: block;
+    }
+
+    .phone-label {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .phone-caption {
+      text-align: center;
+      margin-top: 8px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      max-width: 220px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .phone-caption strong {
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    /* ─── SECTION COMMONS ─────────────────── */
+    .section {
+      padding: 120px 40px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--blue);
+      margin-bottom: 14px;
+    }
+
+    .section h2 {
+      font-size: 48px;
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+    }
+
+    .section > p {
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 600px;
+    }
+
+    /* ─── PROBLEM ─────────────────────────── */
+    .stat-grid {
+      margin-top: 56px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+    }
+    .stat-card .num {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+    .stat-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .stat-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ─── HOW IT WORKS ────────────────────── */
+    .how-section {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .steps {
+      margin-top: 56px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .step-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      transition: transform 0.2s;
+    }
+    .step-card:hover { transform: translateY(-3px); }
+
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .step-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .step-card p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ─── FEATURES (screenshot + text pairs) ── */
+    .feature-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      padding: 100px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .feature-row.reverse { direction: rtl; }
+    .feature-row.reverse > * { direction: ltr; }
+
+    .feature-text .section-label { margin-bottom: 10px; }
+    .feature-text h3 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .feature-text p {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    .feature-text .tag {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 6px 14px;
+      background: var(--gold-light);
+      color: var(--gold);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .feature-phone {
+      display: flex;
+      justify-content: center;
+    }
+    .feature-phone .phone-bezel {
+      width: 280px;
+    }
+
+    /* ─── QUOTE ───────────────────────────── */
+    .quote-section {
+      padding: 100px 40px;
+      text-align: center;
+      background: var(--bg-warm);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .quote-section blockquote {
+      max-width: 640px;
+      margin: 0 auto;
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.5px;
+      color: var(--text);
+    }
+    .quote-section .dash {
+      margin-top: 20px;
+      font-size: 15px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* ─── CTA ─────────────────────────────── */
+    .cta-section {
+      padding: 120px 40px;
+      text-align: center;
+    }
+    .cta-section h2 {
+      font-size: 52px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      margin-bottom: 16px;
+    }
+    .cta-section p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ─── FOOTER ──────────────────────────── */
+    footer {
+      padding: 32px 40px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    footer a { color: var(--text-secondary); text-decoration: none; }
+    footer a:hover { color: var(--text); }
+    .footer-links { display: flex; gap: 24px; }
+
+    /* ─── ANIMATIONS ──────────────────────── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── RESPONSIVE ──────────────────────── */
+    @media (max-width: 900px) {
+      .hero h1 { font-size: 40px; letter-spacing: -1.5px; }
+      .hero-sub { font-size: 17px; }
+      .phone-gallery { flex-direction: column; align-items: center; }
+      .phone-wrapper, .phone-wrapper:nth-child(1), .phone-wrapper:nth-child(3) { transform: none !important; }
+      .phone-wrapper:hover { transform: none !important; }
+      .stat-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; }
+      .feature-row, .feature-row.reverse { grid-template-columns: 1fr; gap: 40px; text-align: center; direction: ltr; }
+      .feature-phone .phone-bezel { width: 240px; }
+      .section h2 { font-size: 34px; }
+      .cta-section h2 { font-size: 34px; }
+      .nav-links a:not(.btn-app-store) { display: none; }
+      nav { padding: 14px 20px; }
+      .hero { padding: 120px 20px 60px; }
+      .section { padding: 80px 20px; }
+      .feature-row { padding: 60px 20px; }
+      .quote-section blockquote { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="nav-logo"><img src="img/icon.png" alt="Ascent" class="nav-icon">Ascent</a>
+    <div class="nav-links">
+      <a href="#how">How It Works</a>
+      <a href="#features">Features</a>
+      <a href="#" class="btn-app-store">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        App Store
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">✨ iOS Exclusive</div>
+    <h1>Your home screen,<br>rewired.</h1>
+    <p class="hero-sub">
+      Ascent turns vague goals into daily actions and keeps them front of mind.
+      Instead of fighting your dopamine, it works with it. You just show up.
+    </p>
+    <div class="hero-ctas">
+      <a href="#" class="btn-primary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        Download for iOS
+      </a>
+      <a href="#how" class="btn-ghost">See how it works</a>
+    </div>
+
+    <!-- Three phones -->
+    <div class="phone-gallery">
+      <div class="phone-wrapper">
+        <div class="phone-bezel">
+          <img src="img/screen-widgets.jpg" alt="Ascent widgets on home screen">
+        </div>
+        <div class="phone-label">Home Screen</div>
+      </div>
+      <div class="phone-wrapper">
+        <div class="phone-bezel">
+          <img src="img/app-demo.gif" alt="Ascent app demo">
+        </div>
+        <div class="phone-label">Live Demo</div>
+        <div class="phone-caption">Your <strong>Motivation Battery</strong> tracks dopamine receptor sensitivity in real time — sleep, screen time, exercise, and habits all move the needle. When it drops, Ascent nudges you before you burn out.</div>
+        <div class="phone-caption" style="margin-top: 12px;">No time? Tap <strong>2-Min Version</strong> — AI shrinks any habit to fit your day.</div>
+      </div>
+      <div class="phone-wrapper">
+        <div class="phone-bezel">
+          <img src="img/screen-coach.jpg" alt="AI Coach chat">
+        </div>
+        <div class="phone-label">AI Coach</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="section fade-up">
+    <div class="section-label">The Problem</div>
+    <h2>You don't have a<br>discipline problem.</h2>
+    <p>Megacorporations spent billions engineering your phone to hijack your attention. You can't willpower your way out of architecture — trying harder is actually part of the trap. You have to redesign the environment.</p>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="num">4.5h</div>
+        <h3>Daily screen time</h3>
+        <p>Average time spent on your phone — most of it unintentional.</p>
+      </div>
+      <div class="stat-card">
+        <div class="num">88%</div>
+        <h3>Apps abandoned</h3>
+        <p>Most habit trackers are deleted within 2 weeks. They guilt you into trying harder — which is the problem, not the solution.</p>
+      </div>
+      <div class="stat-card">
+        <div class="num">0.4s</div>
+        <h3>Unlock to scroll</h3>
+        <p>The time between unlocking and opening TikTok. Faster than conscious thought.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <div class="how-section" id="how">
+    <section class="section fade-up">
+      <div class="section-label">How It Works</div>
+      <h2>Replace the reflex.</h2>
+      <p>Morning intention → daily practice → evening review. Ascent occupies your home screen so your goals are the first thing you see — not the feed.</p>
+
+      <div class="steps">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h3>Set a 60-day goal</h3>
+          <p>Tell Ascent what you're working toward. One goal. Total focus. The countdown starts.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h3>AI builds your path</h3>
+          <p>A phased weekly curriculum that ramps up gradually. No guesswork. Just open the app and see today's task.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h3>Widgets hold the line</h3>
+          <p>Fill your home screen with your goal, tasks, and a motivation battery that makes your dopamine state visible. Every unlock is a pattern interrupt.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <h3>Can't start? Shrink it.</h3>
+          <p>Tap one button and AI generates the smallest possible version. Lower the activation energy, keep the streak alive. Showing up is the point.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- FEATURE: CURRICULUM -->
+  <div id="features">
+    <div class="feature-row fade-up">
+      <div class="feature-text">
+        <div class="section-label">Curriculum</div>
+        <h3>AI turns your goal into a daily plan.</h3>
+        <p>Set a 60-day goal and Ascent generates a phased curriculum with weekly milestones. Each day you get one concrete task — not a wishlist, a next step.</p>
+        <span class="tag">Powered by AI</span>
+      </div>
+      <div class="feature-phone">
+        <div class="phone-bezel">
+          <img src="img/screen-curriculum.jpg" alt="Curriculum view">
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE: COACH -->
+    <div class="feature-row reverse fade-up">
+      <div class="feature-text">
+        <div class="section-label">AI Coach</div>
+        <h3>A coach that sees you, not a script.</h3>
+        <p>Your coach reads your motivation battery, streaks, and Screen Time data. When you're struggling, it doesn't say "try harder." It helps you see clearly what's actually happening — because clarity changes behavior, willpower doesn't.</p>
+        <span class="tag">Adapts to you</span>
+      </div>
+      <div class="feature-phone">
+        <div class="phone-bezel">
+          <img src="img/screen-coach.jpg" alt="AI Coach conversation">
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE: TODAY -->
+    <div class="feature-row fade-up">
+      <div class="feature-text">
+        <div class="section-label">Today</div>
+        <h3>What's the focus. What worked. What's next.</h3>
+        <p>Your goal, today's task, habits with streaks, and a motivation battery — all on one screen. The daily loop: set your intention, do the work, review what happened. No noise.</p>
+        <span class="tag">Day 8 of 70</span>
+      </div>
+      <div class="feature-phone">
+        <div class="phone-bezel">
+          <img src="img/screen-complete.jpg" alt="Today view with completed tasks">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUOTE -->
+  <section class="quote-section fade-up">
+    <blockquote>"The problem was never motivation. It was that every system I tried asked me to try harder — which is actually part of the trap."</blockquote>
+    <div class="dash">— The reason Ascent exists</div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section fade-up">
+    <h2>Stop trying harder.<br>Start seeing more clearly.</h2>
+    <p>Ascent is free to start. No credit card. No 47-step onboarding. Just a goal and 60 days.</p>
+    <a href="#" class="btn-primary" style="font-size: 18px; padding: 18px 40px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      Download for iPhone
+    </a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2026 Ascent.</span>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">TikTok</a>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
