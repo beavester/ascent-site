@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ascent — Your Home Screen, Rewired</title>
-  <meta name="description" content="Ascent replaces your doomscroll reflex with your actual goals. AI-powered habit building designed for how your brain actually works.">
+  <meta name="description" content="Ascent turns vague goals into daily actions and keeps them front of mind. AI-powered habit building designed for how your brain actually works.">
+  <link rel="icon" type="image/png" href="img/icon.png">
+  <link rel="apple-touch-icon" href="img/icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -20,9 +22,11 @@
       --text-muted: #AEAEB2;
       --blue: #007AFF;
       --blue-light: #E8F2FF;
+      --blue-dark: #0055CC;
       --gold: #C5943A;
       --gold-light: #FFF8ED;
       --green: #34C759;
+      --green-light: #E8F8ED;
       --border: #E5E5EA;
       --radius: 20px;
     }
@@ -89,14 +93,14 @@
       gap: 8px;
       padding: 10px 22px;
       background: var(--text);
-      color: #fff;
+      color: #fff !important;
       border-radius: 100px;
       text-decoration: none;
       font-size: 14px;
       font-weight: 600;
       transition: transform 0.2s, opacity 0.2s;
     }
-    .btn-app-store:hover { transform: translateY(-1px); opacity: 0.9; }
+    .btn-app-store:hover { transform: translateY(-1px); opacity: 0.9; color: #fff; }
     .btn-app-store svg { width: 16px; height: 16px; }
 
     /* ─── HERO ────────────────────────────── */
@@ -105,6 +109,20 @@
       max-width: 1200px;
       margin: 0 auto;
       text-align: center;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(0, 122, 255, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
     }
 
     .hero-badge {
@@ -118,6 +136,16 @@
       font-size: 13px;
       font-weight: 600;
       margin-bottom: 24px;
+      animation: fadeDown 0.6s ease both;
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .hero h1 {
@@ -129,6 +157,7 @@
       max-width: 800px;
       margin-left: auto;
       margin-right: auto;
+      animation: fadeUp 0.7s ease 0.1s both;
     }
 
     .hero-sub {
@@ -139,6 +168,7 @@
       max-width: 540px;
       margin-left: auto;
       margin-right: auto;
+      animation: fadeUp 0.7s ease 0.2s both;
     }
 
     .hero-ctas {
@@ -146,6 +176,7 @@
       gap: 14px;
       justify-content: center;
       margin-bottom: 80px;
+      animation: fadeUp 0.7s ease 0.3s both;
     }
 
     .btn-primary {
@@ -186,6 +217,7 @@
       justify-content: center;
       align-items: flex-start;
       padding: 0 20px;
+      animation: fadeUp 0.8s ease 0.4s both;
     }
 
     .phone-wrapper {
@@ -227,10 +259,10 @@
     .phone-caption {
       text-align: center;
       margin-top: 8px;
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-secondary);
-      line-height: 1.4;
-      max-width: 220px;
+      line-height: 1.5;
+      max-width: 280px;
       margin-left: auto;
       margin-right: auto;
     }
@@ -283,6 +315,11 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 32px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.06);
     }
     .stat-card .num {
       font-size: 40px;
@@ -321,9 +358,12 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 32px;
-      transition: transform 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    .step-card:hover { transform: translateY(-3px); }
+    .step-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+    }
 
     .step-num {
       display: inline-flex;
@@ -386,6 +426,14 @@
       font-size: 13px;
       font-weight: 600;
     }
+    .feature-text .tag-green {
+      background: var(--green-light);
+      color: var(--green);
+    }
+    .feature-text .tag-blue {
+      background: var(--blue-light);
+      color: var(--blue);
+    }
 
     .feature-phone {
       display: flex;
@@ -393,6 +441,30 @@
     }
     .feature-phone .phone-bezel {
       width: 280px;
+    }
+
+    /* ─── SCIENCE STRIP ───────────────────── */
+    .science-strip {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 40px;
+      text-align: center;
+    }
+    .science-strip p {
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    .science-strip strong {
+      color: var(--text);
+    }
+    .science-refs {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
     }
 
     /* ─── QUOTE ───────────────────────────── */
@@ -423,6 +495,19 @@
     .cta-section {
       padding: 120px 40px;
       text-align: center;
+      position: relative;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 122, 255, 0.04) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
     }
     .cta-section h2 {
       font-size: 52px;
@@ -471,7 +556,7 @@
       .hero h1 { font-size: 40px; letter-spacing: -1.5px; }
       .hero-sub { font-size: 17px; }
       .phone-gallery { flex-direction: column; align-items: center; }
-      .phone-wrapper, .phone-wrapper:nth-child(1), .phone-wrapper:nth-child(3) { transform: none !important; }
+      .phone-wrapper, .phone-wrapper:nth-child(2), .phone-wrapper:nth-child(1), .phone-wrapper:nth-child(3) { transform: none !important; width: 280px; }
       .phone-wrapper:hover { transform: none !important; }
       .stat-grid { grid-template-columns: 1fr; }
       .steps { grid-template-columns: 1fr; }
@@ -485,6 +570,7 @@
       .section { padding: 80px 20px; }
       .feature-row { padding: 60px 20px; }
       .quote-section blockquote { font-size: 24px; }
+      .hero-ctas { flex-direction: column; align-items: center; }
     }
   </style>
 </head>
@@ -496,6 +582,7 @@
     <div class="nav-links">
       <a href="#how">How It Works</a>
       <a href="#features">Features</a>
+      <a href="#science">Science</a>
       <a href="#" class="btn-app-store">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
         App Store
@@ -526,20 +613,21 @@
           <img src="img/screen-widgets.jpg" alt="Ascent widgets on home screen">
         </div>
         <div class="phone-label">Home Screen</div>
+        <div class="phone-caption">Your goals live on your lock screen. Every unlock is a pattern interrupt.</div>
       </div>
       <div class="phone-wrapper">
         <div class="phone-bezel">
           <img src="img/app-demo.gif" alt="Ascent app demo">
         </div>
         <div class="phone-label">Live Demo</div>
-        <div class="phone-caption">Your <strong>Motivation Battery</strong> tracks dopamine receptor sensitivity in real time — sleep, screen time, exercise, and habits all move the needle. When it drops, Ascent nudges you before you burn out.</div>
-        <div class="phone-caption" style="margin-top: 12px;">No time? Tap <strong>2-Min Version</strong> — AI shrinks any habit to fit your day.</div>
+        <div class="phone-caption"><strong>Motivation Battery</strong> makes your dopamine state visible. <strong>2-Min Version</strong> shrinks any habit to fit your day.</div>
       </div>
       <div class="phone-wrapper">
         <div class="phone-bezel">
           <img src="img/screen-coach.jpg" alt="AI Coach chat">
         </div>
         <div class="phone-label">AI Coach</div>
+        <div class="phone-caption">Reads your data, not a script. Says "aim lower" when that's what actually helps.</div>
       </div>
     </div>
   </section>
@@ -552,17 +640,17 @@
 
     <div class="stat-grid">
       <div class="stat-card">
-        <div class="num">4.5h</div>
+        <div class="num" data-target="4.5" data-suffix="h">4.5h</div>
         <h3>Daily screen time</h3>
         <p>Average time spent on your phone — most of it unintentional.</p>
       </div>
       <div class="stat-card">
-        <div class="num">88%</div>
+        <div class="num" data-target="88" data-suffix="%">88%</div>
         <h3>Apps abandoned</h3>
         <p>Most habit trackers are deleted within 2 weeks. They guilt you into trying harder — which is the problem, not the solution.</p>
       </div>
       <div class="stat-card">
-        <div class="num">0.4s</div>
+        <div class="num" data-target="0.4" data-suffix="s">0.4s</div>
         <h3>Unlock to scroll</h3>
         <p>The time between unlocking and opening TikTok. Faster than conscious thought.</p>
       </div>
@@ -601,9 +689,26 @@
     </section>
   </div>
 
-  <!-- FEATURE: CURRICULUM -->
+  <!-- FEATURES -->
   <div id="features">
+
+    <!-- FEATURE: MOTIVATION BATTERY -->
     <div class="feature-row fade-up">
+      <div class="feature-text">
+        <div class="section-label">Motivation Battery</div>
+        <h3>See your dopamine state. Don't guess it.</h3>
+        <p>Most people burn out without realizing it's happening. The Motivation Battery tracks what actually moves the needle — sleep quality, screen time, exercise, and habit completion — and shows you where you stand before you crash.</p>
+        <span class="tag tag-blue">Backed by neuroscience</span>
+      </div>
+      <div class="feature-phone">
+        <div class="phone-bezel">
+          <img src="img/screen-today.jpg" alt="Motivation Battery on Today view">
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE: CURRICULUM -->
+    <div class="feature-row reverse fade-up">
       <div class="feature-text">
         <div class="section-label">Curriculum</div>
         <h3>AI turns your goal into a daily plan.</h3>
@@ -618,16 +723,31 @@
     </div>
 
     <!-- FEATURE: COACH -->
-    <div class="feature-row reverse fade-up">
+    <div class="feature-row fade-up">
       <div class="feature-text">
         <div class="section-label">AI Coach</div>
         <h3>A coach that sees you, not a script.</h3>
         <p>Your coach reads your motivation battery, streaks, and Screen Time data. When you're struggling, it doesn't say "try harder." It helps you see clearly what's actually happening — because clarity changes behavior, willpower doesn't.</p>
-        <span class="tag">Adapts to you</span>
+        <span class="tag tag-green">Adapts to you</span>
       </div>
       <div class="feature-phone">
         <div class="phone-bezel">
           <img src="img/screen-coach.jpg" alt="AI Coach conversation">
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE: SCREEN TIME -->
+    <div class="feature-row reverse fade-up">
+      <div class="feature-text">
+        <div class="section-label">Screen Time</div>
+        <h3>Confront the scroll habit with real data.</h3>
+        <p>Ascent integrates directly with iOS Screen Time to surface your actual usage patterns. Not to shame you — to make the invisible visible. You can't change what you can't see.</p>
+        <span class="tag tag-blue">iOS Family Controls API</span>
+      </div>
+      <div class="feature-phone">
+        <div class="phone-bezel">
+          <img src="img/screen-reminders.jpg" alt="Screen Time integration">
         </div>
       </div>
     </div>
@@ -638,7 +758,7 @@
         <div class="section-label">Today</div>
         <h3>What's the focus. What worked. What's next.</h3>
         <p>Your goal, today's task, habits with streaks, and a motivation battery — all on one screen. The daily loop: set your intention, do the work, review what happened. No noise.</p>
-        <span class="tag">Day 8 of 70</span>
+        <span class="tag">Day 8 of 60</span>
       </div>
       <div class="feature-phone">
         <div class="phone-bezel">
@@ -647,6 +767,14 @@
       </div>
     </div>
   </div>
+
+  <!-- SCIENCE STRIP -->
+  <section class="science-strip fade-up" id="science">
+    <p>
+      Ascent's Motivation Battery is built on <strong>peer-reviewed dopamine research</strong> — including Volkow et al. PET imaging studies on sleep and D2/D3 receptors, Šrámek's cold exposure findings, and the Huberman framework on dopamine dynamics. It models <strong>receptor sensitivity</strong>, not raw neurotransmitter levels — because that's what actually predicts how motivated you'll feel tomorrow.
+    </p>
+    <div class="science-refs">Volkow et al. 2012 · Van Dongen 2003 · Šrámek et al. 2000 · Kjaer et al. 2002 · Lembke 2021</div>
+  </section>
 
   <!-- QUOTE -->
   <section class="quote-section fade-up">
@@ -670,16 +798,18 @@
     <div class="footer-links">
       <a href="#">Privacy</a>
       <a href="#">Terms</a>
-      <a href="#">TikTok</a>
+      <a href="https://tiktok.com/@searchingfordopam" target="_blank">TikTok</a>
     </div>
   </footer>
 
   <script>
+    // Nav scroll effect
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 20);
     });
 
+    // Fade-up observer
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -687,6 +817,31 @@
     }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Animated counters
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        if (el.dataset.counted) return;
+        el.dataset.counted = 'true';
+        const target = parseFloat(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const decimals = String(target).includes('.') ? String(target).split('.')[1].length : 0;
+        const duration = 1200;
+        const start = performance.now();
+        const tick = (now) => {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = (target * eased).toFixed(decimals);
+          el.textContent = current + suffix;
+          if (progress < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.num[data-target]').forEach(el => counterObserver.observe(el));
   </script>
 
 </body>
