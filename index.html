@@ -201,6 +201,33 @@
     .step h3{font-size:16px;font-weight:700;margin-bottom:5px;letter-spacing:-.2px}
     .step p{font-size:14px;color:var(--text2);line-height:1.6}
 
+    /* WIDGETS */
+    .widget-section{padding:140px 32px}
+    .widget-inner{
+      max-width:1060px;margin:0 auto;
+      display:grid;grid-template-columns:1fr 1fr;gap:64px;
+      align-items:center;
+    }
+    .widget-copy h2{
+      font-size:clamp(28px,4.5vw,44px);font-weight:800;
+      letter-spacing:-1.5px;line-height:1.08;margin-bottom:24px;
+      background:linear-gradient(180deg,#fff 30%,rgba(255,255,255,.6));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .widget-copy p{
+      font-size:17px;line-height:1.85;
+      color:rgba(255,255,255,.55);margin-bottom:16px;
+    }
+    .widget-copy p:last-child{margin-bottom:0}
+    .widget-screenshot{
+      display:flex;justify-content:center;
+    }
+    .widget-screenshot img{
+      width:300px;border-radius:32px;
+      box-shadow:0 4px 12px rgba(0,0,0,.2),0 24px 64px rgba(0,0,0,.3);
+    }
+
     /* FEATURES - sticky phone */
     .feat-section{
       padding:40px 0;max-width:1060px;margin:0 auto;
@@ -283,6 +310,10 @@
 
       .how{padding:80px 24px}
       .steps{grid-template-columns:1fr}
+
+      .widget-section{padding:80px 24px}
+      .widget-inner{grid-template-columns:1fr;gap:40px;text-align:center}
+      .widget-screenshot img{width:240px}
 
       .feat,.feat.flip{
         grid-template-columns:1fr;gap:24px;
@@ -380,6 +411,20 @@
           <h3>Bad day? Hit 2-min version</h3>
           <p>AI shrinks today's task to two minutes. The streak survives. You showed up.</p>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WIDGETS -->
+  <div class="dark-section widget-section">
+    <div class="widget-inner reveal">
+      <div class="widget-copy">
+        <h2>The home screen<br>is the product.</h2>
+        <p>Most apps hide behind an icon you'll stop tapping in a week. Ascent's widgets live on your home screen — your goal, your streak, your motivation battery, right there every time you unlock.</p>
+        <p>The app is the config layer. The widgets are the system. They turn every unlock from a scroll trigger into a moment of intention.</p>
+      </div>
+      <div class="widget-screenshot">
+        <img src="img/screen-widgets.jpg" alt="Ascent widgets on iPhone home screen" loading="lazy">
       </div>
     </div>
   </div>
