@@ -128,6 +128,20 @@
     footer a{color:var(--text3);text-decoration:none}
     .foot-links{display:flex;gap:16px}
 
+    .brainrot-toggle{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:8px 16px;margin-bottom:32px;
+      background:transparent;border:1.5px solid var(--border);
+      border-radius:980px;cursor:pointer;
+      font-family:inherit;font-size:13px;font-weight:600;
+      color:var(--text3);transition:all .15s;
+    }
+    .brainrot-toggle:hover{border-color:#bbb;color:var(--text)}
+    .brainrot-toggle.active{
+      background:linear-gradient(135deg,#ff6b6b,#ffa94d,#ffd43b);
+      border-color:transparent;color:#fff;
+    }
+
     @media(max-width:600px){
       article{padding:100px 20px 60px}
       nav{padding:0 20px}
@@ -149,8 +163,9 @@
     <div class="post-meta">
       <a href="../">← Blog</a> · February 15, 2026
     </div>
-    <h1>You're Not Unmotivated. You're Desensitized.</h1>
-    <div class="post-body">
+    <h1 id="post-title">You're Not Unmotivated. You're Desensitized.</h1>
+    <button class="brainrot-toggle" id="brainrot-btn" onclick="toggleBrainrot()">🧠 Translate to Brainrot</button>
+    <div class="post-body" id="post-body-normal">
 
       <p>Most people think motivation is something you summon — a pep talk, a vision board, a morning routine aggressive enough to scare your alarm clock. But motivation isn't a resource you generate. It's a signal you've stopped being able to hear.</p>
 
@@ -227,6 +242,76 @@
       <a href="#">Terms</a>
     </div>
   </footer>
+
+  <div id="post-body-brainrot" class="post-body" style="display:none">
+
+    <p>Okay chat gather round because I'm about to lore dump the most sigma neuroscience take on motivation you've ever absorbed through your glazed-over screen-rotted eyeballs and honestly? you're not ready but we're doing it anyway</p>
+
+    <h2>You Fanum Taxed Your Own Dopamine and Now You're Cooked</h2>
+
+    <p>So every NPC on the timeline thinks motivation is something you summon like a skibidi ritual. Watch a Goggins reel. Take a cold shower. Scream at yourself in the mirror at 5am like a psychopath. nah fam</p>
+
+    <p>Your brain runs on dopamine right? But not the way your favorite sigma grindset TikToker told you between ads for pre-workout that tastes like radioactive Jolly Ranchers. You're not running low. The dopamine is RIGHT THERE screaming at full volume. But you?? You turned the receiver down to zero.</p>
+
+    <p>Every doom scroll. Every "lemme just check one notification." Every 4-hour YouTube rabbit hole about whether hotdogs are sandwiches. You literally fanum taxed your own sensitivity pool and now you're sitting there like "why does nothing feel worth doing 🥺"</p>
+
+    <p><strong>BROTHER. YOU DID THIS.</strong></p>
+
+    <p>Full pool = effort has rizz. Making the bed hits. Gym sounds fire. You're locked in. Main character energy.</p>
+
+    <p>Drained pool = same dopamine, can't feel it, everything is mid, and suddenly reorganizing your Spotify playlists feels like a valid life calling. You're scrolling with the dead eyes of a man who has seen too much. No aura. No lock-in. Just vibes and not even good ones.</p>
+
+    <p>You wanna know what's actually unhinged?? Addicts don't even feel good anymore doing the thing they're ADDICTED to. Pool's empty bestie. Signal's maxed. Nothing left to hear it with. That's not just sad that's like... cosmically disrespectful. Your own receptors said "nah I'm good" and logged off.</p>
+
+    <p>And the refill??? Bro it's not more stimulation. It's REST. BOREDOM. Doing NOTHING. The cure for no motivation is touching grass and staring at a wall. I know. Absolute violation of everything you stand for. Moving on.</p>
+
+    <h2>Your Brain Is Running on Caveman Firmware and It's a Whole Sigma Grindset but for Doing Nothing</h2>
+
+    <p>Okay so there's this thing in your skull called the lateral habenula. Scientists literally named it the "disappointment center." Whoever named that has ELITE naming aura honestly. Zero sugar coating. Just "yeah this part makes you feel like garbage." Iconic behavior.</p>
+
+    <p>Here's the lore. When reality falls short of expectations, this little gremlin FIRES and actively TANKS your dopamine. Not just less motivation. A dip BELOW baseline. Your own brain is griefing you for having hopes and dreams.</p>
+
+    <p>why tho</p>
+
+    <p>Because your brain firmware is from like 200,000 BC and back then calories were scarce and trying new things usually meant something with teeth was about to make you an NPC permanently. You survived yesterday? That strat is VALIDATED bestie. Your brain is the most risk-averse player in the lobby going "have we considered just... not?"</p>
+
+    <p>So you set a goal. You miss it. MASSIVE L. Prediction error. Dopamine crash. Habenula goes nuclear. Now discipline feels like trying to sprint through wet concrete wearing a weighted vest made of your own bad decisions.</p>
+
+    <p>Your biology is literally short-selling your ambitions. no cap that's wild</p>
+
+    <h2>Plot Twist That Will Absolutely Destroy Your Worldview: Trying Harder Is the Biggest L of All</h2>
+
+    <p>Okay this is where it gets absolutely DEVIOUS and also kind of infuriating because the answer sounds like something a side quest NPC says before ascending to another plane of existence.</p>
+
+    <p>There's this philosopher named Kapil Gupta who drops the most unhinged take in the self-improvement meta: <strong>trying IS the problem.</strong></p>
+
+    <p>The moment you TRY to be motivated you've already confirmed you're not. The effort is the wall. You're speedrunning your own failure. fr fr think about it</p>
+
+  </div>
+
+  <script>
+    let brainrot = false;
+    function toggleBrainrot() {
+      brainrot = !brainrot;
+      const btn = document.getElementById('brainrot-btn');
+      const title = document.getElementById('post-title');
+      const normal = document.getElementById('post-body-normal');
+      const rot = document.getElementById('post-body-brainrot');
+      if (brainrot) {
+        btn.textContent = '🧓 Translate to Adult';
+        btn.classList.add('active');
+        title.textContent = "You're Not Unmotivated King. You Have Zero Aura Left.";
+        normal.style.display = 'none';
+        rot.style.display = 'block';
+      } else {
+        btn.textContent = '🧠 Translate to Brainrot';
+        btn.classList.remove('active');
+        title.textContent = "You're Not Unmotivated. You're Desensitized.";
+        normal.style.display = 'block';
+        rot.style.display = 'none';
+      }
+    }
+  </script>
 
 </body>
 </html>
