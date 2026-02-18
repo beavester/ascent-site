@@ -85,6 +85,14 @@
       letter-spacing:-1.5px;line-height:1.1;margin-bottom:24px;
     }
 
+    .reading-progress{
+      position:fixed;top:52px;left:0;right:0;height:2px;
+      background:transparent;z-index:99;
+    }
+    .reading-progress-bar{
+      height:100%;width:0%;background:var(--blue);
+      transition:width .1s linear;
+    }
     .post-body p{
       font-size:18px;line-height:1.8;color:var(--text2);
       margin-bottom:22px;
@@ -196,6 +204,7 @@
     </div>
   </nav>
 
+  <div class="reading-progress"><div class="reading-progress-bar" id="progress"></div></div>
   <article>
     <div class="post-meta">
       <a href="../">← Blog</a> · February 15, 2026 · <span>6 min read</span>
@@ -375,6 +384,13 @@
   </footer>
 
   <script>
+    // Reading progress
+    const bar=document.getElementById('progress');
+    addEventListener('scroll',()=>{
+      const h=document.documentElement.scrollHeight-innerHeight;
+      bar.style.width=h>0?Math.min(100,scrollY/h*100)+'%':'0%';
+    },{passive:true});
+
     let brainrot = false;
     function toggleBrainrot() {
       brainrot = !brainrot;
