@@ -145,6 +145,19 @@
     footer a{color:var(--text3);text-decoration:none}
     .foot-links{display:flex;gap:16px}
 
+    .share-links{
+      margin-top:40px;padding-top:24px;border-top:1px solid var(--border);
+      display:flex;gap:12px;align-items:center;
+    }
+    .share-links span{font-size:13px;font-weight:600;color:var(--text3)}
+    .share-links a{
+      font-size:13px;font-weight:500;color:var(--text3);
+      text-decoration:none;padding:6px 14px;
+      border:1px solid var(--border);border-radius:980px;
+      transition:all .15s;
+    }
+    .share-links a:hover{border-color:#bbb;color:var(--text)}
+
     .brainrot-toggle{
       display:inline-flex;align-items:center;gap:6px;
       padding:8px 16px;margin-bottom:32px;
@@ -178,7 +191,7 @@
 
   <article>
     <div class="post-meta">
-      <a href="../">← Blog</a> · February 15, 2026
+      <a href="../">← Blog</a> · February 15, 2026 · <span>6 min read</span>
     </div>
     <h1 id="post-title">You're Not Unmotivated. You're Desensitized.</h1>
     <button class="brainrot-toggle" id="brainrot-btn" onclick="toggleBrainrot()">🧠 Translate to Brainrot</button>
@@ -331,6 +344,12 @@
     <p><strong>gg go touch grass your sensitivity pool will thank you</strong></p>
 
   </div>
+
+    <div class="share-links">
+      <span>Share:</span>
+      <a href="https://twitter.com/intent/tweet?text=You%27re%20Not%20Unmotivated.%20You%27re%20Desensitized.&url=https://habitbuilding.xyz/blog/youre-not-unmotivated/" target="_blank" rel="noopener">Twitter</a>
+      <a href="https://www.reddit.com/submit?url=https://habitbuilding.xyz/blog/youre-not-unmotivated/&title=You%27re%20Not%20Unmotivated.%20You%27re%20Desensitized." target="_blank" rel="noopener">Reddit</a>
+    </div>
 
     <div class="post-cta" id="post-cta">
       <p>Ascent is the habit app designed for distracted brains. Free to try.</p>
