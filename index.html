@@ -245,7 +245,7 @@
       display:flex;gap:24px;justify-content:center;
       align-items:flex-end;padding-bottom:120px;
     }
-    .sc-phone{flex-shrink:0}
+    .sc-phone{flex-shrink:0;will-change:transform}
     .sc-phone.side{width:200px;opacity:.85;transform:translateY(-16px)}
     .sc-phone.main{width:260px}
     .device{
@@ -400,7 +400,7 @@
     .feat+.feat{border-top:1px solid var(--border)}
 
     .feat-screen{display:flex;justify-content:center}
-    .feat-screen .device{width:260px}
+    .feat-screen .device{width:260px;will-change:transform}
 
     /* NARRATIVE DIFF SECTION */
     .narrative-diff{
@@ -515,7 +515,7 @@
       max-width:1200px;margin:0 auto;
       font-size:11px;color:var(--text3);
     }
-    footer a{color:var(--text3);text-decoration:none;transition:color .15s}
+    footer a{color:var(--text3);text-decoration:none;transition:color .25s var(--ease-out)}
     footer a:hover{color:var(--text2)}
     .foot-links{display:flex;gap:16px}
 
@@ -853,47 +853,74 @@
   </footer>
 
   <script>
-    // Nav scroll + dark mode detection
+    // --- SMOOTH SCROLL ENGINE ---
+    // Batches all scroll-driven effects into a single rAF loop
+    let ticking=false;
     const nav=document.getElementById('nav');
     const darkEls=document.querySelectorAll('.dark-section,.cta');
-    function updateNav(){
-      nav.classList.toggle('scrolled',scrollY>10);
-      const nr=nav.getBoundingClientRect();
-      let inDark=false;
-      darkEls.forEach(el=>{
-        const r=el.getBoundingClientRect();
-        if(r.top<nr.bottom&&r.bottom>nr.top)inDark=true;
+    const isDesktop=window.innerWidth>900;
+    const showcaseEl=document.querySelector('.showcase-inner');
+    const sidePhonesEls=isDesktop?document.querySelectorAll('.sc-phone.side'):[];
+    const featScreens=isDesktop?document.querySelectorAll('.feat-screen .device'):[];
+
+    function onScroll(){
+      if(ticking)return;
+      ticking=true;
+      requestAnimationFrame(()=>{
+        // Nav: scroll state + dark mode
+        nav.classList.toggle('scrolled',scrollY>10);
+        const nr=nav.getBoundingClientRect();
+        let inDark=false;
+        darkEls.forEach(el=>{
+          const r=el.getBoundingClientRect();
+          if(r.top<nr.bottom&&r.bottom>nr.top)inDark=true;
+        });
+        nav.classList.toggle('dark-mode',inDark);
+
+        // Showcase parallax (subtle, 10px range)
+        if(showcaseEl&&isDesktop){
+          const r=showcaseEl.getBoundingClientRect();
+          const p=Math.max(0,Math.min(1,(innerHeight-r.top)/(innerHeight+r.height)));
+          const y=(p-.5)*-10;
+          sidePhonesEls.forEach(s=>s.style.transform=`translateY(${y}px)`);
+        }
+
+        // Feature phone subtle float (8px range)
+        if(isDesktop){
+          featScreens.forEach(dev=>{
+            const r=dev.getBoundingClientRect();
+            const vp=innerHeight;
+            const p=Math.max(0,Math.min(1,(vp-r.top)/(vp+r.height)));
+            dev.style.transform=`translateY(${(p-.5)*-8}px)`;
+          });
+        }
+
+        ticking=false;
       });
-      nav.classList.toggle('dark-mode',inDark);
     }
-    addEventListener('scroll',updateNav,{passive:true});
-    updateNav();
+    addEventListener('scroll',onScroll,{passive:true});
+    onScroll();
 
-    // Reveal on scroll
+    // Reveal on scroll — unobserve after reveal for performance
     const ro=new IntersectionObserver(es=>{
-      es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
-    },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+      es.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('visible');
+          ro.unobserve(e.target);
+        }
+      });
+    },{threshold:.08,rootMargin:'0px 0px -60px 0px'});
     document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
-
-    // Parallax on phones (subtle, desktop only)
-    const showcase=document.querySelector('.showcase-inner');
-    if(showcase&&window.innerWidth>900){
-      const sides=document.querySelectorAll('.sc-phone.side');
-      addEventListener('scroll',()=>{
-        const r=showcase.getBoundingClientRect();
-        const p=Math.max(0,Math.min(1,(window.innerHeight-r.top)/(window.innerHeight+r.height)));
-        const y=(p-.5)*-20;
-        sides.forEach(s=>s.style.transform=`translateY(${y}px)`);
-      },{passive:true});
-    }
 
     // FAQ accordion
     document.querySelectorAll('.faq-q').forEach(q=>{
       q.addEventListener('click',()=>{
         const item=q.parentElement;
         const wasOpen=item.classList.contains('open');
-        document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
-        document.querySelectorAll('.faq-q').forEach(q=>q.setAttribute('aria-expanded','false'));
+        document.querySelectorAll('.faq-item.open').forEach(i=>{
+          i.classList.remove('open');
+          i.querySelector('.faq-q').setAttribute('aria-expanded','false');
+        });
         if(!wasOpen){
           item.classList.add('open');
           q.setAttribute('aria-expanded','true');
