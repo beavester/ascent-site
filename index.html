@@ -260,11 +260,11 @@
       letter-spacing:.4px;text-transform:uppercase;
     }
     .sc-caption{
-      text-align:center;margin-top:8px;
-      font-size:13px;color:var(--text2);line-height:1.55;
-      max-width:260px;margin-left:auto;margin-right:auto;
+      text-align:center;margin-top:10px;
+      font-size:12px;color:var(--text3);line-height:1.55;
+      max-width:240px;margin-left:auto;margin-right:auto;
     }
-    .sc-caption strong{color:var(--blue);font-weight:700}
+    .sc-caption strong{color:var(--blue);font-weight:600}
 
     /* DARK SECTION */
     .dark-section{
@@ -354,8 +354,11 @@
       display:flex;justify-content:center;
     }
     .widget-screenshot img{
-      width:300px;border-radius:32px;
-      box-shadow:0 4px 12px rgba(0,0,0,.2),0 24px 64px rgba(0,0,0,.3);
+      width:280px;border-radius:32px;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.06),
+        0 4px 12px rgba(0,0,0,.2),
+        0 24px 64px rgba(0,0,0,.35);
     }
 
     /* FEATURES */
@@ -377,9 +380,10 @@
     .feat-copy p{font-size:16px;color:var(--text2);line-height:1.8}
     .feat-copy a{color:var(--text2);text-decoration:underline;text-underline-offset:2px;text-decoration-color:rgba(0,0,0,.2)}
     .feat-copy a:hover{color:var(--blue);text-decoration-color:var(--blue)}
+    .feat+.feat{border-top:1px solid var(--border)}
 
     .feat-screen{display:flex;justify-content:center}
-    .feat-screen .device{width:240px}
+    .feat-screen .device{width:260px}
 
     /* NARRATIVE DIFF SECTION */
     .narrative-diff{
@@ -625,6 +629,15 @@
       </div>
     </div>
 
+    <!-- IDENTITY -->
+    <section class="identity-section reveal" style="padding:120px 32px;max-width:640px;margin:0 auto;">
+      <h2 style="font-size:clamp(28px,4.5vw,44px);font-weight:800;letter-spacing:-1.8px;line-height:1.08;margin-bottom:24px;">You don't start by being a runner.</h2>
+      <p style="font-size:17px;color:var(--text2);line-height:1.85;margin-bottom:20px;">You start by running once. Then again on Thursday. Then again the following week when it's raining and you'd rather not.</p>
+      <p style="font-size:17px;color:var(--text2);line-height:1.85;margin-bottom:20px;">James Clear calls this identity-based habits — the idea that <strong style="color:var(--text);font-weight:600;">every action is a vote for the person you want to become</strong>. But here's the part most people get backwards: you don't declare an identity and then behave accordingly. You accumulate evidence, and identity follows. Nobody wakes up one morning and decides "I am a writer." They notice, after months of showing up, that they've written 40,000 words. The label arrives last.</p>
+      <p style="font-size:17px;color:var(--text2);line-height:1.85;margin-bottom:20px;">This is why affirmations feel hollow. Saying "I am disciplined" while sitting on the couch doesn't update anything — your brain tracks evidence, not declarations. Fourteen days of showing up, even for two minutes? That updates the model.</p>
+      <p style="font-size:17px;color:var(--text2);line-height:1.85;">Ascent's evening review doesn't ask who you want to be. It shows you who you were today — and lets the pattern speak for itself.</p>
+    </section>
+
     <!-- WIDGETS -->
     <div class="dark-section widget-section">
       <div class="widget-inner reveal">
@@ -638,6 +651,15 @@
         </div>
       </div>
     </div>
+
+    <!-- CUES -->
+    <section style="padding:100px 32px;max-width:640px;margin:0 auto;" class="reveal">
+      <h2 style="font-size:clamp(24px,3.5vw,32px);font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:24px;">Every unlock is a cue.</h2>
+      <p style="font-size:17px;color:var(--text2);line-height:1.85;margin-bottom:20px;">You pick up your phone 80–150 times a day. Each pickup fires a cue — a stimulus that triggers whatever behavior has the strongest cached response. For most people, that's Instagram. Or Twitter. Or the thing they swore they'd stop opening.</p>
+      <p style="font-size:17px;color:var(--text2);line-height:1.85;margin-bottom:20px;">The coffee maker beeping is a cue. The notification buzz is a cue. The lock screen lighting up is a cue. Your environment is saturated with triggers, and almost all of them point toward consumption. Not because you chose them — because someone else designed them that way.</p>
+      <p style="font-size:17px;color:var(--text2);line-height:1.85;margin-bottom:20px;">Cue research goes back to Pavlov, but the modern version is more insidious. <strong style="color:var(--text);font-weight:600;">Digital cues are invisible because they're everywhere.</strong> You don't notice the trigger because the trigger is the device itself — and it's in your hand before you've consciously decided anything (<a href="https://doi.org/10.1016/j.neubiorev.2019.09.016" style="color:var(--text2);text-decoration:underline;text-underline-offset:2px;text-decoration-color:rgba(0,0,0,.2)">Smith & Graybiel, 2016</a>).</p>
+      <p style="font-size:17px;color:var(--text2);line-height:1.85;">You can't eliminate the cue — you're not throwing away your phone. But you can change what it points to. A widget on your home screen means the first thing you see after unlocking isn't a feed. It's your goal.</p>
+    </section>
 
     <div class="feat-section" id="features">
       <div class="feat reveal">
