@@ -17,7 +17,7 @@
   <meta property="og:site_name" content="Ascent">
 
   <!-- Twitter -->
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Ascent — Habit building for distracted brains">
   <meta name="twitter:description" content="Instead of fighting your dopamine, work with it.">
   <meta name="twitter:image" content="https://habitbuilding.xyz/img/icon.png">
@@ -33,6 +33,7 @@
 
   <!-- Preload critical resources -->
   <link rel="preload" as="video" href="img/app-demo.mp4" type="video/mp4">
+  <link rel="preload" as="image" href="img/screen-widgets.jpg">
 
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -135,6 +136,7 @@
     .nav-links a{
       text-decoration:none;color:var(--text3);
       font-size:13px;font-weight:500;transition:color .15s;
+      min-height:44px;display:inline-flex;align-items:center;
     }
     .nav-links a:hover{color:var(--text)}
     .btn-nav{
@@ -373,7 +375,7 @@
     }
     .faq-item:first-child{border-top:1px solid var(--border)}
     .faq-q{
-      padding:24px 0;cursor:pointer;
+      padding:24px 0;cursor:pointer;min-height:44px;
       display:flex;justify-content:space-between;align-items:center;
       font-size:16px;font-weight:600;letter-spacing:-.2px;
       user-select:none;
@@ -427,7 +429,7 @@
       max-width:1200px;margin:0 auto;
       font-size:11px;color:var(--text3);
     }
-    footer a{color:var(--text3);text-decoration:none;transition:color .15s}
+    footer a{color:var(--text3);text-decoration:none;transition:color .15s;min-height:44px;display:inline-flex;align-items:center;padding:0 4px}
     footer a:hover{color:var(--text2)}
     .foot-links{display:flex;gap:16px}
 
@@ -512,7 +514,7 @@
           <div class="device">
             <video autoplay loop muted playsinline aria-label="Ascent app demo showing 2-minute version feature">
               <source src="img/app-demo.mp4" type="video/mp4">
-              <img src="img/app-demo.gif" alt="Ascent app demo">
+              Your browser does not support the video tag.
             </video>
           </div>
           <div class="sc-tag">2-Min Version</div>
