@@ -43,7 +43,12 @@
       --blue:#0071E3;--white:#fff;--border:#e4e4e8;
     }
     html{scroll-behavior:smooth}
-    ::selection{background:rgba(0,113,227,.12)}
+    ::selection{background:rgba(0,113,227,.15)}
+    :focus-visible{outline:2px solid rgba(0,113,227,.4);outline-offset:2px;border-radius:4px}
+    ::-webkit-scrollbar{width:8px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:4px}
+    ::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.25)}
     body{
       font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
       background:var(--bg);color:var(--text);
@@ -136,7 +141,7 @@
       margin-top:36px;margin-bottom:12px;
     }
     .sci-section p{
-      font-size:17px;color:var(--text2);line-height:1.85;
+      font-size:18px;color:var(--text2);line-height:1.8;
       margin-bottom:20px;
     }
     .sci-section p:last-child{margin-bottom:0}
@@ -144,7 +149,7 @@
     .sci-section em{font-style:italic}
     .sci-section ul{
       margin:12px 0 20px 24px;
-      font-size:17px;color:var(--text2);line-height:1.85;
+      font-size:18px;color:var(--text2);line-height:1.8;
     }
     .sci-section li{margin-bottom:8px}
 
@@ -163,10 +168,14 @@
     /* CITATION */
     .cite{
       font-size:13px;color:var(--text3);
-      margin-top:-12px;margin-bottom:20px;
+      margin-top:-12px;margin-bottom:24px;
       font-style:italic;
+      padding-left:16px;
+      border-left:2px solid var(--border);
+      line-height:1.7;
     }
-    .cite a{color:var(--blue);text-decoration:underline;text-underline-offset:2px}
+    .cite a{color:var(--blue);text-decoration:underline;text-underline-offset:2px;text-decoration-color:rgba(0,113,227,.3)}
+    .cite a:hover{text-decoration-color:var(--blue)}
 
     /* DARK SECTION */
     .dark-band{
@@ -247,8 +256,8 @@
 
     /* REVEAL */
     .reveal{
-      opacity:0;transform:translateY(12px);
-      transition:opacity .5s ease,transform .5s ease;
+      opacity:0;transform:translateY(16px);
+      transition:opacity .6s cubic-bezier(.25,.1,.25,1),transform .6s cubic-bezier(.25,.1,.25,1);
     }
     .reveal.visible{opacity:1;transform:translateY(0)}
 
