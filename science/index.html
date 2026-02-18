@@ -41,6 +41,9 @@
       --bg:#FAFAF7;--bg2:#F3F1EC;--dark:#0a0a0a;
       --text:#1a1a1c;--text2:#555;--text3:#888;
       --blue:#0071E3;--white:#fff;--border:#e4e4e8;
+      --spring:cubic-bezier(.22,1,.36,1);
+      --ease-out:cubic-bezier(.25,.46,.45,.94);
+      --ease-smooth:cubic-bezier(.4,0,.2,1);
     }
     html{scroll-behavior:smooth}
     ::selection{background:rgba(0,113,227,.15)}
@@ -64,10 +67,11 @@
       backdrop-filter:saturate(180%) blur(20px);
       -webkit-backdrop-filter:saturate(180%) blur(20px);
       border-bottom:0.5px solid rgba(0,0,0,.08);
-      transition:background .3s,border .3s;
+      transition:background .5s var(--ease-smooth),border-color .5s var(--ease-smooth);
+      will-change:background-color;
     }
     nav.dark-mode{background:rgba(10,10,10,.92);border-bottom-color:rgba(255,255,255,.06)}
-    nav.dark-mode a{color:rgba(255,255,255,.8)}
+    nav.dark-mode a{color:rgba(255,255,255,.8);transition:color .3s var(--ease-smooth)}
     nav.dark-mode a:hover{color:#fff}
     nav.dark-mode .btn-nav{background:#fff;color:#000!important}
     .nav-logo{
@@ -79,7 +83,7 @@
     .nav-links{display:flex;gap:24px;align-items:center}
     .nav-links a{
       text-decoration:none;color:var(--text3);
-      font-size:13px;font-weight:500;transition:color .15s;
+      font-size:13px;font-weight:500;transition:color .25s var(--ease-out);
     }
     .nav-links a:hover{color:var(--text)}
     .nav-links a.active{color:var(--text)}
@@ -128,6 +132,7 @@
       min-width:16px;
     }
     .toc-list a:hover{color:var(--blue)}
+    .toc-list a:hover::before{color:var(--blue)}
 
     /* SECTIONS */
     .sci-section{
@@ -236,9 +241,11 @@
       background:#fff;color:#000;
       font-size:15px;padding:14px 28px;
       border-radius:980px;text-decoration:none;font-weight:600;
-      transition:background .15s;
+      transition:transform .25s var(--spring),background .25s var(--ease-out),box-shadow .3s var(--ease-out);
+      will-change:transform;
     }
-    .cta .btn-blue:hover{background:#f0f0f0}
+    .cta .btn-blue:hover{background:#f0f0f0;box-shadow:0 4px 20px rgba(255,255,255,.15)}
+    .cta .btn-blue:active{transform:scale(.965);transition-duration:.1s}
 
     /* FOOTER */
     footer{
@@ -253,10 +260,14 @@
 
     /* REVEAL */
     .reveal{
-      opacity:0;transform:translateY(16px);
-      transition:opacity .6s cubic-bezier(.25,.1,.25,1),transform .6s cubic-bezier(.25,.1,.25,1);
+      opacity:0;transform:translateY(20px);
+      transition:opacity .7s var(--spring),transform .7s var(--spring);
+      will-change:transform,opacity;
     }
     .reveal.visible{opacity:1;transform:translateY(0)}
+    @media(prefers-reduced-motion:reduce){
+      *,.reveal{animation-duration:.01ms!important;transition-duration:.01ms!important}
+    }
 
     /* RESPONSIVE */
     @media(max-width:900px){
@@ -555,20 +566,26 @@
   <script>
     const nav=document.getElementById('nav');
     const darkEls=document.querySelectorAll('.dark-band,.cta');
-    function updateNav(){
-      const nr=nav.getBoundingClientRect();
-      let inDark=false;
-      darkEls.forEach(el=>{
-        const r=el.getBoundingClientRect();
-        if(r.top<nr.bottom&&r.bottom>nr.top)inDark=true;
+    let ticking=false;
+    function onScroll(){
+      if(ticking)return;
+      ticking=true;
+      requestAnimationFrame(()=>{
+        const nr=nav.getBoundingClientRect();
+        let inDark=false;
+        darkEls.forEach(el=>{
+          const r=el.getBoundingClientRect();
+          if(r.top<nr.bottom&&r.bottom>nr.top)inDark=true;
+        });
+        nav.classList.toggle('dark-mode',inDark);
+        ticking=false;
       });
-      nav.classList.toggle('dark-mode',inDark);
     }
-    addEventListener('scroll',updateNav,{passive:true});
-    updateNav();
+    addEventListener('scroll',onScroll,{passive:true});
+    onScroll();
     const ro=new IntersectionObserver(es=>{
-      es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
-    },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+      es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target)}});
+    },{threshold:.08,rootMargin:'0px 0px -60px 0px'});
     document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
   </script>
 

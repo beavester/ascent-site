@@ -15,6 +15,7 @@
     :root{
       --bg:#FAFAF7;--text:#1a1a1c;--text2:#555;--text3:#888;
       --blue:#0071E3;--border:#e4e4e8;
+      --spring:cubic-bezier(.22,1,.36,1);--ease-out:cubic-bezier(.25,.46,.45,.94);
     }
     html{scroll-behavior:smooth}
     ::selection{background:rgba(0,113,227,.15)}
@@ -75,7 +76,7 @@
     .post-card{
       display:block;text-decoration:none;color:inherit;
       padding:32px 0;border-bottom:1px solid var(--border);
-      transition:opacity .15s;
+      transition:opacity .3s var(--ease-out);
     }
     .post-card:first-child{border-top:1px solid var(--border)}
     .post-card:hover{opacity:.75}
@@ -88,7 +89,7 @@
     .post-card h2{
       font-size:22px;font-weight:700;letter-spacing:-.3px;
       line-height:1.25;margin-bottom:6px;
-      transition:color .2s;
+      transition:color .25s var(--ease-out);
     }
     .post-card p{
       font-size:15px;color:var(--text2);line-height:1.6;
