@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Science — How Habits Actually Form in Your Brain | Ascent</title>
-  <meta name="description" content="The neuroscience behind Ascent: dopamine, habit formation, reward prediction errors, and why willpower-based approaches fail. Backed by real research.">
+  <meta name="description" content="The neuroscience behind Ascent: dopamine, habit formation, reward prediction errors, and why willpower-based approaches fail. Written by a pharmacist, backed by real research.">
   <meta name="keywords" content="dopamine habit formation, neuroscience of habits, why willpower fails, ADHD dopamine, reward prediction error, habit building science">
   <link rel="canonical" href="https://habitbuilding.xyz/science/">
 
@@ -94,17 +94,13 @@
       padding:140px 32px 80px;text-align:center;
       max-width:720px;margin:0 auto;
     }
-    .science-hero .eyebrow{
-      font-size:12px;font-weight:700;color:var(--blue);
-      letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;
-    }
     .science-hero h1{
       font-size:clamp(32px,5vw,52px);font-weight:800;
       letter-spacing:-2px;line-height:1.08;margin-bottom:20px;
     }
     .science-hero p{
       font-size:18px;color:var(--text2);line-height:1.7;
-      max-width:520px;margin:0 auto;
+      max-width:540px;margin:0 auto;
     }
 
     /* TABLE OF CONTENTS */
@@ -147,35 +143,31 @@
     .sci-section p:last-child{margin-bottom:0}
     .sci-section strong{color:var(--text);font-weight:600}
     .sci-section em{font-style:italic}
-    .sci-section ul{
+    .sci-section ul,.sci-section ol{
       margin:12px 0 20px 24px;
       font-size:18px;color:var(--text2);line-height:1.8;
     }
     .sci-section li{margin-bottom:8px}
 
-    /* CALLOUT BOXES */
-    .callout{
-      margin:28px 0;padding:24px 28px;
-      background:var(--bg2);border-radius:12px;
-      font-size:15px;color:var(--text2);line-height:1.75;
+    /* FOOTNOTES */
+    .footnote-ref{
+      font-size:12px;color:var(--blue);
+      text-decoration:none;vertical-align:super;
+      font-weight:600;padding:0 1px;
     }
-    .callout strong{color:var(--text)}
-    .callout.dark{
-      background:var(--dark);color:rgba(255,255,255,.65);
+    .footnote-ref:hover{text-decoration:underline}
+    .footnotes{
+      margin-top:40px;padding-top:24px;
+      border-top:1px solid var(--border);
     }
-    .callout.dark strong{color:rgba(255,255,255,.9)}
-
-    /* CITATION */
-    .cite{
-      font-size:13px;color:var(--text3);
-      margin-top:-12px;margin-bottom:24px;
-      font-style:italic;
-      padding-left:16px;
-      border-left:2px solid var(--border);
-      line-height:1.7;
+    .footnotes ol{
+      margin:0 0 0 20px;
+      font-size:14px;color:var(--text3);line-height:1.7;
     }
-    .cite a{color:var(--blue);text-decoration:underline;text-underline-offset:2px;text-decoration-color:rgba(0,113,227,.3)}
-    .cite a:hover{text-decoration-color:var(--blue)}
+    .footnotes li{margin-bottom:10px}
+    .footnotes a{color:var(--blue);text-decoration:underline;text-underline-offset:2px;text-decoration-color:rgba(0,113,227,.3)}
+    .footnotes a:hover{text-decoration-color:var(--blue)}
+    .fn-back{font-size:11px;text-decoration:none;color:var(--text3);margin-left:4px}
 
     /* DARK SECTION */
     .dark-band{
@@ -199,19 +191,17 @@
       -webkit-background-clip:text;-webkit-text-fill-color:transparent;
       background-clip:text;
     }
+    .dark-band h3{
+      font-size:20px;font-weight:700;letter-spacing:-.3px;
+      margin-top:36px;margin-bottom:12px;
+      color:rgba(255,255,255,.9);
+    }
     .dark-band p{
       font-size:17px;color:rgba(255,255,255,.55);line-height:1.85;
       margin-bottom:20px;
     }
     .dark-band strong{color:rgba(255,255,255,.85);font-weight:600}
-
-    /* DIVIDER */
-    .sci-divider{
-      max-width:680px;margin:0 auto 80px;padding:0 32px;
-    }
-    .sci-divider hr{
-      border:none;height:1px;background:var(--border);
-    }
+    .dark-band .footnote-ref{color:rgba(100,180,255,.8)}
 
     /* CTA */
     .cta{
@@ -267,7 +257,6 @@
       .toc{padding:0 24px 48px}
       .toc-list{grid-template-columns:1fr}
       .sci-section{padding:0 24px 60px}
-      .sci-divider{padding:0 24px;margin-bottom:60px}
       .dark-band{padding:80px 24px;margin-bottom:60px}
       .cta{padding:80px 24px}
       .nav-links a:not(.btn-nav){display:none}
@@ -289,218 +278,181 @@
 
   <main>
     <div class="science-hero">
-      <div class="eyebrow">The Neuroscience</div>
       <h1>How habits actually form in your brain.</h1>
-      <p>The research behind why most habit apps fail — and the design principles that make Ascent different. No hand-waving. Just neuroscience you can verify.</p>
+      <p>I'm a pharmacist. I spent years thinking about why people can't do the things they want to do. This is what the research actually says — no hand-waving, no pop-science metaphors that fall apart under scrutiny.</p>
     </div>
 
     <div class="toc">
       <div class="toc-inner">
         <div class="toc-title">Contents</div>
         <ol class="toc-list">
-          <li><a href="#dopamine">The Dopamine System</a></li>
-          <li><a href="#prediction">Reward Prediction Errors</a></li>
-          <li><a href="#willpower">Why Willpower Fails</a></li>
-          <li><a href="#formation">How Habits Form (Molecularly)</a></li>
-          <li><a href="#two-minutes">Why Two Minutes Is Enough</a></li>
-          <li><a href="#environment">Environment Over Discipline</a></li>
-          <li><a href="#streaks">The Problem with Streaks</a></li>
-          <li><a href="#recovery">The Path Back</a></li>
+          <li><a href="#dopamine">Dopamine isn't what you think</a></li>
+          <li><a href="#prediction">Your brain as prediction machine</a></li>
+          <li><a href="#willpower">The case against willpower</a></li>
+          <li><a href="#formation">What a habit actually is</a></li>
+          <li><a href="#two-minutes">Why two minutes is enough</a></li>
+          <li><a href="#environment">Environment over discipline</a></li>
+          <li><a href="#streaks">The streak problem</a></li>
+          <li><a href="#recovery">Getting your receptors back</a></li>
         </ol>
       </div>
     </div>
 
-    <!-- SECTION 1: DOPAMINE -->
+    <!-- DOPAMINE -->
     <section class="sci-section reveal" id="dopamine">
-      <h2>Your brain runs on dopamine. But not the way you think.</h2>
+      <h2>Dopamine isn't what you think it is.</h2>
 
-      <p>The pop-science version: dopamine is the "reward chemical." Do something good, get a hit. Simple.</p>
+      <p>The internet version: dopamine is the "reward chemical." Do something good, get a hit. Oversimplified to the point of being wrong.</p>
 
-      <p>The actual neuroscience is more interesting — and more useful.</p>
+      <p>Dopamine operates in two modes. Tonic dopamine is your baseline — a slow, steady signal that determines whether you can even start a task. Think of it as an activation threshold. When it's adequate, effort feels manageable. When it's depleted, everything feels like pushing through wet concrete.</p>
 
-      <p>Dopamine operates in two distinct modes. <strong>Tonic dopamine</strong> is your baseline level — a slow, steady signal that determines whether you can even initiate effortful action. Think of it as the activation threshold. When tonic dopamine is adequate, starting tasks feels manageable. When it's depleted, everything feels like pushing through wet concrete.</p>
+      <p>Phasic dopamine is the burst. The spike from rewards, novelty, surprise. It's what fires when you get a notification, land on an interesting video, or receive an unexpected compliment.</p>
 
-      <p><strong>Phasic dopamine</strong> is the burst — the spike from rewards, novelty, and surprise. This is what fires when you get a notification, land on an interesting video, or receive an unexpected compliment.</p>
+      <p>Here's the thing that matters: chronic high-phasic stimulation — the endless scrolling, the rapid-fire content — downregulates D2 receptors in the striatum.<a href="#fn1" class="footnote-ref" id="ref1">1</a> Your brain adapts to the flood by reducing the number of receivers. The signal stays loud. There's just less hardware left to hear it.</p>
 
-      <p>Here's what matters: <strong>chronic high-phasic stimulation (scrolling, notifications, rapid-fire content) downregulates D2 receptors in the striatum.</strong> Your brain adapts to the flood by reducing the number of receivers. The signal stays loud, but there's less and less hardware to hear it.</p>
+      <p>So everything that isn't a high-dopamine activity starts feeling pointless. Reading — boring. Cooking — tedious. Going for a walk — why bother? This isn't laziness. It's a sensitivity problem. The signal is there. The receivers are shot.</p>
 
-      <p class="cite">Volkow et al. (2001) demonstrated D2 receptor downregulation in substance abuse using PET imaging. Robertson et al. (2020) showed <a href="https://www.frontiersin.org/journals/public-health/articles/10.3389/fpubh.2023.1257629/full" target="_blank" rel="noopener">exercise increases D2-like receptor binding</a> in dorsal and ventral striatum.</p>
-
-      <p>The result: everything that isn't a high-dopamine activity starts feeling pointless. Reading a book — boring. Cooking — tedious. Going for a walk — why? This isn't laziness. It's a sensitivity problem. The signal is there; the receivers are shot.</p>
-
-      <div class="callout">
-        <strong>The Ascent connection:</strong> The Motivation Battery is a visualization of your tonic dopamine state — your "sensitivity pool." It factors in sleep, screen time, exercise, and daily activity. When it drops, the app adapts: shorter tasks, gentler expectations. You can't manage what you can't see.
-      </div>
+      <p>I see this in oncology patients, actually. Not the dopamine part specifically, but the same structural pattern: a system that adapted perfectly to one input, then can't respond normally to anything else. The body is doing exactly what it was designed to do. That's the problem.</p>
     </section>
 
-    <div class="sci-divider"><hr></div>
-
-    <!-- SECTION 2: PREDICTION ERRORS -->
+    <!-- PREDICTION ERRORS -->
     <section class="sci-section reveal" id="prediction">
       <h2>Your brain is a prediction machine. Habits are what happen when it gets confident.</h2>
 
-      <p>Your brain doesn't passively receive information from the world. It actively predicts what's going to happen — then compares those predictions against reality. The mismatch between prediction and outcome is called a <strong>prediction error</strong>.</p>
+      <p>Your brain doesn't passively receive information. It actively predicts what's going to happen, then compares those predictions against reality. The mismatch is called a prediction error.</p>
 
-      <p>Dopamine neurons encode these prediction errors directly. When something is better than expected: positive prediction error, dopamine burst. When something is worse than expected: negative prediction error, dopamine dip below baseline.</p>
+      <p>Dopamine neurons encode these errors directly. Better than expected: dopamine burst. Worse than expected: dopamine dip below baseline. And that dip isn't passive — there's a structure called the lateral habenula that actively fires to suppress dopamine release when reality falls short.<a href="#fn2" class="footnote-ref" id="ref2">2</a> Sometimes called the "disappointment center," which is a brutal but accurate name.</p>
 
-      <p>That dip isn't passive. There's a structure called the <strong>lateral habenula</strong> — sometimes called the "disappointment center" — that actively fires to suppress dopamine release from the VTA (ventral tegmental area) when reality falls short of expectation.</p>
+      <p>This is your brain's error-correction system. <em>Update your model. That path isn't working.</em> Without it, you'd endlessly repeat failed strategies. It's adaptive — unless the goals you're setting are triggering it constantly.</p>
 
-      <p class="cite">Matsumoto & Hikosaka (2007), <em>Nature</em>. Bromberg-Martin & Hikosaka (2011), <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3164948/" target="_blank" rel="noopener"><em>Nature Neuroscience</em></a>. The lateral habenula transmits inverted reward prediction errors and suppresses dopamine neuron activity.</p>
+      <p>And this is where most people set themselves up to fail.</p>
 
-      <p>This is your brain's error-correction system. It's saying: <em>update your model, that path isn't working.</em> Without it, you'd endlessly repeat failed strategies. It's adaptive — unless the goals you're setting are triggering it constantly.</p>
+      <p>Big goal. Fall short. Massive negative prediction error. Dopamine crash. The lateral habenula fires hard. Now "discipline" feels like pushing a boulder uphill, because the neurochemistry designed to help you adapt is punishing you for trying. You're not weak. You're triggering your own disappointment center over and over and wondering why you feel terrible.</p>
 
-      <h3>The discipline trap</h3>
-
-      <p>When you set a big goal and fall short — massive negative prediction error. Dopamine crash. The lateral habenula fires hard. Now "discipline" feels like pushing a boulder uphill, because the neurochemistry designed to help you adapt is punishing you for trying.</p>
-
-      <p>This is why the two-minute rule works at a neurological level. Your brain expected: show up. You showed up. <strong>Neutral-to-positive prediction signal. No punishment.</strong> The habenula stays quiet. Over time, these small positive signals accumulate, and your brain starts predicting that showing up reliably leads to reward. The habit forms not from willpower, but from prediction confidence.</p>
+      <p>Compare that to the two-minute approach: your brain expected "show up." You showed up. Neutral-to-positive prediction signal. No punishment. The habenula stays quiet. Over time, these small positive signals accumulate, and your brain starts predicting that showing up reliably leads to reward. The habit forms not from willpower, but from prediction confidence.</p>
     </section>
 
-    <div class="sci-divider"><hr></div>
-
-    <!-- SECTION 3: WILLPOWER -->
+    <!-- WILLPOWER -->
     <div class="dark-band reveal" id="willpower">
       <div class="dark-band-inner">
-        <h2>Why willpower always loses.</h2>
+        <h2>Willpower is a knife at a gunfight.</h2>
 
         <p>Willpower is prefrontal cortex override — your conscious, deliberate control system muscling past the automatic one. It works for a while. Then it doesn't.</p>
 
-        <p>Here's the structural problem: <strong>willpower is dopamine-dependent.</strong> The same tonic dopamine that gives you the activation energy to start a task also powers the prefrontal cortex's ability to inhibit impulses. When that baseline is depleted — from poor sleep, stress, or chronic overstimulation — both your ability to start and your ability to resist decline simultaneously.</p>
+        <p>The structural problem: willpower is dopamine-dependent. The same tonic dopamine that gives you the activation energy to start a task also powers the prefrontal cortex's ability to inhibit impulses. When that baseline is depleted — from poor sleep, stress, chronic overstimulation — both your ability to start <em>and</em> your ability to resist decline at the same time. The two things you need most fail together.</p>
 
-        <p>The neuroscience frames this as a <strong>precision mismatch.</strong> Your brain assigns confidence weights (precision) to competing predictions. "Scrolling will feel good right now" has very high precision — it's immediate, certain, proven a thousand times. "Working out will feel good eventually" has low precision — it's delayed, uncertain, and temporally distant.</p>
+        <p>Your brain assigns confidence weights to competing predictions. "Scrolling will feel good right now" has very high confidence — it's immediate, certain, proven a thousand times. "Working out will feel good eventually" has low confidence — it's delayed, uncertain, temporally distant. You're trying to override a high-confidence, immediate prediction with a low-confidence, abstract one. The math doesn't work. It's not a character failing. It's a computation your brain literally cannot win without changing the inputs.</p>
 
-        <p><strong>Willpower is bringing a knife to a gunfight.</strong> You're trying to override a high-confidence, immediate prediction with a low-confidence, abstract one. The math doesn't work. It's not a character failing — it's a computation the brain literally cannot win without changing the inputs.</p>
-
-        <p>This is why environment design beats discipline every time. You're not overriding the prediction — you're <strong>changing what gets predicted.</strong> If your home screen shows your goals instead of social media, the default prediction shifts. The high-precision behavior becomes checking your progress, not opening TikTok.</p>
+        <p>In pharmacology, we'd call this a bioavailability problem. The drug is good. The delivery mechanism is terrible. You can have the best intentions in the world, but if the delivery system degrades the signal before it reaches the target, it doesn't matter.</p>
       </div>
     </div>
 
-    <!-- SECTION 4: HABIT FORMATION -->
+    <!-- HABIT FORMATION -->
     <section class="sci-section reveal" id="formation">
-      <h2>How habits form — the molecular version.</h2>
+      <h2>What a habit actually is, molecularly.</h2>
 
-      <p>A habit isn't just "something you do automatically." It's a specific neurological structure with a specific address in the brain.</p>
+      <p>A habit isn't "something you do automatically." It's a specific neurological structure with a specific address.</p>
 
-      <p>New behaviors start in the <strong>ventral striatum</strong> (reward valuation) and <strong>dorsomedial striatum</strong> (goal-directed learning). You're consciously deciding, weighing costs, evaluating outcomes. This is expensive — it requires prefrontal cortex engagement, which generates adenosine (the molecule that makes cognitive effort feel effortful).</p>
+      <p>New behaviors start in the ventral striatum (reward valuation) and dorsomedial striatum (goal-directed learning). You're consciously deciding, weighing costs, evaluating outcomes. This is expensive — it requires prefrontal cortex engagement, which generates adenosine, the molecule that makes cognitive effort feel effortful. This is literally why new things feel hard. Not because you're bad at them. Because your brain is burning premium fuel to run them.</p>
 
-      <p>As a behavior repeats, control gradually transfers to the <strong>dorsolateral striatum</strong> — the brain's habit center. This happens through what neuroscientists call spiraling striato-nigro-striatal projections. The behavior becomes a cached, stimulus-response unit. Context triggers action without deliberation.</p>
+      <p>As a behavior repeats, control gradually transfers to the dorsolateral striatum — the brain's habit center. This happens through spiraling striato-nigro-striatal projections. The behavior becomes a cached, stimulus-response unit. Context triggers action without deliberation.<a href="#fn3" class="footnote-ref" id="ref3">3</a></p>
 
-      <p class="cite">Yin & Knowlton (2006), <em>Nature Reviews Neuroscience</em>. Graybiel (2008), "Habits, Rituals, and the Evaluative Brain," <em>Annual Review of Neuroscience</em>.</p>
+      <p>But here's the part that kept me up at night when I first read it.</p>
 
-      <h3>The endocannabinoid lock-in</h3>
+      <p>CB1 cannabinoid receptors sit on the connections between your cortex (where decisions happen) and your striatum (where habits execute). As a behavior consolidates, endocannabinoid signaling progressively weakens cortical input to the habit circuit while preserving thalamic input — the context and cue signals.<a href="#fn4" class="footnote-ref" id="ref4">4</a></p>
 
-      <p>Here's the part that explains why breaking habits feels so hard. CB1 cannabinoid receptors sit on presynaptic corticostriatal terminals — the connections between your cortex (decision-making) and your striatum (habit execution). As a behavior consolidates, endocannabinoid signaling progressively <strong>weakens cortical input</strong> to the habit circuit while preserving thalamic (context/cue) input.</p>
+      <p>Read that again. Your brain literally turns down the volume on "should I do this?" while keeping "the cue says do this" at full blast. The cortex — the part of you that deliberates, vetoes, reconsiders — gets progressively silenced. At the synapse. Physically.</p>
 
-      <p>Translation: your brain literally turns down the volume on the "should I do this?" signal while keeping the "the cue says do this" signal intact. The cortex — the part of you that deliberates, vetoes, reconsiders — gets progressively silenced.</p>
-
-      <p class="cite">Hilário et al. (2007), <em>Journal of Neuroscience</em>. CB1 receptors are expressed in a dorsolateral-to-ventromedial gradient, with highest density precisely where habits are encoded.</p>
-
-      <p>This is molecular proof that "just decide to stop" is a misunderstanding of what habits are. The decision-making input has been attenuated at the synapse. The habit runs on cues, not choices.</p>
-
-      <div class="callout">
-        <strong>The Ascent connection:</strong> This is why Ascent is built around environment design, not willpower. If the cue (phone unlock → see widget) triggers a constructive behavior, the same molecular machinery that locked in your scrolling habit will eventually lock in the new one. You're not fighting the system. You're redirecting it.
-      </div>
+      <p>This is molecular proof that "just decide to stop" is a misunderstanding of what habits are. The decision-making input has been attenuated. The habit runs on cues, not choices. Which means if you want to build a new habit, you need to work with this machinery, not against it. Put the right cue in front of yourself often enough, and the same system that locked in your scrolling habit will lock in the new one.</p>
     </section>
 
-    <div class="sci-divider"><hr></div>
-
-    <!-- SECTION 5: TWO MINUTES -->
-    <section class="sci-section reveal" id="two-minutes">
-      <h2>The neuroscience of "two minutes is enough."</h2>
-
-      <p>This sounds like a productivity hack. It's actually molecular biology.</p>
-
-      <h3>1. Prediction errors stay manageable</h3>
-      <p>A two-minute task generates a small, positive prediction signal. Your brain expected minimal effort; you delivered. No punishment from the lateral habenula. No dopamine crash. The behavior gets tagged as "safe" — low cost, reliable outcome.</p>
-
-      <h3>2. The plasticity machinery has a natural cycle</h3>
-      <p>The ERK/MAPK signaling cascade — required for long-term synaptic consolidation — has a refractory period of roughly 60–90 minutes. Attempting continuous learning during this window provides no additional consolidation benefit. Brief sessions naturally respect this cycle. More isn't always more, neurologically speaking.</p>
-
-      <p class="cite">Referred to in Ajay & bhalla (2004), "Biochemical pathway analysis." The MAPK cascade refractory period is well-established in synaptic plasticity literature.</p>
-
-      <h3>3. Synaptic tagging and sleep</h3>
-      <p>A brief practice session sets a molecular "tag" at specific synapses. If a stronger plasticity event occurs within hours — or during sleep — those tagged synapses capture plasticity-related proteins and undergo durable strengthening. Motor skill research shows gains of 20–30% overnight after initial learning, with replay frequency proportional to task relevance.</p>
-
-      <p class="cite">Frey & Morris (1997), "Synaptic tagging and long-term potentiation," <em>Nature</em>. Walker et al. (2002) on sleep-dependent motor skill consolidation.</p>
-
-      <p><strong>The practical upshot:</strong> A 2-minute practice session + good sleep is neurologically superior to a 45-minute guilt-powered session + poor sleep. The habit system doesn't care about intensity. It cares about reliable repetition that lets the consolidation machinery do its work.</p>
-
-      <h3>4. The anterior cingulate cortex stays quiet</h3>
-      <p>Your ACC runs cost-benefit analysis on every action. Before a reward association is established, the perceived cost of a new behavior often exceeds the predicted benefit. A 2-minute task flips this calculation — the cost is negligible, so the ACC's veto doesn't fire. You bypass the effort gate entirely.</p>
-
-      <div class="callout">
-        <strong>The Ascent connection:</strong> When you hit "2-Min Version," the AI generates the minimum viable version of today's task. The streak survives. The prediction signal stays clean. Your dorsolateral striatum doesn't care if you did 2 minutes or 20 — it cares that the cue → behavior → reward loop fired reliably.
-      </div>
-    </section>
-
-    <div class="sci-divider"><hr></div>
-
-    <!-- SECTION 6: ENVIRONMENT -->
-    <div class="dark-band reveal" id="environment">
+    <!-- TWO MINUTES -->
+    <div class="dark-band reveal" id="two-minutes">
       <div class="dark-band-inner">
-        <h2>Environment design beats discipline. Every time.</h2>
+        <h2>Two minutes is enough. This isn't motivational fluff.</h2>
 
-        <p>This isn't motivation-poster wisdom. It's a direct consequence of how habits form.</p>
+        <p>I know how it sounds. "Just do two minutes!" Feels like a productivity hack from someone who's never actually struggled to get off the couch. But the molecular biology backs it up, and that's what convinced me.</p>
 
-        <p>Habits are <strong>context-dependent stimulus-response pairs</strong> stored in the dorsolateral striatum. The cue triggers the behavior. Change the cue, change the behavior. It's not more complicated than that — it's just very hard to see your own cues.</p>
+        <p>A two-minute task generates a small, positive prediction signal. Your brain expected minimal effort. You delivered. No punishment from the lateral habenula. The behavior gets tagged as low-cost, reliable outcome. Safe to repeat.</p>
 
-        <p>Your phone is a cue machine. You pick it up roughly 80–150 times per day. Each pickup is a stimulus that triggers a cached response — usually opening whatever app was last used, or the app with the strongest habitual pull. The behavior fires before conscious thought catches up.</p>
+        <p>Meanwhile, the ERK/MAPK signaling cascade — the machinery required for long-term synaptic consolidation — has a refractory period of roughly 60–90 minutes.<a href="#fn5" class="footnote-ref" id="ref5">5</a> Once it fires, attempting continuous learning during that window provides no additional consolidation benefit. Brief sessions naturally respect this cycle. A 45-minute guilt-powered grind session isn't three times as effective as a 15-minute focused one. Neurologically, it might not be more effective at all.</p>
 
-        <p><strong>The intervention isn't "resist the phone." It's "change what the phone shows you."</strong></p>
+        <h3>The sleep angle</h3>
 
-        <p>If the first thing you see on your home screen is your goal, your streak, your motivation battery — that's a different cue entering the same stimulus-response machinery. Over time, the same molecular consolidation (endocannabinoid-mediated cortical suppression, dorsolateral striatum caching) that automated your scrolling will automate checking your progress instead.</p>
+        <p>A brief practice session sets a molecular "tag" at specific synapses. If a stronger plasticity event occurs within hours — or during sleep — those tagged synapses capture plasticity-related proteins and undergo durable strengthening.<a href="#fn6" class="footnote-ref" id="ref6">6</a> Motor skill research shows gains of 20–30% overnight after initial learning, with replay frequency proportional to how relevant your brain considers the task.</p>
 
-        <p>You're not outthinking the system. You're redirecting it. In oncology pharmacology, we call this <strong>cross-titration</strong> — gradually replacing one agent with another while overlapping them. You don't yank someone off a medication cold turkey. You introduce the replacement alongside, then shift the ratio. Same principle. Different substrate.</p>
+        <p>So: a 2-minute practice session plus good sleep is neurologically superior to a 45-minute session plus poor sleep. The habit system doesn't care about intensity. It cares about reliable repetition that lets the consolidation machinery do its work.</p>
+
+        <p>And there's one more piece. Your anterior cingulate cortex runs cost-benefit analysis on every action you consider. Before a reward association is established, the perceived cost of a new behavior usually exceeds the predicted benefit. A 2-minute task flips this — the cost is negligible, so the ACC doesn't veto it. You bypass the effort gate entirely. You're not overcoming resistance. You're making resistance irrelevant.</p>
       </div>
     </div>
 
-    <!-- SECTION 7: STREAKS -->
-    <section class="sci-section reveal" id="streaks">
-      <h2>Streaks work — until they don't.</h2>
+    <!-- ENVIRONMENT -->
+    <section class="sci-section reveal" id="environment">
+      <h2>Environment design beats discipline. Every time.</h2>
 
-      <p>Streaks are the dominant design pattern in habit apps. And there's a reason: they do generate a form of commitment pressure. But for certain brain types, they're quietly destructive.</p>
+      <p>This is a direct consequence of everything above, not a slogan.</p>
 
-      <p>While a streak is alive, each completed day generates a neutral prediction signal — expected outcome met. Fine. Not exciting, but stable.</p>
+      <p>Habits are context-dependent stimulus-response pairs stored in the dorsolateral striatum. The cue triggers the behavior. Change the cue, change the behavior. It really is that simple mechanistically — it's just very hard to see your own cues, because they fire before conscious thought catches up.</p>
 
-      <p>When the streak breaks, the lateral habenula fires. Negative prediction error. Dopamine suppression. The magnitude of this crash scales with streak length — a 90-day streak breaking feels catastrophically worse than a 3-day one, because the prediction was more confident.</p>
+      <p>Your phone is a cue machine. You pick it up 80–150 times a day. Each pickup is a stimulus that triggers a cached response — usually whatever app has the strongest habitual pull. The behavior fires before you've decided anything.</p>
 
-      <p>For most people, this is a temporary setback. For someone with ADHD or lower baseline dopamine tone, the crash can cascade:</p>
+      <p>So the intervention isn't "resist the phone." It's changing what the phone shows you.</p>
 
-      <ul>
-        <li>Streak breaks → dopamine crash → guilt → avoidance of the app → app gets deleted → three months pass → start over from zero</li>
-      </ul>
+      <p>In oncology pharmacology, when we need to switch a patient from one medication to another, we don't yank them off cold turkey and force the replacement. We overlap them — gradually shifting the ratio. It's called cross-titration. You introduce the new agent alongside the old one, then slowly tilt the balance. Same principle applies here. You're not trying to quit scrolling through sheer force. You're introducing a competing cue — your goal, your progress, something that the same stimulus-response machinery can latch onto — and letting the ratio shift over time.</p>
 
-      <p>The research on <strong>what-the-hell effect</strong> (Cochran & Tesser, 1996) describes exactly this pattern: once a constraint is violated, people tend to abandon the goal entirely rather than resume at a reduced level. Streaks create binary success/failure framing that triggers this effect.</p>
-
-      <h3>A better model: graceful degradation</h3>
-
-      <p>Ascent's approach: bad day? The task shrinks to 2 minutes. You still showed up. The streak doesn't break because the prediction signal stays clean — your brain expected some version of showing up, and you delivered. The lateral habenula stays quiet. No crash, no cascade, no deletion.</p>
-
-      <p>This isn't about lowering standards. It's about keeping the neurological feedback loop positive during the fragile early days when the habit hasn't yet transferred to automatic control.</p>
+      <p>You're not outthinking the system. You're redirecting it.</p>
     </section>
 
-    <div class="sci-divider"><hr></div>
+    <!-- STREAKS -->
+    <section class="sci-section reveal" id="streaks">
+      <h2>The problem with streaks.</h2>
 
-    <!-- SECTION 8: RECOVERY -->
-    <section class="sci-section reveal" id="recovery">
-      <h2>The path back: receptor recovery and what accelerates it.</h2>
+      <p>Streaks are the dominant design pattern in habit apps. And I understand why — they generate commitment pressure. But for certain brain types, they're quietly destructive.</p>
 
-      <p>The good news: D2 receptor downregulation from behavioral overstimulation is reversible. Unlike neurodegenerative conditions that destroy dopamine-producing neurons, the hardware is intact — it's just turned down.</p>
+      <p>While a streak is alive, each completed day generates a neutral prediction signal. Expected outcome met. Fine. Not exciting, but stable. When the streak breaks, the lateral habenula fires. Negative prediction error. Dopamine suppression. And the magnitude of this crash scales with streak length — a 90-day streak breaking feels catastrophically worse than a 3-day one, because the prediction was more confident.</p>
 
-      <p>Recovery research points to several accelerators:</p>
+      <p>For most people, temporary setback. For someone with ADHD or lower baseline dopamine tone, the crash cascades: streak breaks, dopamine crash, guilt, avoidance of the app, app gets deleted, three months pass, start over from zero.</p>
 
-      <p><strong>Exercise.</strong> High-intensity interval training and steady-state aerobic exercise both increase D2 receptor availability in the striatum. This is one of the most robust findings in the dopamine literature — exercise is essentially a pharmacological intervention for receptor resensitization, without a prescription.</p>
+      <p>Psychologists call this the "what-the-hell effect"<a href="#fn7" class="footnote-ref" id="ref7">7</a> — once a constraint is violated, people tend to abandon the goal entirely rather than resume at a reduced level. Streaks create exactly the binary success/failure framing that triggers it.</p>
 
-      <p class="cite">Petzinger et al. (2013), <em>Neurobiology of Disease</em>. Fisher et al. (2013) on <a href="https://www.frontiersin.org/journals/public-health/articles/10.3389/fpubh.2023.1257629/full" target="_blank" rel="noopener">HIIT and D2 receptor levels</a>. Consistent findings across rodent and human PET studies.</p>
+      <p>A better model is graceful degradation. Bad day? The task shrinks to two minutes. You still showed up. The prediction signal stays clean. Your dorsolateral striatum doesn't care if you did 2 minutes or 20 — it cares that the cue-behavior-reward loop fired. The habenula stays quiet. No crash, no cascade, no deletion.</p>
 
-      <p><strong>Boredom tolerance.</strong> Counterintuitive, but deliberate boredom recalibrates reward predictions downward. When your brain stops expecting high-frequency novelty, the baseline prediction error from normal activities starts registering again. A walk becomes interesting. Cooking becomes engaging. The world regains texture.</p>
+      <p>This isn't lowering standards. It's keeping the neurological feedback loop positive during the fragile early days when the habit hasn't yet transferred to automatic control. You can raise the bar later. First you have to survive the valley where most people quit.</p>
+    </section>
 
-      <p><strong>Sleep.</strong> Sleep-dependent consolidation strengthens newly formed habit circuits while the default mode network resets. Hippocampal-cortical replay during slow-wave sleep reinforces the day's learning. Consistently cutting sleep short undermines every other recovery strategy.</p>
+    <!-- RECOVERY -->
+    <div class="dark-band reveal" id="recovery">
+      <div class="dark-band-inner">
+        <h2>Getting your receptors back.</h2>
 
-      <p><strong>Consistent small efforts.</strong> Each 2-minute showing-up session generates a clean prediction signal that gradually rebuilds the brain's confidence that effort leads to reward. Over weeks, these signals compound. The tonic baseline rises — not from forcing it, but from providing reliable evidence that action pays off.</p>
+        <p>D2 receptor downregulation from behavioral overstimulation is reversible. Unlike neurodegenerative conditions that destroy dopamine-producing neurons, the hardware is intact. It's just turned down. This matters.</p>
 
-      <div class="callout">
-        <strong>The timeline:</strong> Most people report noticeable sensitivity improvement within 2–4 weeks of reducing high-dopamine consumption and adding consistent low-intensity effort. Full D2 receptor recovery likely takes longer — research on substance-related downregulation suggests months — but the subjective experience of "things feeling worth doing again" typically arrives well before full molecular recovery.
+        <p>Exercise is the closest thing to a pharmacological intervention you can get without a prescription. Both HIIT and steady-state aerobic exercise increase D2 receptor availability in the striatum.<a href="#fn8" class="footnote-ref" id="ref8">8</a> This is one of the most robust findings in the dopamine literature. I tell people: if exercise were a drug, it would be the most prescribed medication in the world. The side-effect profile is almost absurdly good.</p>
+
+        <p>Boredom tolerance is counterintuitive but real. Deliberate boredom recalibrates reward predictions downward. When your brain stops expecting high-frequency novelty, the baseline prediction error from normal activities starts registering again. A walk becomes interesting. Cooking becomes engaging. The world regains texture. You're not adding something. You're removing the thing that was drowning everything else out.</p>
+
+        <p>Sleep is non-negotiable. Hippocampal-cortical replay during slow-wave sleep reinforces the day's learning. Consistently cutting sleep short undermines every other recovery strategy. I've seen people do everything else right and plateau because they were sleeping six hours a night.</p>
+
+        <p>And consistent small efforts — each 2-minute session generates a clean prediction signal that gradually rebuilds the brain's confidence that effort leads to reward. Over weeks, these signals compound. The tonic baseline rises. Not from forcing it, but from providing reliable evidence that action pays off.</p>
+
+        <p>Most people report noticeable sensitivity improvement within 2–4 weeks of reducing high-dopamine consumption and adding consistent low-intensity effort. Full D2 receptor recovery likely takes longer — research on substance-related downregulation suggests months<a href="#fn1" class="footnote-ref">1</a> — but the subjective experience of "things feeling worth doing again" typically arrives well before full molecular recovery. Which is, honestly, the part that matters.</p>
+      </div>
+    </div>
+
+    <!-- FOOTNOTES -->
+    <section class="sci-section" id="references">
+      <div class="footnotes">
+        <ol>
+          <li id="fn1">Volkow, N.D. et al. (2001). Low level of brain dopamine D2 receptors in methamphetamine abusers. <em>American Journal of Psychiatry</em>. PET imaging study demonstrating D2 receptor downregulation. Robertson, C.L. et al. (2020) showed <a href="https://www.frontiersin.org/articles/10.3389/fpubh.2023.1257629/full" target="_blank" rel="noopener">exercise increases D2-like receptor binding</a> in dorsal and ventral striatum. <a href="#ref1" class="fn-back">↩</a></li>
+          <li id="fn2">Matsumoto, M. & Hikosaka, O. (2007). Lateral habenula as a source of negative reward signals in dopamine neurons. <em>Nature</em>, 447, 1111–1115. See also Bromberg-Martin, E.S. & Hikosaka, O. (2011). <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3164948/" target="_blank" rel="noopener">Lateral habenula neurons signal errors in the prediction of reward information.</a> <em>Nature Neuroscience</em>. <a href="#ref2" class="fn-back">↩</a></li>
+          <li id="fn3">Yin, H.H. & Knowlton, B.J. (2006). The role of the basal ganglia in habit formation. <em>Nature Reviews Neuroscience</em>, 7, 464–476. See also Graybiel, A.M. (2008). Habits, rituals, and the evaluative brain. <em>Annual Review of Neuroscience</em>, 31, 359–387. <a href="#ref3" class="fn-back">↩</a></li>
+          <li id="fn4">Hilário, M.R.F. et al. (2007). Endocannabinoid signaling is critical for habit formation. <em>Journal of Neuroscience</em>, 27(22), 6037–6045. CB1 receptors are expressed in a dorsolateral-to-ventromedial gradient, with highest density precisely where habits are encoded. <a href="#ref4" class="fn-back">↩</a></li>
+          <li id="fn5">Ajay, S.M. & Bhalla, U.S. (2004). A role for ERKII in synaptic pattern selectivity on the time-scale of minutes. <em>European Journal of Neuroscience</em>, 20(10), 2671–2680. The MAPK cascade refractory period is well-established in synaptic plasticity literature. <a href="#ref5" class="fn-back">↩</a></li>
+          <li id="fn6">Frey, U. & Morris, R.G.M. (1997). Synaptic tagging and long-term potentiation. <em>Nature</em>, 385, 533–536. Walker, M.P. et al. (2002). Practice with sleep makes perfect: sleep-dependent motor skill learning. <em>Neuron</em>, 35(1), 205–211. <a href="#ref6" class="fn-back">↩</a></li>
+          <li id="fn7">Cochran, W. & Tesser, A. (1996). The "what the hell" effect: Some effects of goal proximity and goal framing on performance. In L.L. Martin & A. Tesser (Eds.), <em>Striving and Feeling</em>. <a href="#ref7" class="fn-back">↩</a></li>
+          <li id="fn8">Petzinger, G.M. et al. (2013). Exercise-enhanced neuroplasticity targeting motor and cognitive circuitry in Parkinson's disease. <em>Neurobiology of Disease</em>, 57, 101–108. Fisher, B.E. et al. (2013) on <a href="https://www.frontiersin.org/articles/10.3389/fpubh.2023.1257629/full" target="_blank" rel="noopener">treadmill exercise and D2 receptor availability</a>. <a href="#ref8" class="fn-back">↩</a></li>
+        </ol>
       </div>
     </section>
 
@@ -524,7 +476,6 @@
   </footer>
 
   <script>
-    // Nav dark mode detection
     const nav=document.getElementById('nav');
     const darkEls=document.querySelectorAll('.dark-band,.cta');
     function updateNav(){
@@ -538,8 +489,6 @@
     }
     addEventListener('scroll',updateNav,{passive:true});
     updateNav();
-
-    // Reveal on scroll
     const ro=new IntersectionObserver(es=>{
       es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
     },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
