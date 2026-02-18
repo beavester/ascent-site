@@ -183,7 +183,10 @@
     .hero h1{
       font-size:clamp(40px,7vw,76px);font-weight:800;
       line-height:1.02;letter-spacing:-3.5px;
-      margin-bottom:20px;
+      margin-bottom:24px;
+      background:linear-gradient(180deg,var(--text) 40%,rgba(26,26,28,.45));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background-clip:text;
       opacity:0;animation:heroIn .8s ease .1s forwards;
     }
     .hero-sub{
