@@ -123,6 +123,11 @@
       --text:#1a1a1c;--text2:#555;--text3:#888;
       --blue:#0071E3;--white:#fff;--border:#e4e4e8;
     }
+    :root{
+      --spring:cubic-bezier(.22,1,.36,1);
+      --ease-out:cubic-bezier(.25,.46,.45,.94);
+      --ease-smooth:cubic-bezier(.4,0,.2,1);
+    }
     html{scroll-behavior:smooth}
     ::selection{background:rgba(0,113,227,.15)}
     :focus-visible{outline:2px solid rgba(0,113,227,.4);outline-offset:2px;border-radius:4px}
@@ -145,15 +150,16 @@
       background:rgba(250,250,247,.72);
       backdrop-filter:saturate(180%) blur(20px);
       -webkit-backdrop-filter:saturate(180%) blur(20px);
-      transition:background .3s,border .3s;
+      transition:background .5s var(--ease-smooth),border-color .5s var(--ease-smooth);
       border-bottom:0.5px solid transparent;
+      will-change:background-color;
     }
     nav.scrolled{border-bottom-color:rgba(0,0,0,.08);background:rgba(250,250,247,.92)}
     nav.dark-mode{background:rgba(10,10,10,.72);border-bottom-color:rgba(255,255,255,.06)}
     nav.dark-mode.scrolled{background:rgba(10,10,10,.92)}
-    nav.dark-mode a{color:rgba(255,255,255,.8)}
+    nav.dark-mode a{color:rgba(255,255,255,.8);transition:color .3s var(--ease-smooth)}
     nav.dark-mode a:hover{color:#fff}
-    nav.dark-mode .btn-nav{background:#fff;color:#000!important}
+    nav.dark-mode .btn-nav{background:#fff;color:#000!important;transition:background .3s var(--ease-smooth),opacity .2s}
 
     .nav-logo{
       font-weight:800;font-size:18px;letter-spacing:-.3px;
@@ -164,14 +170,17 @@
     .nav-links{display:flex;gap:24px;align-items:center}
     .nav-links a{
       text-decoration:none;color:var(--text3);
-      font-size:13px;font-weight:500;transition:color .15s;
+      font-size:13px;font-weight:500;
+      transition:color .25s var(--ease-out);
     }
     .nav-links a:hover{color:var(--text)}
     .btn-nav{
       padding:7px 16px;background:var(--text);color:#fff!important;
       border-radius:980px;font-size:12px;font-weight:600;
+      transition:transform .2s var(--spring),opacity .25s var(--ease-out);
     }
-    .btn-nav:hover{opacity:.8}
+    .btn-nav:hover{opacity:.85}
+    .btn-nav:active{transform:scale(.96)}
 
     /* HERO */
     .hero{
@@ -187,40 +196,43 @@
       background:linear-gradient(180deg,var(--text) 40%,rgba(26,26,28,.45));
       -webkit-background-clip:text;-webkit-text-fill-color:transparent;
       background-clip:text;
-      opacity:0;animation:heroIn .8s ease .1s forwards;
+      opacity:0;animation:heroIn .9s var(--spring) .15s forwards;
     }
     .hero-sub{
       font-size:clamp(16px,2vw,19px);line-height:1.55;
       color:var(--text2);max-width:440px;
       margin-bottom:40px;
-      opacity:0;animation:heroIn .8s ease .25s forwards;
+      opacity:0;animation:heroIn .9s var(--spring) .35s forwards;
     }
     .hero-cta{
       display:flex;gap:10px;
-      opacity:0;animation:heroIn .8s ease .4s forwards;
+      opacity:0;animation:heroIn .9s var(--spring) .55s forwards;
     }
     .btn-blue{
       display:inline-flex;align-items:center;gap:7px;
       padding:15px 28px;background:var(--blue);color:#fff;
       border-radius:980px;text-decoration:none;
       font-size:15px;font-weight:600;
-      transition:transform .2s cubic-bezier(.25,.1,.25,1),filter .2s;
+      transition:transform .25s var(--spring),filter .3s var(--ease-out),box-shadow .3s var(--ease-out);
+      will-change:transform;
     }
-    .btn-blue:hover{filter:brightness(1.1)}
-    .btn-blue:active{transform:scale(.97)}
+    .btn-blue:hover{filter:brightness(1.08);box-shadow:0 4px 16px rgba(0,113,227,.25)}
+    .btn-blue:active{transform:scale(.965);transition-duration:.1s}
     .btn-blue svg{width:15px;height:15px;flex-shrink:0}
     .btn-outline{
       padding:15px 28px;background:transparent;
       border:1.5px solid var(--border);border-radius:980px;
       color:var(--text);text-decoration:none;
       font-size:15px;font-weight:600;
-      transition:border-color .2s,color .2s;
+      transition:border-color .25s var(--ease-out),color .25s var(--ease-out),transform .25s var(--spring),background .25s var(--ease-out);
+      will-change:transform;
     }
-    .btn-outline:hover{border-color:#bbb;color:var(--text)}
+    .btn-outline:hover{border-color:#bbb;color:var(--text);background:rgba(0,0,0,.02)}
+    .btn-outline:active{transform:scale(.965);transition-duration:.1s}
 
     @keyframes heroIn{
-      from{opacity:0;transform:translateY(20px)}
-      to{opacity:1;transform:translateY(0)}
+      0%{opacity:0;transform:translateY(24px)}
+      100%{opacity:1;transform:translateY(0)}
     }
 
     /* PHONE SHOWCASE */
@@ -320,9 +332,10 @@
       padding:32px;border-radius:16px;
       background:var(--bg2);
       border:1px solid transparent;
-      transition:background .2s,border-color .2s;
+      transition:background .3s var(--ease-out),border-color .3s var(--ease-out),transform .3s var(--spring);
+      will-change:transform;
     }
-    .step:hover{background:#edeae4;border-color:rgba(0,0,0,.04)}
+    .step:hover{background:#edeae4;border-color:rgba(0,0,0,.04);transform:translateY(-2px)}
     .step-n{
       font-size:28px;font-weight:800;color:var(--blue);
       letter-spacing:-1px;margin-bottom:14px;
@@ -378,7 +391,11 @@
       letter-spacing:-.5px;line-height:1.15;margin-bottom:14px;
     }
     .feat-copy p{font-size:16px;color:var(--text2);line-height:1.8}
-    .feat-copy a{color:var(--text2);text-decoration:underline;text-underline-offset:2px;text-decoration-color:rgba(0,0,0,.2)}
+    .feat-copy a{
+      color:var(--text2);text-decoration:underline;text-underline-offset:3px;
+      text-decoration-color:rgba(0,0,0,.15);text-decoration-thickness:1px;
+      transition:color .25s var(--ease-out),text-decoration-color .25s var(--ease-out);
+    }
     .feat-copy a:hover{color:var(--blue);text-decoration-color:var(--blue)}
     .feat+.feat{border-top:1px solid var(--border)}
 
@@ -434,26 +451,31 @@
       display:flex;justify-content:space-between;align-items:center;
       font-size:16px;font-weight:600;letter-spacing:-.2px;
       user-select:none;
+      transition:color .25s var(--ease-out);
     }
+    .faq-item.open .faq-q{color:var(--blue)}
     .faq-q::after{
       content:'';width:16px;height:16px;flex-shrink:0;margin-left:16px;
       background:currentColor;
       -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
       mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
       color:var(--text3);
-      transition:transform .3s cubic-bezier(.25,.1,.25,1);
+      transition:transform .4s var(--spring);
     }
     .faq-item.open .faq-q::after{transform:rotate(180deg)}
     .faq-a{
-      max-height:0;overflow:hidden;
-      transition:max-height .4s cubic-bezier(.25,.1,.25,1),padding .4s cubic-bezier(.25,.1,.25,1);
+      display:grid;
+      grid-template-rows:0fr;
+      transition:grid-template-rows .45s var(--spring);
     }
+    .faq-item.open .faq-a{grid-template-rows:1fr}
+    .faq-a-inner{overflow:hidden}
     .faq-a p{
       font-size:15px;color:var(--text2);line-height:1.7;
-      opacity:0;transform:translateY(4px);
-      transition:opacity .3s ease .1s,transform .3s ease .1s;
+      padding-bottom:24px;
+      opacity:0;transform:translateY(6px);
+      transition:opacity .35s var(--ease-out) .05s,transform .35s var(--spring) .05s;
     }
-    .faq-item.open .faq-a{max-height:300px;padding-bottom:24px}
     .faq-item.open .faq-a p{opacity:1;transform:translateY(0)}
 
     /* CTA */
@@ -481,8 +503,9 @@
     .cta .btn-blue{
       background:#fff;color:#000;
       font-size:15px;padding:15px 28px;
+      box-shadow:0 2px 12px rgba(255,255,255,.1);
     }
-    .cta .btn-blue:hover{background:#f0f0f0}
+    .cta .btn-blue:hover{background:#f0f0f0;box-shadow:0 4px 20px rgba(255,255,255,.15)}
     .cta .btn-blue svg path{fill:#000}
 
     /* FOOTER */
@@ -498,10 +521,35 @@
 
     /* ANIMATIONS */
     .reveal{
-      opacity:0;transform:translateY(16px);
-      transition:opacity .6s cubic-bezier(.25,.1,.25,1),transform .6s cubic-bezier(.25,.1,.25,1);
+      opacity:0;transform:translateY(20px);
+      transition:opacity .7s var(--spring),transform .7s var(--spring);
+      will-change:transform,opacity;
     }
     .reveal.visible{opacity:1;transform:translateY(0)}
+    /* Staggered children — steps, nd-blocks, faq-items */
+    .reveal.visible .step,
+    .reveal.visible .nd-block,
+    .reveal.visible .faq-item{
+      animation:revealChild .6s var(--spring) both;
+    }
+    .reveal.visible .step:nth-child(1),.reveal.visible .nd-block:nth-of-type(1),.reveal.visible .faq-item:nth-child(1){animation-delay:.05s}
+    .reveal.visible .step:nth-child(2),.reveal.visible .nd-block:nth-of-type(2),.reveal.visible .faq-item:nth-child(2){animation-delay:.1s}
+    .reveal.visible .step:nth-child(3),.reveal.visible .nd-block:nth-of-type(3),.reveal.visible .faq-item:nth-child(3){animation-delay:.15s}
+    .reveal.visible .step:nth-child(4),.reveal.visible .nd-block:nth-of-type(4),.reveal.visible .faq-item:nth-child(4){animation-delay:.2s}
+    .reveal.visible .faq-item:nth-child(5){animation-delay:.25s}
+    .reveal.visible .faq-item:nth-child(6){animation-delay:.3s}
+    .reveal.visible .faq-item:nth-child(7){animation-delay:.35s}
+    @keyframes revealChild{
+      from{opacity:0;transform:translateY(12px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+    /* Reduce motion for accessibility */
+    @media(prefers-reduced-motion:reduce){
+      *,.reveal,.hero h1,.hero-sub,.hero-cta{
+        animation-duration:.01ms!important;
+        transition-duration:.01ms!important;
+      }
+    }
 
     /* RESPONSIVE */
     @media(max-width:900px){
@@ -751,37 +799,37 @@
 
       <div class="faq-item">
         <div class="faq-q" role="button" tabindex="0" aria-expanded="false">"Another habit app? Really?"</div>
-        <div class="faq-a"><p>Yeah, we know. Most habit apps are streak counters that get deleted in two weeks. Ascent is different because the widgets live on your home screen — you don't have to remember to open it. The app is the config layer. The home screen is the product. And the 2-minute version means you literally cannot fail unless you decide to.</p></div>
+        <div class="faq-a"><div class="faq-a-inner"><p>Yeah, we know. Most habit apps are streak counters that get deleted in two weeks. Ascent is different because the widgets live on your home screen — you don't have to remember to open it. The app is the config layer. The home screen is the product. And the 2-minute version means you literally cannot fail unless you decide to.</p></div></div>
       </div>
 
       <div class="faq-item">
         <div class="faq-q" role="button" tabindex="0" aria-expanded="false">Does this actually work for ADHD?</div>
-        <div class="faq-a"><p>It was built for it. Widgets you can't avoid, tasks that shrink to 2 minutes, a motivation battery based on dopamine psychology — all of it targets the gap between knowing what to do and doing it. Works whether you have ADHD or just fried your reward circuitry like the rest of us.</p></div>
+        <div class="faq-a"><div class="faq-a-inner"><p>It was built for it. Widgets you can't avoid, tasks that shrink to 2 minutes, a motivation battery based on dopamine psychology — all of it targets the gap between knowing what to do and doing it. Works whether you have ADHD or just fried your reward circuitry like the rest of us.</p></div></div>
       </div>
 
       <div class="faq-item">
         <div class="faq-q" role="button" tabindex="0" aria-expanded="false">Is it free?</div>
-        <div class="faq-a"><p>Free to start. One goal, 60-day curriculum, widgets, AI coach. We're in beta on iOS via TestFlight — which means you get early access and can actually shape what this becomes.</p></div>
+        <div class="faq-a"><div class="faq-a-inner"><p>Free to start. One goal, 60-day curriculum, widgets, AI coach. We're in beta on iOS via TestFlight — which means you get early access and can actually shape what this becomes.</p></div></div>
       </div>
 
       <div class="faq-item">
         <div class="faq-q" role="button" tabindex="0" aria-expanded="false">Why 60 days?</div>
-        <div class="faq-a"><p>Research shows habit formation takes 18–254 days depending on complexity (<a href="https://doi.org/10.1002/ejsp.674">Lally et al., 2010</a>). 60 days is long enough to cross from effortful to automatic for most daily habits, and short enough that your brain doesn't file it under "someday." It's a real deadline, not a life sentence.</p></div>
+        <div class="faq-a"><div class="faq-a-inner"><p>Research shows habit formation takes 18–254 days depending on complexity (<a href="https://doi.org/10.1002/ejsp.674">Lally et al., 2010</a>). 60 days is long enough to cross from effortful to automatic for most daily habits, and short enough that your brain doesn't file it under "someday." It's a real deadline, not a life sentence.</p></div></div>
       </div>
 
       <div class="faq-item">
         <div class="faq-q" role="button" tabindex="0" aria-expanded="false">What's the "Motivation Battery"?</div>
-        <div class="faq-a"><p>A model of your dopamine receptor sensitivity. It factors in sleep, screen time, exercise, and daily activity to estimate how much motivational fuel you actually have. When it's low, the app adapts — shorter tasks, gentler nudges. Think of it like a phone battery: you don't "try harder" to charge it. You plug it in and stop draining it.</p></div>
+        <div class="faq-a"><div class="faq-a-inner"><p>A model of your dopamine receptor sensitivity. It factors in sleep, screen time, exercise, and daily activity to estimate how much motivational fuel you actually have. When it's low, the app adapts — shorter tasks, gentler nudges. Think of it like a phone battery: you don't "try harder" to charge it. You plug it in and stop draining it.</p></div></div>
       </div>
 
       <div class="faq-item">
         <div class="faq-q" role="button" tabindex="0" aria-expanded="false">Will it shame me?</div>
-        <div class="faq-a"><p>No. When your battery is low, Ascent says "great time for a 2-minute version" — not "you wasted your day." When you miss a day, it asks "what happened?" not "you failed." Shame doesn't build habits. Seeing clearly does.</p></div>
+        <div class="faq-a"><div class="faq-a-inner"><p>No. When your battery is low, Ascent says "great time for a 2-minute version" — not "you wasted your day." When you miss a day, it asks "what happened?" not "you failed." Shame doesn't build habits. Seeing clearly does.</p></div></div>
       </div>
 
       <div class="faq-item">
         <div class="faq-q" role="button" tabindex="0" aria-expanded="false">Android?</div>
-        <div class="faq-a"><p>iOS first. Android is on the roadmap. Sign up for the blog to get notified.</p></div>
+        <div class="faq-a"><div class="faq-a-inner"><p>iOS first. Android is on the roadmap. Sign up for the blog to get notified.</p></div></div>
       </div>
     </section>
 
