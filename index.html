@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FAFAF7">
   <title>Ascent — Habit building for distracted brains</title>
   <meta name="description" content="Ascent is a habit-building app for ADHD and distracted brains. Instead of fighting your dopamine, it works with it. Widgets on your home screen, AI-powered 2-minute versions, and a motivation battery that actually makes sense.">
   <meta name="keywords" content="ADHD habit tracker, habit app for ADHD, dopamine habit building, best habit app for distracted brains, ADHD productivity app, habit tracker for ADHD, motivation app">
@@ -129,8 +130,9 @@
       --ease-smooth:cubic-bezier(.4,0,.2,1);
     }
     html{scroll-behavior:smooth}
+    body{line-height:1.5}
     ::selection{background:rgba(0,113,227,.15)}
-    :focus-visible{outline:2px solid rgba(0,113,227,.4);outline-offset:2px;border-radius:4px}
+    :focus-visible{outline:2px solid rgba(0,113,227,.65);outline-offset:3px;border-radius:8px;box-shadow:0 0 0 4px rgba(0,113,227,.16)}
     /* Scrollbar */
     ::-webkit-scrollbar{width:8px}
     ::-webkit-scrollbar-track{background:transparent}
@@ -141,6 +143,15 @@
       background:var(--bg);color:var(--text);
       -webkit-font-smoothing:antialiased;overflow-x:hidden;
     }
+
+
+    .skip-link{
+      position:absolute;left:16px;top:-48px;z-index:300;
+      background:var(--text);color:#fff;text-decoration:none;
+      padding:10px 14px;border-radius:10px;font-size:13px;font-weight:600;
+      transition:top .2s var(--ease-out);
+    }
+    .skip-link:focus-visible{top:12px}
 
     /* NAV */
     nav{
@@ -198,6 +209,11 @@
       background-clip:text;
       opacity:0;animation:heroIn .9s var(--spring) .15s forwards;
     }
+    .hero-kicker{
+      font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--blue);
+      margin-bottom:14px;
+      opacity:0;animation:heroIn .9s var(--spring) .25s forwards;
+    }
     .hero-sub{
       font-size:clamp(16px,2vw,19px);line-height:1.55;
       color:var(--text2);max-width:440px;
@@ -207,7 +223,9 @@
     .hero-cta{
       display:flex;gap:10px;
       opacity:0;animation:heroIn .9s var(--spring) .55s forwards;
+      margin-bottom:12px;
     }
+    .hero-meta{font-size:13px;color:var(--text3);opacity:0;animation:heroIn .9s var(--spring) .68s forwards}
     .btn-blue{
       display:inline-flex;align-items:center;gap:7px;
       padding:15px 28px;background:var(--blue);color:#fff;
@@ -545,9 +563,10 @@
     }
     /* Reduce motion for accessibility */
     @media(prefers-reduced-motion:reduce){
-      *,.reveal,.hero h1,.hero-sub,.hero-cta{
-        animation-duration:.01ms!important;
-        transition-duration:.01ms!important;
+      html{scroll-behavior:auto}
+      *,.reveal,.hero h1,.hero-sub,.hero-cta,.hero-kicker{
+        animation:none!important;
+        transition:none!important;
       }
     }
 
@@ -591,6 +610,7 @@
   </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Skip to content</a>
 
   <nav id="nav" role="navigation" aria-label="Main navigation">
     <a href="#" class="nav-logo"><img src="img/icon.png" alt="" width="26" height="26">Ascent</a>
@@ -603,8 +623,9 @@
     </div>
   </nav>
 
-  <main>
+  <main id="main-content">
     <section class="hero" aria-label="Hero">
+      <p class="hero-kicker">Built for distracted brains</p>
       <h1>Your home screen,<br>rewired.</h1>
       <p class="hero-sub">You know what you should be doing. Ascent makes the gap between knowing and doing impossible to ignore.</p>
       <div class="hero-cta">
@@ -614,6 +635,7 @@
         </a>
         <a href="#how" class="btn-outline">How it works</a>
       </div>
+      <p class="hero-meta">Free TestFlight beta &middot; No credit card &middot; Setup in under 2 minutes</p>
     </section>
 
     <div class="showcase" aria-label="App screenshots">
@@ -833,22 +855,23 @@
       </div>
     </section>
 
-    <section class="cta reveal">
+    <section class="cta reveal" aria-label="Call to action">
       <h2>Stop trying harder.<br>Start seeing clearly.</h2>
       <p>Free on iOS. One goal. 60 days. Two minutes a day.</p>
       <a href="https://testflight.apple.com/join/TMkKkQcz" class="btn-blue" aria-label="Download Ascent for iPhone">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
         Download for iPhone
       </a>
+      <p style="margin-top:14px;font-size:13px;color:rgba(255,255,255,.5);">Join the beta, install in minutes, and get your first 60-day plan today.</p>
     </section>
   </main>
 
   <footer>
     <span>© 2026 Ascent</span>
     <div class="foot-links">
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
-      <a href="#">Contact</a>
+      <a href="blog/">Blog</a>
+      <a href="science/">Science</a>
+      <a href="mailto:hello@habitbuilding.xyz">Contact</a>
     </div>
   </footer>
 
@@ -858,7 +881,8 @@
     let ticking=false;
     const nav=document.getElementById('nav');
     const darkEls=document.querySelectorAll('.dark-section,.cta');
-    const isDesktop=window.innerWidth>900;
+    const prefersReducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isDesktop=window.innerWidth>900&&!prefersReducedMotion;
     const showcaseEl=document.querySelector('.showcase-inner');
     const sidePhonesEls=isDesktop?document.querySelectorAll('.sc-phone.side'):[];
     const featScreens=isDesktop?document.querySelectorAll('.feat-screen .device'):[];
@@ -898,19 +922,28 @@
         ticking=false;
       });
     }
-    addEventListener('scroll',onScroll,{passive:true});
-    onScroll();
+    if(!prefersReducedMotion){
+      addEventListener('scroll',onScroll,{passive:true});
+      onScroll();
+    }else{
+      nav.classList.remove('dark-mode');
+      nav.classList.remove('scrolled');
+    }
 
     // Reveal on scroll — unobserve after reveal for performance
-    const ro=new IntersectionObserver(es=>{
-      es.forEach(e=>{
-        if(e.isIntersecting){
-          e.target.classList.add('visible');
-          ro.unobserve(e.target);
-        }
-      });
-    },{threshold:.08,rootMargin:'0px 0px -60px 0px'});
-    document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+    if(prefersReducedMotion){
+      document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));
+    }else{
+      const ro=new IntersectionObserver(es=>{
+        es.forEach(e=>{
+          if(e.isIntersecting){
+            e.target.classList.add('visible');
+            ro.unobserve(e.target);
+          }
+        });
+      },{threshold:.08,rootMargin:'0px 0px -60px 0px'});
+      document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+    }
 
     // FAQ accordion
     document.querySelectorAll('.faq-q').forEach(q=>{
