@@ -123,6 +123,7 @@
       --bg:#FAFAF7;--bg2:#F3F1EC;--dark:#0a0a0a;--dark2:#111;
       --text:#1a1a1c;--text2:#555;--text3:#888;
       --blue:#0071E3;--white:#fff;--border:#e4e4e8;
+      --card:#ffffffb8;--glass:rgba(255,255,255,.72);--shadow-soft:0 10px 30px rgba(12,14,20,.06);
     }
     :root{
       --spring:cubic-bezier(.22,1,.36,1);
@@ -152,6 +153,8 @@
       transition:top .2s var(--ease-out);
     }
     .skip-link:focus-visible{top:12px}
+    .scroll-progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:220;background:transparent}
+    .scroll-progress span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#0071E3,#66b3ff);box-shadow:0 2px 8px rgba(0,113,227,.35);transition:width .08s linear}
 
     /* NAV */
     nav{
@@ -165,7 +168,7 @@
       border-bottom:0.5px solid transparent;
       will-change:background-color;
     }
-    nav.scrolled{border-bottom-color:rgba(0,0,0,.08);background:rgba(250,250,247,.92)}
+    nav.scrolled{border-bottom-color:rgba(0,0,0,.08);background:rgba(250,250,247,.92);box-shadow:0 8px 24px rgba(15,18,25,.06)}
     nav.dark-mode{background:rgba(10,10,10,.72);border-bottom-color:rgba(255,255,255,.06)}
     nav.dark-mode.scrolled{background:rgba(10,10,10,.92)}
     nav.dark-mode a{color:rgba(255,255,255,.8);transition:color .3s var(--ease-smooth)}
@@ -185,6 +188,7 @@
       transition:color .25s var(--ease-out);
     }
     .nav-links a:hover{color:var(--text)}
+    .nav-links a.active{color:var(--text);font-weight:600}
     .btn-nav{
       padding:7px 16px;background:var(--text);color:#fff!important;
       border-radius:980px;font-size:12px;font-weight:600;
@@ -198,10 +202,25 @@
       min-height:100vh;display:flex;flex-direction:column;
       align-items:center;justify-content:center;
       padding:120px 32px 80px;text-align:center;
-      position:relative;
+      position:relative;isolation:isolate;
+    }
+    .hero::before{
+      content:'';position:absolute;inset:0;z-index:-2;
+      background:
+        radial-gradient(700px 320px at 50% 12%, rgba(0,113,227,.14), transparent 70%),
+        radial-gradient(420px 220px at 20% 28%, rgba(125,211,252,.16), transparent 75%),
+        radial-gradient(360px 180px at 80% 24%, rgba(59,130,246,.11), transparent 75%);
+      pointer-events:none;
+    }
+    .hero::after{
+      content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+      background-image:radial-gradient(rgba(0,0,0,.04) .6px, transparent .6px);
+      background-size:18px 18px;opacity:.18;
+      mask-image:linear-gradient(to bottom, rgba(0,0,0,.7), transparent 70%);
     }
     .hero h1{
       font-size:clamp(40px,7vw,76px);font-weight:800;
+      text-wrap:balance;
       line-height:1.02;letter-spacing:-3.5px;
       margin-bottom:24px;
       background:linear-gradient(180deg,var(--text) 40%,rgba(26,26,28,.45));
@@ -226,6 +245,15 @@
       margin-bottom:12px;
     }
     .hero-meta{font-size:13px;color:var(--text3);opacity:0;animation:heroIn .9s var(--spring) .68s forwards}
+    .hero-proof{
+      margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
+      opacity:0;animation:heroIn .9s var(--spring) .76s forwards;
+    }
+    .proof-pill{
+      font-size:12px;font-weight:600;color:#3a3a40;
+      background:rgba(255,255,255,.74);border:1px solid rgba(0,0,0,.06);
+      padding:8px 12px;border-radius:999px;backdrop-filter:blur(10px);
+    }
     .btn-blue{
       display:inline-flex;align-items:center;gap:7px;
       padding:15px 28px;background:var(--blue);color:#fff;
@@ -237,6 +265,9 @@
     .btn-blue:hover{filter:brightness(1.08);box-shadow:0 4px 16px rgba(0,113,227,.25)}
     .btn-blue:active{transform:scale(.965);transition-duration:.1s}
     .btn-blue svg{width:15px;height:15px;flex-shrink:0}
+    .btn-blue{position:relative;overflow:hidden}
+    .btn-blue::after{content:'';position:absolute;inset:-120% auto -120% -40%;width:36%;transform:rotate(18deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.34),transparent);transition:transform .8s var(--ease-smooth)}
+    .btn-blue:hover::after{transform:translateX(320%) rotate(18deg)}
     .btn-outline{
       padding:15px 28px;background:transparent;
       border:1.5px solid var(--border);border-radius:980px;
@@ -347,13 +378,14 @@
     }
     .steps{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .step{
-      padding:32px;border-radius:16px;
-      background:var(--bg2);
-      border:1px solid transparent;
+      padding:32px;border-radius:20px;
+      background:linear-gradient(160deg,var(--glass),rgba(255,255,255,.92));
+      border:1px solid rgba(255,255,255,.65);
+      box-shadow:var(--shadow-soft);
       transition:background .3s var(--ease-out),border-color .3s var(--ease-out),transform .3s var(--spring);
       will-change:transform;
     }
-    .step:hover{background:#edeae4;border-color:rgba(0,0,0,.04);transform:translateY(-2px)}
+    .step:hover{background:#fff;border-color:rgba(0,113,227,.16);transform:translateY(-4px)}
     .step-n{
       font-size:28px;font-weight:800;color:var(--blue);
       letter-spacing:-1px;margin-bottom:14px;
@@ -433,10 +465,14 @@
       margin-bottom:48px;
     }
     .nd-block{
-      padding:32px 0;
-      border-bottom:1px solid var(--border);
+      padding:26px 24px;
+      border:1px solid var(--border);
+      border-radius:16px;
+      background:rgba(255,255,255,.68);
+      box-shadow:var(--shadow-soft);
+      margin-bottom:12px;
     }
-    .nd-block:first-of-type{border-top:1px solid var(--border)}
+    .nd-block:first-of-type{margin-top:6px}
     .nd-block h3{
       font-size:18px;font-weight:700;letter-spacing:-.2px;
       margin-bottom:8px;
@@ -461,9 +497,14 @@
       letter-spacing:-1.8px;line-height:1.08;margin-bottom:48px;
     }
     .faq-item{
-      border-bottom:1px solid var(--border);
+      border:1px solid var(--border);
+      border-radius:14px;
+      margin-bottom:10px;
+      padding:0 18px;
+      background:rgba(255,255,255,.75);
+      box-shadow:var(--shadow-soft);
     }
-    .faq-item:first-child{border-top:1px solid var(--border)}
+    .faq-item:first-child{margin-top:4px}
     .faq-q{
       padding:24px 0;cursor:pointer;
       display:flex;justify-content:space-between;align-items:center;
@@ -498,7 +539,7 @@
 
     /* CTA */
     .cta{
-      background:var(--dark);color:var(--white);
+      background:radial-gradient(900px 420px at 50% -20%, rgba(0,113,227,.28), transparent 62%), var(--dark);color:var(--white);
       padding:140px 32px;text-align:center;
       position:relative;z-index:2;
     }
@@ -537,6 +578,19 @@
     footer a:hover{color:var(--text2)}
     .foot-links{display:flex;gap:16px}
 
+    .mobile-cta{
+      position:fixed;left:14px;right:14px;bottom:14px;z-index:120;
+      display:none;align-items:center;justify-content:center;gap:10px;
+      padding:11px 14px;border-radius:16px;
+      background:rgba(10,10,10,.86);backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 10px 30px rgba(0,0,0,.22);
+      text-decoration:none;color:#fff;font-weight:700;font-size:14px;
+      letter-spacing:.01em;
+      transition:transform .3s var(--spring),opacity .25s var(--ease-out);
+    }
+    .mobile-cta.hide{opacity:0;transform:translateY(16px);pointer-events:none}
+
     /* ANIMATIONS */
     .reveal{
       opacity:0;transform:translateY(20px);
@@ -544,6 +598,7 @@
       will-change:transform,opacity;
     }
     .reveal.visible{opacity:1;transform:translateY(0)}
+    .section-shell{max-width:680px;margin:0 auto}
     /* Staggered children — steps, nd-blocks, faq-items */
     .reveal.visible .step,
     .reveal.visible .nd-block,
@@ -573,6 +628,8 @@
     /* RESPONSIVE */
     @media(max-width:900px){
       .hero{min-height:auto;padding:100px 24px 48px}
+      body{padding-bottom:84px}
+      .mobile-cta{display:flex}
       .hero-cta{flex-direction:column;align-items:center;width:100%}
       .hero-cta a{width:100%;max-width:280px;justify-content:center;text-align:center}
 
@@ -607,10 +664,15 @@
       .hero h1{letter-spacing:-2px}
       .sc-phone.side,.sc-phone.main{width:180px}
     }
+    @media(max-width:900px){
+      .hero-proof{gap:8px}
+      .proof-pill{font-size:11px;padding:7px 10px}
+    }
   </style>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to content</a>
+  <div class="scroll-progress" aria-hidden="true"><span id="scrollProgressBar"></span></div>
 
   <nav id="nav" role="navigation" aria-label="Main navigation">
     <a href="#" class="nav-logo"><img src="img/icon.png" alt="" width="26" height="26">Ascent</a>
@@ -636,6 +698,11 @@
         <a href="#how" class="btn-outline">How it works</a>
       </div>
       <p class="hero-meta">Free TestFlight beta &middot; No credit card &middot; Setup in under 2 minutes</p>
+      <div class="hero-proof" aria-label="Ascent highlights">
+        <span class="proof-pill">iOS TestFlight Beta</span>
+        <span class="proof-pill">Widgets-first habit system</span>
+        <span class="proof-pill">Built for ADHD brains</span>
+      </div>
     </section>
 
     <div class="showcase" aria-label="App screenshots">
@@ -646,7 +713,7 @@
         </div>
         <div class="sc-phone main">
           <div class="device">
-            <video autoplay loop muted playsinline aria-label="Ascent app demo showing 2-minute version feature">
+            <video autoplay loop muted playsinline preload="metadata" poster="img/app-demo.gif" aria-label="Ascent app demo showing 2-minute version feature">
               <source src="img/app-demo.mp4" type="video/mp4">
               <img src="img/app-demo.gif" alt="Ascent app demo">
             </video>
@@ -700,7 +767,7 @@
     </div>
 
     <!-- IDENTITY -->
-    <section class="identity-section reveal" style="padding:120px 32px;max-width:640px;margin:0 auto;">
+    <section class="identity-section reveal section-shell" style="padding:120px 32px;">
       <h2 style="font-size:clamp(28px,4.5vw,44px);font-weight:800;letter-spacing:-1.8px;line-height:1.08;margin-bottom:24px;">You don't start by being a runner.</h2>
       <p style="font-size:17px;color:var(--text2);line-height:1.85;margin-bottom:20px;">You start by running once. Then again on Thursday. Then again the following week when it's raining and you'd rather not.</p>
       <p style="font-size:17px;color:var(--text2);line-height:1.85;margin-bottom:20px;">James Clear calls this identity-based habits — the idea that <strong style="color:var(--text);font-weight:600;">every action is a vote for the person you want to become</strong>. But here's the part most people get backwards: you don't declare an identity and then behave accordingly. You accumulate evidence, and identity follows. Nobody wakes up one morning and decides "I am a writer." They notice, after months of showing up, that they've written 40,000 words. The label arrives last.</p>
@@ -723,7 +790,7 @@
     </div>
 
     <!-- CUES -->
-    <section style="padding:100px 32px;max-width:640px;margin:0 auto;" class="reveal">
+    <section style="padding:100px 32px;" class="reveal section-shell">
       <h2 style="font-size:clamp(24px,3.5vw,32px);font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:24px;">Every unlock is a cue.</h2>
       <p style="font-size:17px;color:var(--text2);line-height:1.85;margin-bottom:20px;">You pick up your phone 80–150 times a day. Each pickup fires a cue — a stimulus that triggers whatever behavior has the strongest cached response. For most people, that's Instagram. Or Twitter. Or the thing they swore they'd stop opening.</p>
       <p style="font-size:17px;color:var(--text2);line-height:1.85;margin-bottom:20px;">The coffee maker beeping is a cue. The notification buzz is a cue. The lock screen lighting up is a cue. Your environment is saturated with triggers, and almost all of them point toward consumption. Not because you chose them — because someone else designed them that way.</p>
@@ -871,15 +938,22 @@
     <div class="foot-links">
       <a href="blog/">Blog</a>
       <a href="science/">Science</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
       <a href="mailto:hello@habitbuilding.xyz">Contact</a>
     </div>
   </footer>
+
+  <a href="https://testflight.apple.com/join/TMkKkQcz" class="mobile-cta" aria-label="Download Ascent on TestFlight">
+    Download Ascent <span aria-hidden="true">→</span>
+  </a>
 
   <script>
     // --- SMOOTH SCROLL ENGINE ---
     // Batches all scroll-driven effects into a single rAF loop
     let ticking=false;
     const nav=document.getElementById('nav');
+    const progressBar=document.getElementById('scrollProgressBar');
     const darkEls=document.querySelectorAll('.dark-section,.cta');
     const prefersReducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const isDesktop=window.innerWidth>900&&!prefersReducedMotion;
@@ -919,6 +993,12 @@
           });
         }
 
+        // Scroll progress
+        const h=document.documentElement;
+        const maxScroll=Math.max(h.scrollHeight-window.innerHeight,1);
+        const scPct=Math.min((window.scrollY/maxScroll)*100,100);
+        if(progressBar) progressBar.style.width=`${scPct}%`;
+
         ticking=false;
       });
     }
@@ -945,24 +1025,80 @@
       document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
     }
 
-    // FAQ accordion
-    document.querySelectorAll('.faq-q').forEach(q=>{
+    // FAQ accordion + accessible ids + hash deep-linking
+    const faqItems=[...document.querySelectorAll('.faq-item')];
+    const slug=(txt)=>txt.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,48);
+    const openFaq=(item,q)=>{
+      const wasOpen=item.classList.contains('open');
+      faqItems.forEach(i=>{
+        i.classList.remove('open');
+        i.querySelector('.faq-q').setAttribute('aria-expanded','false');
+      });
+      if(!wasOpen){
+        item.classList.add('open');
+        q.setAttribute('aria-expanded','true');
+      }
+    };
+
+    faqItems.forEach((item,idx)=>{
+      const q=item.querySelector('.faq-q');
+      const a=item.querySelector('.faq-a');
+      const qId=`faq-q-${idx+1}`;
+      const aId=`faq-a-${idx+1}`;
+      const itemSlug=slug(q.textContent||`faq-${idx+1}`);
+      item.dataset.faq=itemSlug;
+      q.id=qId;
+      a.id=aId;
+      q.setAttribute('aria-controls',aId);
+      a.setAttribute('role','region');
+      a.setAttribute('aria-labelledby',qId);
+
       q.addEventListener('click',()=>{
-        const item=q.parentElement;
-        const wasOpen=item.classList.contains('open');
-        document.querySelectorAll('.faq-item.open').forEach(i=>{
-          i.classList.remove('open');
-          i.querySelector('.faq-q').setAttribute('aria-expanded','false');
-        });
-        if(!wasOpen){
-          item.classList.add('open');
-          q.setAttribute('aria-expanded','true');
-        }
+        openFaq(item,q);
+        history.replaceState(null,'',`#faq-${itemSlug}`);
       });
       q.addEventListener('keydown',e=>{
         if(e.key==='Enter'||e.key===' '){e.preventDefault();q.click()}
       });
     });
+
+    const hash=window.location.hash;
+    if(hash.startsWith('#faq-')){
+      const key=hash.replace('#faq-','');
+      const hit=faqItems.find(i=>i.dataset.faq===key);
+      if(hit){
+        const q=hit.querySelector('.faq-q');
+        openFaq(hit,q);
+        setTimeout(()=>hit.scrollIntoView({behavior:'smooth',block:'center'}),120);
+      }
+    }
+
+    // Active nav state for in-page sections
+    const sectionLinks=[...document.querySelectorAll('.nav-links a[href^="#"]')];
+    const sectionTargets=sectionLinks
+      .map(a=>document.querySelector(a.getAttribute('href')))
+      .filter(Boolean);
+    if(sectionTargets.length){
+      const navObserver=new IntersectionObserver(entries=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            const id='#'+entry.target.id;
+            sectionLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')===id));
+          }
+        });
+      },{rootMargin:'-35% 0px -55% 0px',threshold:0.01});
+      sectionTargets.forEach(s=>navObserver.observe(s));
+    }
+
+    // Hide mobile CTA when footer is in view
+    const mobileCta=document.querySelector('.mobile-cta');
+    const footer=document.querySelector('footer');
+    if(mobileCta&&footer){
+      const ctaObserver=new IntersectionObserver(([entry])=>{
+        mobileCta.classList.toggle('hide',entry.isIntersecting);
+      },{threshold:0.15});
+      ctaObserver.observe(footer);
+    }
   </script>
 
 </body>
