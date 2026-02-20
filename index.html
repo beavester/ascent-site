@@ -124,6 +124,7 @@
       --text:#1a1a1c;--text2:#555;--text3:#888;
       --blue:#0071E3;--white:#fff;--border:#e4e4e8;
       --card:#ffffffb8;--glass:rgba(255,255,255,.72);--shadow-soft:0 10px 30px rgba(12,14,20,.06);
+      --radius-lg:20px;--content-max:680px;
     }
     :root{
       --spring:cubic-bezier(.22,1,.36,1);
@@ -181,7 +182,7 @@
       display:flex;align-items:center;gap:8px;
     }
     .nav-logo img{width:26px;height:26px;border-radius:6px}
-    .nav-links{display:flex;gap:24px;align-items:center}
+    .nav-links{display:flex;gap:20px;align-items:center}
     .nav-links a{
       text-decoration:none;color:var(--text3);
       font-size:13px;font-weight:500;
@@ -234,8 +235,8 @@
       opacity:0;animation:heroIn .9s var(--spring) .25s forwards;
     }
     .hero-sub{
-      font-size:clamp(16px,2vw,19px);line-height:1.55;
-      color:var(--text2);max-width:440px;
+      font-size:clamp(16px,1.95vw,19px);line-height:1.62;
+      color:var(--text2);max-width:500px;
       margin-bottom:40px;
       opacity:0;animation:heroIn .9s var(--spring) .35s forwards;
     }
@@ -250,8 +251,8 @@
       opacity:0;animation:heroIn .9s var(--spring) .76s forwards;
     }
     .proof-pill{
-      font-size:12px;font-weight:600;color:#3a3a40;
-      background:rgba(255,255,255,.74);border:1px solid rgba(0,0,0,.06);
+      font-size:12px;font-weight:600;color:#4a4a50;
+      background:rgba(255,255,255,.62);border:1px solid rgba(0,0,0,.05);
       padding:8px 12px;border-radius:999px;backdrop-filter:blur(10px);
     }
     .btn-blue{
@@ -367,7 +368,7 @@
     }
 
     /* HOW */
-    .how{padding:160px 32px 140px;max-width:900px;margin:0 auto}
+    .how{padding:148px 32px 132px;max-width:900px;margin:0 auto}
     .how>h2{
       font-size:clamp(28px,4.5vw,44px);font-weight:800;
       letter-spacing:-1.8px;line-height:1.08;margin-bottom:14px;
@@ -395,7 +396,7 @@
     .step p{font-size:14px;color:var(--text2);line-height:1.6}
 
     /* WIDGETS */
-    .widget-section{padding:140px 32px}
+    .widget-section{padding:132px 32px}
     .widget-inner{
       max-width:1060px;margin:0 auto;
       display:grid;grid-template-columns:1fr 1fr;gap:64px;
@@ -454,7 +455,7 @@
 
     /* NARRATIVE DIFF SECTION */
     .narrative-diff{
-      padding:120px 32px 140px;max-width:720px;margin:0 auto;
+      padding:112px 32px 128px;max-width:720px;margin:0 auto;
     }
     .narrative-diff h2{
       font-size:clamp(28px,4.5vw,44px);font-weight:800;
@@ -490,7 +491,7 @@
 
     /* FAQ */
     .faq{
-      padding:140px 32px;max-width:720px;margin:0 auto;
+      padding:124px 32px;max-width:720px;margin:0 auto;
     }
     .faq h2{
       font-size:clamp(28px,4.5vw,44px);font-weight:800;
@@ -539,8 +540,8 @@
 
     /* CTA */
     .cta{
-      background:radial-gradient(900px 420px at 50% -20%, rgba(0,113,227,.28), transparent 62%), var(--dark);color:var(--white);
-      padding:140px 32px;text-align:center;
+      background:radial-gradient(900px 420px at 50% -20%, rgba(0,113,227,.22), transparent 62%), var(--dark);color:var(--white);
+      padding:128px 32px;text-align:center;
       position:relative;z-index:2;
     }
     .cta::before{
@@ -598,7 +599,7 @@
       will-change:transform,opacity;
     }
     .reveal.visible{opacity:1;transform:translateY(0)}
-    .section-shell{max-width:680px;margin:0 auto}
+    .section-shell{max-width:var(--content-max);margin:0 auto}
     /* Staggered children — steps, nd-blocks, faq-items */
     .reveal.visible .step,
     .reveal.visible .nd-block,
