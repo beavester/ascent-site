@@ -246,15 +246,6 @@
       margin-bottom:12px;
     }
     .hero-meta{font-size:13px;color:var(--text3);opacity:0;animation:heroIn .9s var(--spring) .68s forwards}
-    .hero-proof{
-      margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
-      opacity:0;animation:heroIn .9s var(--spring) .76s forwards;
-    }
-    .proof-pill{
-      font-size:12px;font-weight:600;color:#4a4a50;
-      background:rgba(255,255,255,.62);border:1px solid rgba(0,0,0,.05);
-      padding:8px 12px;border-radius:999px;backdrop-filter:blur(10px);
-    }
     .btn-blue{
       display:inline-flex;align-items:center;gap:7px;
       padding:15px 28px;background:var(--blue);color:#fff;
@@ -291,7 +282,7 @@
       padding:0 32px;
     }
     .showcase-inner{
-      max-width:1000px;margin:0 auto;
+      max-width:860px;margin:0 auto;
       display:flex;gap:24px;justify-content:center;
       align-items:flex-end;padding-bottom:120px;
     }
@@ -665,10 +656,6 @@
       .hero h1{letter-spacing:-2px}
       .sc-phone.side,.sc-phone.main{width:180px}
     }
-    @media(max-width:900px){
-      .hero-proof{gap:8px}
-      .proof-pill{font-size:11px;padding:7px 10px}
-    }
   </style>
 </head>
 <body>
@@ -681,7 +668,6 @@
       <a href="#how">How It Works</a>
       <a href="#features">Features</a>
       <a href="science/">Science</a>
-      <a href="blog/">Blog</a>
       <a href="https://testflight.apple.com/join/TMkKkQcz?utm_source=habitbuilding&utm_medium=site&utm_campaign=homepage&utm_content=nav" class="btn-nav" aria-label="Download Ascent on TestFlight">Get the App</a>
     </div>
   </nav>
@@ -699,11 +685,6 @@
         <a href="#how" class="btn-outline">How it works</a>
       </div>
       <p class="hero-meta">Free TestFlight beta &middot; No credit card &middot; Setup in under 2 minutes</p>
-      <div class="hero-proof" aria-label="Ascent highlights">
-        <span class="proof-pill">iOS TestFlight Beta</span>
-        <span class="proof-pill">Widgets-first habit system</span>
-        <span class="proof-pill">Built for ADHD brains</span>
-      </div>
     </section>
 
     <div class="showcase" aria-label="App screenshots">
@@ -721,10 +702,6 @@
           </div>
           <div class="sc-tag">2-Min Version</div>
           <div class="sc-caption">Bad day? Tap <strong>2-Min Version</strong> and AI shrinks your habit to something doable right now. You showed up. That's the whole point.</div>
-        </div>
-        <div class="sc-phone side">
-          <div class="device"><img src="img/screen-coach.webp" alt="Ascent AI coach conversation" loading="lazy" decoding="async"></div>
-          <div class="sc-tag">Coach</div>
         </div>
       </div>
     </div>
@@ -766,15 +743,6 @@
         </div>
       </div>
     </div>
-
-    <!-- IDENTITY -->
-    <section class="identity-section reveal section-shell" style="padding:120px 32px;">
-      <h2 style="font-size:clamp(28px,4.5vw,44px);font-weight:800;letter-spacing:-1.8px;line-height:1.08;margin-bottom:24px;">You don't start by being a runner.</h2>
-      <p style="font-size:17px;color:var(--text2);line-height:1.85;margin-bottom:20px;">You start by running once. Then again on Thursday. Then again the following week when it's raining and you'd rather not.</p>
-      <p style="font-size:17px;color:var(--text2);line-height:1.85;margin-bottom:20px;">James Clear calls this identity-based habits — the idea that <strong style="color:var(--text);font-weight:600;">every action is a vote for the person you want to become</strong>. But here's the part most people get backwards: you don't declare an identity and then behave accordingly. You accumulate evidence, and identity follows. Nobody wakes up one morning and decides "I am a writer." They notice, after months of showing up, that they've written 40,000 words. The label arrives last.</p>
-      <p style="font-size:17px;color:var(--text2);line-height:1.85;margin-bottom:20px;">This is why affirmations feel hollow. Saying "I am disciplined" while sitting on the couch doesn't update anything — your brain tracks evidence, not declarations. Fourteen days of showing up, even for two minutes? That updates the model.</p>
-      <p style="font-size:17px;color:var(--text2);line-height:1.85;">Ascent's evening review doesn't ask who you want to be. It shows you who you were today — and lets the pattern speak for itself.</p>
-    </section>
 
     <!-- WIDGETS -->
     <div class="dark-section widget-section">
@@ -852,12 +820,6 @@
         </div>
       </div>
     </div>
-
-
-    <section class="section-shell reveal" style="padding:20px 32px 100px;text-align:center;">
-      <p style="font-size:15px;color:var(--text2);margin-bottom:14px;">See your first 60-day plan in under 2 minutes.</p>
-      <a href="https://testflight.apple.com/join/TMkKkQcz?utm_source=habitbuilding&utm_medium=site&utm_campaign=homepage&utm_content=midpage" class="btn-blue" aria-label="Get Ascent on TestFlight">Get Ascent on TestFlight</a>
-    </section>
 
     <!-- WHAT'S DIFFERENT — NARRATIVE -->
     <section class="narrative-diff reveal" aria-label="What makes Ascent different">
@@ -1110,4 +1072,5 @@
 
 </body>
 </html>
+
 
