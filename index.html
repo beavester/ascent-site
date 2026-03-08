@@ -579,19 +579,6 @@
     footer a:hover{color:var(--text2)}
     .foot-links{display:flex;gap:16px}
 
-    .mobile-cta{
-      position:fixed;left:14px;right:14px;bottom:14px;z-index:120;
-      display:none;align-items:center;justify-content:center;gap:10px;
-      padding:11px 14px;border-radius:16px;
-      background:rgba(10,10,10,.86);backdrop-filter:blur(12px);
-      border:1px solid rgba(255,255,255,.14);
-      box-shadow:0 10px 30px rgba(0,0,0,.22);
-      text-decoration:none;color:#fff;font-weight:700;font-size:14px;
-      letter-spacing:.01em;
-      transition:transform .3s var(--spring),opacity .25s var(--ease-out);
-    }
-    .mobile-cta.hide{opacity:0;transform:translateY(16px);pointer-events:none}
-
     /* ANIMATIONS */
     .reveal{
       opacity:0;transform:translateY(20px);
@@ -629,8 +616,6 @@
     /* RESPONSIVE */
     @media(max-width:900px){
       .hero{min-height:auto;padding:100px 24px 48px}
-      body{padding-bottom:84px}
-      .mobile-cta{display:flex}
       .hero-cta{flex-direction:column;align-items:center;width:100%}
       .hero-cta a{width:100%;max-width:280px;justify-content:center;text-align:center}
 
@@ -951,10 +936,6 @@
     </div>
   </footer>
 
-  <a href="https://apps.apple.com/us/app/ascent-habit-builder/id6756843194?utm_source=habitbuilding&utm_medium=site&utm_campaign=homepage&utm_content=mobile-sticky" class="mobile-cta" aria-label="Download Ascent on the App Store">
-    Download Ascent <span aria-hidden="true">→</span>
-  </a>
-
   <script>
     // --- SMOOTH SCROLL ENGINE ---
     // Batches all scroll-driven effects into a single rAF loop
@@ -1095,16 +1076,6 @@
         });
       },{rootMargin:'-35% 0px -55% 0px',threshold:0.01});
       sectionTargets.forEach(s=>navObserver.observe(s));
-    }
-
-    // Hide mobile CTA when footer is in view
-    const mobileCta=document.querySelector('.mobile-cta');
-    const footer=document.querySelector('footer');
-    if(mobileCta&&footer){
-      const ctaObserver=new IntersectionObserver(([entry])=>{
-        mobileCta.classList.toggle('hide',entry.isIntersecting);
-      },{threshold:0.15});
-      ctaObserver.observe(footer);
     }
   </script>
 
