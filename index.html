@@ -1,1160 +1,550 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#F7F8FB">
-  <title>Ascent — Habit building for distracted brains</title>
-  <meta name="description" content="Ascent is an iOS habit-building app for distracted brains. Build one habit with a 60-day plan, home-screen widgets, adaptive coaching, and 2-minute fallback tasks.">
-  <meta name="keywords" content="ADHD habit tracker, habit app for ADHD, dopamine habit building, best habit app for distracted brains, ADHD productivity app, habit tracker for ADHD, motivation app">
-  <link rel="canonical" href="https://habitbuilding.xyz/">
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://habitbuilding.xyz/">
-  <meta property="og:title" content="Ascent — Habit building for distracted brains">
-  <meta property="og:description" content="Build one habit with a 60-day plan, home-screen widgets, adaptive coaching, and 2-minute fallback tasks.">
-  <meta property="og:image" content="https://habitbuilding.xyz/img/icon.png">
-  <meta property="og:site_name" content="Ascent">
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Ascent — Habit building for distracted brains">
-  <meta name="twitter:description" content="Build one habit without depending on perfect motivation.">
-  <meta name="twitter:image" content="https://habitbuilding.xyz/img/icon.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="img/icon.png">
-  <link rel="apple-touch-icon" href="img/icon.png">
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-  <!-- JSON-LD Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "MobileApplication",
-    "name": "Ascent",
-    "description": "Habit building app for ADHD and distracted brains. Uses dopamine psychology, AI coaching, and home screen widgets to make showing up inevitable.",
-    "operatingSystem": "iOS",
-    "applicationCategory": "HealthApplication",
-    "url": "https://habitbuilding.xyz",
-    "image": "https://habitbuilding.xyz/img/icon.png",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "author": {
-      "@type": "Organization",
-      "name": "Ascent"
-    }
-  }
-  </script>
-
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MEDSTMYLJ3"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-MEDSTMYLJ3');
-  </script>
-  <!-- <script defer data-domain="habitbuilding.xyz" src=""></script> -->
-
-  <style>
-    :root {
-      --ink: #101114;
-      --muted: #60656f;
-      --subtle: #8a9099;
-      --line: #e4e7ec;
-      --paper: #ffffff;
-      --wash: #f7f8fb;
-      --wash-blue: #eef6ff;
-      --blue: #0875ee;
-      --blue-dark: #075ec0;
-      --green: #21a67a;
-      --orange: #ff8a3d;
-      --shadow: 0 24px 70px rgba(15, 17, 21, 0.14);
-      --max: 1160px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--ink);
-      background: var(--paper);
-      -webkit-font-smoothing: antialiased;
-      line-height: 1.5;
-      overflow-x: hidden;
-    }
-
-    img, video {
-      max-width: 100%;
-      display: block;
-    }
-
-    a {
-      color: inherit;
-    }
-
-    .nav {
-      position: fixed;
-      z-index: 20;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 64px;
-      background: rgba(255, 255, 255, 0.82);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid rgba(228, 231, 236, 0.82);
-    }
-
-    .nav-inner {
-      width: min(var(--max), calc(100% - 48px));
-      height: 100%;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      font-weight: 800;
-      font-size: 20px;
-    }
-
-    .brand img {
-      width: 30px;
-      height: 30px;
-      border-radius: 7px;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      color: #69707c;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-    }
-
-    .nav-links a:hover {
-      color: var(--ink);
-    }
-
-    .button {
-      min-height: 44px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 0 20px;
-      border-radius: 8px;
-      border: 1px solid transparent;
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 800;
-      white-space: nowrap;
-      transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
-    }
-
-    .button:hover {
-      transform: translateY(-1px);
-    }
-
-    .button.primary {
-      background: var(--blue);
-      color: white;
-      box-shadow: 0 14px 32px rgba(8, 117, 238, 0.24);
-    }
-
-    .button.primary:hover {
-      background: var(--blue-dark);
-    }
-
-    .button.secondary {
-      background: white;
-      color: var(--ink);
-      border-color: var(--line);
-    }
-
-    .hero {
-      min-height: calc(100svh - 80px);
-      max-height: 820px;
-      margin-top: 64px;
-      position: relative;
-      overflow: hidden;
-      background: #f6f8fb;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(90deg, rgba(246, 248, 251, 0.98) 0%, rgba(246, 248, 251, 0.94) 38%, rgba(246, 248, 251, 0.46) 62%, rgba(246, 248, 251, 0.18) 100%),
-        linear-gradient(180deg, rgba(255,255,255,0.34), rgba(255,255,255,0));
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    .hero-product {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .phone {
-      position: absolute;
-      width: 286px;
-      border-radius: 42px;
-      box-shadow: var(--shadow);
-      border: 8px solid #0b0c0f;
-      background: #0b0c0f;
-      overflow: hidden;
-    }
-
-    .phone img {
-      width: 100%;
-      height: auto;
-      border-radius: 32px;
-    }
-
-    .phone.main {
-      right: 128px;
-      top: 118px;
-      transform: rotate(2deg);
-    }
-
-    .phone.side {
-      right: 398px;
-      top: 178px;
-      width: 232px;
-      opacity: 0.9;
-      transform: rotate(-6deg);
-    }
-
-    .phone.third {
-      right: -16px;
-      top: 252px;
-      width: 218px;
-      opacity: 0.78;
-      transform: rotate(7deg);
-    }
-
-    .hero-inner {
-      position: relative;
-      z-index: 3;
-      width: min(var(--max), calc(100% - 48px));
-      margin: 0 auto;
-      min-height: calc(100svh - 80px);
-      max-height: 820px;
-      display: flex;
-      align-items: center;
-      padding: 48px 0 64px;
-    }
-
-    .hero-copy {
-      width: min(570px, 100%);
-    }
-
-    .eyebrow {
-      margin: 0 0 18px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--blue);
-      font-size: 13px;
-      font-weight: 900;
-      text-transform: uppercase;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 0 4px rgba(33, 166, 122, 0.14);
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 76px;
-      line-height: 0.94;
-      font-weight: 900;
-    }
-
-    .lead {
-      margin: 24px 0 0;
-      max-width: 520px;
-      color: #3f4650;
-      font-size: 21px;
-      line-height: 1.55;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 30px;
-    }
-
-    .microcopy {
-      margin: 16px 0 0;
-      color: #69707c;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .hero-proof {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      width: min(560px, 100%);
-      margin-top: 34px;
-    }
-
-    .proof-pill {
-      min-height: 72px;
-      padding: 14px 16px;
-      border: 1px solid rgba(203, 213, 225, 0.82);
-      background: rgba(255, 255, 255, 0.72);
-      border-radius: 8px;
-    }
-
-    .proof-pill strong {
-      display: block;
-      font-size: 20px;
-      line-height: 1.1;
-    }
-
-    .proof-pill span {
-      display: block;
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .strip {
-      background: var(--ink);
-      color: white;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .strip-inner {
-      width: min(var(--max), calc(100% - 48px));
-      margin: 0 auto;
-      min-height: 96px;
-      display: grid;
-      grid-template-columns: 1.2fr repeat(3, 1fr);
-      gap: 22px;
-      align-items: center;
-    }
-
-    .strip h2 {
-      margin: 0;
-      font-size: 21px;
-      line-height: 1.25;
-    }
-
-    .strip-item {
-      color: rgba(255, 255, 255, 0.72);
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .strip-item b {
-      display: block;
-      margin-bottom: 3px;
-      color: white;
-      font-size: 15px;
-    }
-
-    section {
-      padding: 96px 0;
-    }
-
-    .section-inner {
-      width: min(var(--max), calc(100% - 48px));
-      margin: 0 auto;
-    }
-
-    .section-head {
-      display: grid;
-      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-      gap: 48px;
-      align-items: end;
-      margin-bottom: 48px;
-    }
-
-    .section-head h2 {
-      margin: 0;
-      font-size: 48px;
-      line-height: 1.02;
-      font-weight: 900;
-    }
-
-    .section-head p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 18px;
-      line-height: 1.65;
-    }
-
-    .workflow {
-      background: white;
-    }
-
-    .workflow-grid {
-      display: grid;
-      grid-template-columns: 360px minmax(0, 1fr);
-      gap: 56px;
-      align-items: start;
-    }
-
-    .phone-stage {
-      position: sticky;
-      top: 96px;
-      min-height: 620px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--wash);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .phone-stage img {
-      width: 262px;
-      border-radius: 38px;
-      border: 8px solid #0b0c0f;
-      box-shadow: var(--shadow);
-    }
-
-    .steps {
-      display: grid;
-      gap: 18px;
-    }
-
-    .step {
-      display: grid;
-      grid-template-columns: 52px minmax(0, 1fr);
-      gap: 18px;
-      padding: 24px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: white;
-    }
-
-    .step-number {
-      width: 52px;
-      height: 52px;
-      display: grid;
-      place-items: center;
-      border-radius: 8px;
-      background: var(--wash-blue);
-      color: var(--blue);
-      font-weight: 900;
-    }
-
-    .step h3 {
-      margin: 0;
-      font-size: 22px;
-      line-height: 1.2;
-    }
-
-    .step p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      font-size: 16px;
-    }
-
-    .features {
-      background: var(--wash);
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-      align-items: stretch;
-    }
-
-    .feature {
-      padding: 24px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: white;
-      min-height: 0;
-      display: grid;
-      gap: 22px;
-      overflow: hidden;
-    }
-
-    .feature-mark {
-      width: 38px;
-      height: 38px;
-      display: grid;
-      place-items: center;
-      border-radius: 8px;
-      background: #101114;
-      color: white;
-      font-weight: 900;
-    }
-
-    .feature h3 {
-      margin: 28px 0 0;
-      font-size: 22px;
-      line-height: 1.2;
-    }
-
-    .feature p {
-      margin: 10px 0 0;
-      color: var(--muted);
-    }
-
-    .feature img {
-      justify-self: end;
-      width: 132px;
-      margin-top: 0;
-      border-radius: 18px;
-      border: 4px solid #0b0c0f;
-      box-shadow: 0 18px 38px rgba(15, 17, 21, 0.16);
-    }
-
-    .science {
-      background: #111318;
-      color: white;
-    }
-
-    .science .section-head p,
-    .science .kicker {
-      color: rgba(255, 255, 255, 0.68);
-    }
-
-    .evidence-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 18px;
-      align-items: stretch;
-    }
-
-    .evidence-main {
-      padding: 34px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.06);
-    }
-
-    .evidence-main h3 {
-      margin: 0;
-      font-size: 30px;
-      line-height: 1.15;
-    }
-
-    .evidence-main p {
-      margin: 16px 0 0;
-      color: rgba(255, 255, 255, 0.72);
-      font-size: 17px;
-      line-height: 1.7;
-    }
-
-    .evidence-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .evidence-item {
-      padding: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.06);
-    }
-
-    .evidence-item b {
-      display: block;
-      margin-bottom: 6px;
-      color: white;
-    }
-
-    .evidence-item span {
-      color: rgba(255, 255, 255, 0.68);
-      font-size: 14px;
-    }
-
-    .compare {
-      background: white;
-    }
-
-    .compare-table {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-
-    .compare-col {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      overflow: hidden;
-      background: white;
-    }
-
-    .compare-col h3 {
-      margin: 0;
-      padding: 20px 22px;
-      font-size: 20px;
-      background: var(--wash);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .compare-col.ascent h3 {
-      background: var(--wash-blue);
-      color: var(--blue-dark);
-    }
-
-    .compare-row {
-      min-height: 74px;
-      padding: 18px 22px;
-      border-bottom: 1px solid var(--line);
-      color: var(--muted);
-      font-weight: 600;
-    }
-
-    .compare-row:last-child {
-      border-bottom: 0;
-    }
-
-    .compare-row b {
-      display: block;
-      margin-bottom: 4px;
-      color: var(--ink);
-    }
-
-    .cta {
-      padding: 88px 0;
-      background: var(--blue);
-      color: white;
-      text-align: center;
-    }
-
-    .cta h2 {
-      margin: 0 auto;
-      max-width: 760px;
-      font-size: 48px;
-      line-height: 1.05;
-      font-weight: 900;
-    }
-
-    .cta p {
-      margin: 18px auto 0;
-      max-width: 620px;
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 18px;
-    }
-
-    .cta .button {
-      margin-top: 28px;
-      background: white;
-      color: var(--blue-dark);
-    }
-
-    .footer {
-      padding: 28px 0;
-      background: var(--ink);
-      color: rgba(255, 255, 255, 0.66);
-      font-size: 14px;
-    }
-
-    .footer-inner {
-      width: min(var(--max), calc(100% - 48px));
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .footer a {
-      margin-left: 18px;
-      text-decoration: none;
-    }
-
-    @media (max-width: 980px) {
-      .nav-links a:not(.button) {
-        display: none;
-      }
-
-      .hero {
-        max-height: none;
-      }
-
-      .hero::before {
-        background:
-          linear-gradient(180deg, rgba(246, 248, 251, 1) 0%, rgba(246, 248, 251, 0.96) 46%, rgba(246, 248, 251, 0.4) 100%),
-          linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
-      }
-
-      .hero-inner {
-        align-items: flex-start;
-        padding-top: 56px;
-        text-align: center;
-      }
-
-      .hero-copy {
-        margin: 0 auto;
-      }
-
-      h1 {
-        font-size: 54px;
-      }
-
-      .lead {
-        margin-left: auto;
-        margin-right: auto;
-        font-size: 18px;
-      }
-
-      .hero-actions {
-        justify-content: center;
-      }
-
-      .hero-proof {
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .phone.main {
-        top: auto;
-        left: 50%;
-        right: auto;
-        bottom: -280px;
-        width: 250px;
-        transform: translateX(-50%) rotate(1deg);
-      }
-
-      .phone.side {
-        top: auto;
-        left: calc(50% - 190px);
-        right: auto;
-        bottom: -220px;
-        width: 194px;
-        transform: rotate(-7deg);
-      }
-
-      .phone.third {
-        top: auto;
-        right: calc(50% - 210px);
-        bottom: -230px;
-        width: 184px;
-        transform: rotate(6deg);
-      }
-
-      .strip-inner,
-      .section-head,
-      .workflow-grid,
-      .evidence-grid,
-      .compare-table {
-        grid-template-columns: 1fr;
-      }
-
-      .strip-inner {
-        padding: 26px 0;
-      }
-
-      .phone-stage {
-        position: relative;
-        top: auto;
-        min-height: 520px;
-      }
-
-      .feature-grid {
-        grid-template-columns: 1fr;
-        max-width: 780px;
-        margin: 0 auto;
-      }
-
-      .feature {
-        grid-template-columns: minmax(0, 1fr) 170px;
-        align-items: center;
-        padding: 22px;
-      }
-
-      .feature h3 {
-        margin-top: 22px;
-      }
-
-      .feature img {
-        width: 170px;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .nav {
-        height: 56px;
-      }
-
-      .nav-inner {
-        width: min(100% - 28px, var(--max));
-      }
-
-      .brand {
-        font-size: 19px;
-      }
-
-      .nav-links {
-        gap: 0;
-      }
-
-      .nav .button {
-        min-height: 38px;
-        padding: 0 14px;
-        font-size: 13px;
-      }
-
-      .hero {
-        min-height: calc(100svh - 76px);
-        margin-top: 56px;
-      }
-
-      .hero-inner {
-        width: min(100% - 32px, var(--max));
-        min-height: calc(100svh - 76px);
-        padding: 40px 0 46px;
-      }
-
-      h1 {
-        font-size: 46px;
-      }
-
-      .lead {
-        font-size: 17px;
-      }
-
-      .button {
-        width: 100%;
-      }
-
-      .hero-proof {
-        grid-template-columns: 1fr;
-        gap: 8px;
-        margin-top: 22px;
-      }
-
-      .proof-pill {
-        min-height: 54px;
-        padding: 10px 12px;
-      }
-
-      .proof-pill strong {
-        font-size: 18px;
-      }
-
-      .phone.main {
-        bottom: -360px;
-        width: 222px;
-      }
-
-      .phone.side,
-      .phone.third {
-        display: none;
-      }
-
-      .strip-inner,
-      .section-inner,
-      .footer-inner {
-        width: min(100% - 32px, var(--max));
-      }
-
-      section {
-        padding: 70px 0;
-      }
-
-      .section-head {
-        gap: 18px;
-        margin-bottom: 30px;
-      }
-
-      .section-head h2,
-      .cta h2 {
-        font-size: 36px;
-      }
-
-      .workflow-grid {
-        gap: 28px;
-      }
-
-      .step {
-        grid-template-columns: 42px minmax(0, 1fr);
-        padding: 18px;
-      }
-
-      .step-number {
-        width: 42px;
-        height: 42px;
-      }
-
-      .phone-stage {
-        min-height: 440px;
-      }
-
-      .phone-stage img {
-        width: 220px;
-      }
-
-      .feature-grid {
-        max-width: none;
-      }
-
-      .feature {
-        grid-template-columns: 1fr;
-        gap: 18px;
-      }
-
-      .feature img {
-        justify-self: start;
-        width: 120px;
-      }
-
-      .footer-inner {
-        flex-direction: column;
-      }
-
-      .footer a {
-        margin-left: 0;
-        margin-right: 18px;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ascent — Habit building for distracted brains</title>
+<meta name="description" content="Ascent is an iOS habit-building app for distracted brains. Build one habit with a 60-day plan, home-screen widgets, adaptive coaching, and 2-minute fallback tasks.">
+<link rel="canonical" href="https://habitbuilding.xyz/">
+<meta property="og:title" content="Ascent — Habit building for distracted brains">
+<meta property="og:description" content="Build one habit with a 60-day plan, home-screen widgets, adaptive coaching, and 2-minute fallback tasks.">
+<meta property="og:image" content="https://habitbuilding.xyz/img/icon.png">
+<meta property="og:url" content="https://habitbuilding.xyz/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ascent">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#FAF7F2">
+<link rel="icon" href="img/icon.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MEDSTMYLJ3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MEDSTMYLJ3');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FAF7F2;
+  --paper-deep:#F3EEE5;
+  --ink:#1C1A16;
+  --ink-soft:#5C574D;
+  --ink-faint:#8A8478;
+  --pine:#3D7FC1;
+  --pine-deep:#1F4E7E;
+  --pine-tint:#E2EEF9;
+  --ember:#C75B2B;
+  --line:#E5DFD3;
+  --card:#FFFFFF;
+  --shadow-sm:0 1px 2px rgba(28,26,22,.05),0 2px 8px rgba(28,26,22,.04);
+  --shadow-md:0 2px 6px rgba(28,26,22,.06),0 12px 32px rgba(28,26,22,.08);
+  --shadow-lg:0 4px 12px rgba(28,26,22,.08),0 24px 64px rgba(28,26,22,.14);
+  --radius:20px;
+  --display:'Fraunces',Georgia,serif;
+  --body:'Instrument Sans',-apple-system,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--body);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.6;
+  font-size:17px;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--pine);color:var(--paper)}
+img{max-width:100%;display:block}
+a{color:inherit}
+
+/* ---------- grain + atmosphere ---------- */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.35;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .04 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px;position:relative;z-index:2}
+
+/* ---------- nav ---------- */
+header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(250,247,242,.82);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s;
+}
+header.scrolled{border-bottom-color:var(--line)}
+nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:600;font-size:1.25rem;text-decoration:none;letter-spacing:-.01em}
+.brand img{width:30px;height:30px;border-radius:8px}
+.nav-links{display:flex;align-items:center;gap:30px;font-size:.95rem;font-weight:500}
+.nav-links a{text-decoration:none;color:var(--ink-soft);transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--ink);color:var(--paper);
+  padding:11px 22px;border-radius:100px;
+  font-weight:600;font-size:.95rem;text-decoration:none;
+  transition:transform .2s,background .2s,box-shadow .2s;
+  box-shadow:var(--shadow-sm);
+}
+.btn:hover{background:var(--pine-deep);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn.primary{background:#2A66A6}
+.btn.primary:hover{background:var(--pine-deep)}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.ghost:hover{background:var(--paper-deep);transform:translateY(-1px)}
+.nav-links .btn{padding:9px 18px}
+@media(max-width:760px){.nav-links a:not(.btn){display:none}}
+
+/* ---------- hero ---------- */
+.hero{padding:84px 0 40px;position:relative;overflow:hidden}
+.hero-bg{
+  position:absolute;inset:-20% -10% auto;height:120%;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(600px 420px at 78% 18%, rgba(61,127,193,.12), transparent 70%),
+    radial-gradient(520px 380px at 12% 80%, rgba(199,91,43,.07), transparent 70%);
+}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;position:relative;z-index:2}
+.kicker{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.8rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--pine);margin-bottom:22px;
+}
+.kicker::before{content:"";width:22px;height:1.5px;background:var(--pine)}
+h1.display{
+  font-family:var(--display);font-weight:500;
+  font-size:clamp(2.7rem,5.4vw,4.3rem);
+  line-height:1.04;letter-spacing:-.025em;
+  margin-bottom:24px;
+}
+h1.display em{font-style:italic;color:var(--pine)}
+.hero-sub{font-size:1.18rem;color:var(--ink-soft);max-width:33em;margin-bottom:34px}
+.hero-ctas{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.hero-ctas .btn{padding:15px 28px;font-size:1rem}
+.fineprint{font-size:.88rem;color:var(--ink-faint)}
+
+/* phone collage */
+.hero-visual{position:relative;min-height:540px}
+.phone{
+  position:absolute;border-radius:34px;overflow:hidden;
+  box-shadow:var(--shadow-lg);
+  border:1px solid rgba(28,26,22,.08);
+  background:var(--card);
+  transition:transform .5s cubic-bezier(.2,.8,.2,1);
+}
+.phone img{width:100%;height:auto}
+.phone.p-main{width:62%;left:19%;top:0;z-index:3;transform:rotate(0deg)}
+.phone.p-left{width:46%;left:-4%;top:14%;z-index:2;transform:rotate(-7deg);opacity:.96}
+.phone.p-right{width:46%;right:-4%;top:20%;z-index:2;transform:rotate(7deg);opacity:.96}
+.hero-visual:hover .p-left{transform:rotate(-8.5deg) translateY(-6px)}
+.hero-visual:hover .p-right{transform:rotate(8.5deg) translateY(-6px)}
+.hero-visual:hover .p-main{transform:translateY(-8px)}
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr;gap:56px}
+  .hero{padding-top:56px}
+  .hero-visual{min-height:0;height:480px;max-width:480px;margin:0 auto;width:100%}
+}
+
+/* ---------- stat strip ---------- */
+.stats{padding:54px 0 0}
+.stat-row{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.stat{padding:30px 24px;display:flex;flex-direction:column;gap:4px;position:relative}
+.stat+.stat::before{content:"";position:absolute;left:0;top:24px;bottom:24px;width:1px;background:var(--line)}
+.stat b{font-family:var(--display);font-size:1.9rem;font-weight:600;letter-spacing:-.02em}
+.stat span{color:var(--ink-soft);font-size:.95rem}
+@media(max-width:680px){
+  .stat-row{grid-template-columns:1fr}
+  .stat+.stat::before{left:24px;right:24px;top:0;bottom:auto;width:auto;height:1px}
+}
+
+/* ---------- section scaffolding ---------- */
+section{padding:104px 0}
+.sec-head{max-width:680px;margin-bottom:60px}
+.sec-head.center{margin-left:auto;margin-right:auto;text-align:center}
+h2{
+  font-family:var(--display);font-weight:500;
+  font-size:clamp(1.9rem,3.6vw,2.8rem);
+  line-height:1.12;letter-spacing:-.02em;margin-bottom:18px;
+}
+h2 em{font-style:italic;color:var(--pine)}
+.sec-head p{color:var(--ink-soft);font-size:1.12rem}
+
+/* ---------- workflow (day loop) ---------- */
+.loop{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.loop-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:32px 28px;box-shadow:var(--shadow-sm);
+  transition:transform .3s,box-shadow .3s;
+}
+.loop-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.loop-time{
+  font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ember);margin-bottom:14px;display:block;
+}
+.loop-card h3{font-family:var(--display);font-weight:600;font-size:1.3rem;letter-spacing:-.01em;margin-bottom:10px}
+.loop-card p{color:var(--ink-soft);font-size:1rem}
+@media(max-width:820px){.loop{grid-template-columns:1fr}}
+
+/* ---------- steps ---------- */
+.steps-sec{background:var(--paper-deep);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.steps-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:72px;align-items:start}
+.steps-sticky{position:sticky;top:120px}
+.steps-sticky .phone-solo{
+  border-radius:34px;overflow:hidden;box-shadow:var(--shadow-lg);
+  border:1px solid rgba(28,26,22,.08);max-width:340px;background:var(--card);
+}
+.step{
+  display:grid;grid-template-columns:64px 1fr;gap:24px;
+  padding:36px 0;border-bottom:1px solid var(--line);
+}
+.step:last-child{border-bottom:none}
+.step-num{
+  font-family:var(--display);font-size:2rem;font-weight:500;color:var(--ink);
+  width:64px;height:64px;border-radius:50%;
+  border:1.5px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  background:var(--paper);
+}
+.step h3{font-family:var(--display);font-weight:600;font-size:1.45rem;letter-spacing:-.015em;margin-bottom:8px;padding-top:8px}
+.step p{color:var(--ink-soft)}
+@media(max-width:900px){
+  .steps-grid{grid-template-columns:1fr}
+  .steps-sticky{position:static;display:flex;justify-content:center}
+}
+
+/* ---------- features ---------- */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.feat{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;
+  transition:transform .3s,box-shadow .3s;
+}
+.feat:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.feat-body{padding:30px 28px 24px}
+.feat-tag{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:40px;height:40px;padding:0 12px;border-radius:12px;
+  background:var(--pine-tint);color:var(--pine);
+  font-family:var(--display);font-weight:600;font-size:1.05rem;
+  margin-bottom:18px;
+}
+.feat h3{font-family:var(--display);font-weight:600;font-size:1.35rem;letter-spacing:-.01em;margin-bottom:10px}
+.feat p{color:var(--ink-soft);font-size:1rem}
+.feat-shot{
+  margin-top:auto;padding:28px 28px 0;background:linear-gradient(var(--card),var(--paper-deep));
+}
+.feat-shot img{
+  border-radius:22px 22px 0 0;border:1px solid var(--line);border-bottom:none;
+  box-shadow:0 -2px 24px rgba(28,26,22,.07);
+}
+@media(max-width:900px){.feat-grid{grid-template-columns:1fr;max-width:440px;margin:0 auto}}
+
+/* ---------- science ---------- */
+.science-sec{background:#1A3D60;color:#EAF1F8;position:relative;overflow:hidden}
+.science-sec::after{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background:radial-gradient(700px 500px at 85% 10%, rgba(255,255,255,.06), transparent 70%);
+}
+.science-sec .wrap{position:relative;z-index:2}
+.science-sec .kicker{color:#9CC0E4}
+.science-sec .kicker::before{background:#9CC0E4}
+.science-sec h2{color:#FBFAF6}
+.science-sec h2 em{color:#AFD2F0}
+.science-sec .sec-head p{color:#C0D3E5}
+.sci-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.sci-card{
+  border:1px solid rgba(255,255,255,.14);border-radius:var(--radius);
+  padding:30px 28px;background:rgba(255,255,255,.04);
+  backdrop-filter:blur(4px);
+}
+.sci-card h3{font-family:var(--display);font-weight:600;font-size:1.25rem;margin-bottom:10px;color:#FBFAF6}
+.sci-card p{color:#C0D3E5;font-size:1rem}
+@media(max-width:820px){.sci-grid{grid-template-columns:1fr}}
+
+/* ---------- comparison ---------- */
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
+.cmp{border-radius:var(--radius);padding:38px 34px;border:1px solid var(--line)}
+.cmp.them{background:var(--paper-deep)}
+.cmp.us{background:var(--card);border-color:var(--pine);box-shadow:0 0 0 1px var(--pine),var(--shadow-md);position:relative}
+.cmp.us::before{
+  content:"Ascent";position:absolute;top:-13px;left:32px;
+  background:var(--pine);color:var(--paper);font-size:.75rem;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;padding:4px 14px;border-radius:100px;
+}
+.cmp h3{font-family:var(--display);font-weight:600;font-size:1.3rem;margin-bottom:22px;letter-spacing:-.01em}
+.cmp ul{list-style:none;display:flex;flex-direction:column;gap:18px}
+.cmp li{display:grid;grid-template-columns:24px 1fr;gap:12px;align-items:start}
+.cmp li b{display:block;font-weight:600;margin-bottom:2px}
+.cmp li span{color:var(--ink-soft);font-size:.97rem}
+.mark{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;margin-top:2px;flex-shrink:0}
+.mark.x{background:#EFE6DA;color:var(--ink-faint)}
+.mark.c{background:var(--pine-tint);color:var(--pine)}
+@media(max-width:820px){.cmp-grid{grid-template-columns:1fr}}
+
+/* ---------- final CTA ---------- */
+.cta-sec{padding:120px 0 130px;text-align:center}
+.cta-sec h2{font-size:clamp(2.1rem,4.4vw,3.4rem);max-width:16em;margin:0 auto 20px}
+.cta-sec p{color:var(--ink-soft);font-size:1.15rem;max-width:32em;margin:0 auto 36px}
+.cta-sec .btn{padding:17px 34px;font-size:1.05rem}
+.cta-sec .fineprint{margin-top:16px}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);padding:36px 0;font-size:.92rem;color:var(--ink-faint)}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.foot-links{display:flex;gap:24px}
+.foot-links a{text-decoration:none;color:var(--ink-soft)}
+.foot-links a:hover{color:var(--ink)}
+
+/* ---------- reveal animation ---------- */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
+</style>
 </head>
 <body>
-  <nav class="nav" aria-label="Primary navigation">
-    <div class="nav-inner">
-      <a class="brand" href="#">
-        <img src="img/icon.png" alt="">
-        <span>Ascent</span>
-      </a>
+
+<header id="hdr">
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="#"><img src="img/icon.png" alt="Ascent icon">Ascent</a>
       <div class="nav-links">
         <a href="#workflow">Workflow</a>
         <a href="#features">Features</a>
         <a href="#science">Science</a>
-        <a href="blog/">Blog</a>
-        <a class="button primary" href="https://apps.apple.com/us/app/ascent-habit-builder/id6756843194?utm_source=habitbuilding&utm_medium=site&utm_campaign=homepage&utm_content=nav">Get the App</a>
+        <a href="https://habitbuilding.xyz/blog/">Blog</a>
+        <a class="btn primary" href="https://apps.apple.com/us/app/ascent-habit-builder/id6756843194?utm_source=habitbuilding&utm_medium=site&utm_campaign=homepage&utm_content=nav">Get the App</a>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </div>
+</header>
 
-  <header class="hero">
-    <div class="hero-product" aria-hidden="true">
-      <div class="phone side"><img src="img/screen-coach.webp" alt=""></div>
-      <div class="phone main"><img src="img/screen-widgets.webp" alt=""></div>
-      <div class="phone third"><img src="img/screen-today.webp" alt=""></div>
-    </div>
-    <div class="hero-inner">
-      <div class="hero-copy">
-        <p class="eyebrow">Habit building for distracted brains</p>
-        <h1>Ascent</h1>
-        <p class="lead">A 60-day habit system that lives on your home screen, adapts on low-motivation days, and turns every phone unlock into a cue to show up.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="https://apps.apple.com/us/app/ascent-habit-builder/id6756843194?utm_source=habitbuilding&utm_medium=site&utm_campaign=homepage&utm_content=hero-primary">Download for iOS</a>
-          <a class="button secondary" href="#workflow">See the system</a>
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="kicker reveal">Habit building for distracted brains</span>
+        <h1 class="display reveal d1">One habit. Sixty days. <em>Right on your home screen.</em></h1>
+        <p class="hero-sub reveal d2">Ascent is a 60-day habit system that lives where your attention already goes — adapting on low-motivation days and turning every phone unlock into a cue to show up.</p>
+        <div class="hero-ctas reveal d3">
+          <a class="btn primary" href="https://apps.apple.com/us/app/ascent-habit-builder/id6756843194?utm_source=habitbuilding&utm_medium=site&utm_campaign=homepage&utm_content=hero-primary">
+            <svg width="16" height="19" viewBox="0 0 16 19" fill="currentColor" aria-hidden="true"><path d="M13.05 10.06c.02 2.3 2.02 3.07 2.04 3.08-.02.05-.32 1.1-1.06 2.17-.64.93-1.3 1.86-2.35 1.88-1.03.02-1.36-.61-2.53-.61-1.18 0-1.54.59-2.51.63-1.01.04-1.78-1-2.43-1.93C2.89 13.39 1.88 9.9 3.24 7.55c.67-1.16 1.88-1.9 3.18-1.92 1-.02 1.93.67 2.53.67.6 0 1.74-.82 2.94-.7.5.02 1.9.2 2.8 1.52-.07.05-1.67.98-1.64 2.94ZM11.1 4.32c.53-.65.89-1.55.8-2.45-.77.03-1.7.51-2.25 1.16-.5.57-.93 1.49-.81 2.37.85.07 1.73-.43 2.26-1.08Z"/></svg>
+            Download for iOS
+          </a>
+          <a class="btn ghost" href="#workflow">See the system</a>
         </div>
-        <p class="microcopy">Free to start. No credit card. Setup in under 2 minutes.</p>
-        <div class="hero-proof" aria-label="Product highlights">
-          <div class="proof-pill"><strong>60 days</strong><span>One focused curriculum</span></div>
-          <div class="proof-pill"><strong>2 min</strong><span>Fallback version on hard days</span></div>
-          <div class="proof-pill"><strong>Home screen</strong><span>Widgets before feeds</span></div>
+        <p class="fineprint reveal d3">Free to start · No credit card · Setup in under 2 minutes</p>
+      </div>
+      <div class="hero-visual reveal d2">
+        <div class="phone p-left"><img src="img/screen-coach.webp" alt="Ascent coaching screen" loading="eager"></div>
+        <div class="phone p-main"><img src="img/screen-today.webp" alt="Ascent daily habit screen" loading="eager"></div>
+        <div class="phone p-right"><img src="img/screen-widgets.webp" alt="Ascent widget screen" loading="eager"></div>
+      </div>
+    </div>
+
+    <div class="stats reveal">
+      <div class="stat-row">
+        <div class="stat"><b>60 days</b><span>One focused curriculum</span></div>
+        <div class="stat"><b>2 minutes</b><span>Fallback version on hard days</span></div>
+        <div class="stat"><b>Home screen</b><span>Widgets before feeds</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="workflow">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="kicker" style="justify-content:center">The daily loop</span>
+      <h2>The app is the setup. <em>The widget is the habit loop.</em></h2>
+    </div>
+    <div class="loop">
+      <div class="loop-card reveal">
+        <span class="loop-time">Morning</span>
+        <h3>One task, before the noise</h3>
+        <p>See exactly what today asks of you — before the day gets loud and the feeds get the first shot at your brain.</p>
+      </div>
+      <div class="loop-card reveal d1">
+        <span class="loop-time">When motivation dips</span>
+        <h3>Shrink it, don't skip it</h3>
+        <p>Tap the 2-minute version and keep the chain alive. Showing up small still counts as showing up.</p>
+      </div>
+      <div class="loop-card reveal d2">
+        <span class="loop-time">Evening</span>
+        <h3>Evidence, not streak guilt</h3>
+        <p>Review proof that you showed up instead of staring at a number begging not to be reset.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="steps-sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">How it works</span>
+      <h2>A sharper loop for <em>actually doing the thing.</em></h2>
+      <p>Most habit apps ask you to remember them. Ascent moves the prompt to the surface you already look at all day: your iPhone home screen.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="steps-sticky reveal">
+        <div class="phone-solo"><img src="img/screen-today.webp" alt="Ascent daily habit screen" loading="lazy"></div>
+      </div>
+      <div>
+        <div class="step reveal">
+          <div class="step-num">1</div>
+          <div><h3>Choose one goal that matters</h3><p>Ascent keeps the scope tight: one goal, one curriculum, one daily action. Less planning, more evidence.</p></div>
         </div>
-      </div>
-    </div>
-  </header>
-
-  <aside class="strip" aria-label="Ascent positioning">
-    <div class="strip-inner">
-      <h2>The app is the setup. The widget is the habit loop.</h2>
-      <div class="strip-item"><b>Morning</b>See one task before the day gets noisy.</div>
-      <div class="strip-item"><b>When motivation dips</b>Tap the 2-minute version and keep the chain alive.</div>
-      <div class="strip-item"><b>Evening</b>Review evidence instead of chasing streak guilt.</div>
-    </div>
-  </aside>
-
-  <section class="workflow" id="workflow">
-    <div class="section-inner">
-      <div class="section-head">
-        <h2>A sharper loop for actually doing the thing.</h2>
-        <p>Most habit apps ask you to remember them. Ascent moves the prompt to the surface you already look at all day: your iPhone home screen.</p>
-      </div>
-      <div class="workflow-grid">
-        <div class="phone-stage">
-          <img src="img/screen-today.webp" alt="Ascent daily habit screen">
+        <div class="step reveal">
+          <div class="step-num">2</div>
+          <div><h3>AI turns it into a 60-day plan</h3><p>Each phase starts small and ramps up — enough structure to feel real without becoming a second job.</p></div>
         </div>
-        <div class="steps">
-          <article class="step">
-            <div class="step-number">01</div>
-            <div>
-              <h3>Choose one goal that matters.</h3>
-              <p>Ascent keeps the scope tight: one goal, one curriculum, one daily action. Less planning, more evidence.</p>
-            </div>
-          </article>
-          <article class="step">
-            <div class="step-number">02</div>
-            <div>
-              <h3>AI turns it into a 60-day plan.</h3>
-              <p>Each phase starts small and ramps up with enough structure to feel real without becoming a second job.</p>
-            </div>
-          </article>
-          <article class="step">
-            <div class="step-number">03</div>
-            <div>
-              <h3>The task sits where your attention already goes.</h3>
-              <p>Widgets show the goal, the day’s action, and motivation state before feeds get the first shot at your brain.</p>
-            </div>
-          </article>
-          <article class="step">
-            <div class="step-number">04</div>
-            <div>
-              <h3>Bad days still count.</h3>
-              <p>The 2-minute version preserves the habit loop when the original task is too heavy. Showing up remains the win.</p>
-            </div>
-          </article>
+        <div class="step reveal">
+          <div class="step-num">3</div>
+          <div><h3>The task sits where your attention goes</h3><p>Widgets show the goal, the day's action, and your motivation state right on the home screen.</p></div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="features" id="features">
-    <div class="section-inner">
-      <div class="section-head">
-        <h2>Built for the way follow-through actually happens.</h2>
-        <p>Ascent keeps the system visible, makes hard days recoverable, and gives the coach enough context to be useful instead of generic.</p>
-      </div>
-      <div class="feature-grid">
-        <article class="feature">
-          <div>
-            <div class="feature-mark">W</div>
-            <h3>Widgets first</h3>
-            <p>The home screen becomes the cue. The app supports the system instead of hiding the system behind an icon.</p>
-          </div>
-          <img src="img/screen-widgets.webp" alt="Ascent widget screen">
-        </article>
-        <article class="feature">
-          <div>
-            <div class="feature-mark">2</div>
-            <h3>2-minute fallback</h3>
-            <p>A clear recovery path when the day goes sideways, without streak shame or fake cheerleading.</p>
-          </div>
-          <img src="img/screen-complete.jpg" alt="Ascent completion screen">
-        </article>
-        <article class="feature">
-          <div>
-            <div class="feature-mark">AI</div>
-            <h3>Adaptive coach</h3>
-            <p>Guidance based on the plan, progress, and motivation state, not generic “you got this” motivation.</p>
-          </div>
-          <img src="img/screen-coach.webp" alt="Ascent coaching screen">
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="science" id="science">
-    <div class="section-inner">
-      <div class="section-head">
-        <h2>Based on cues, small wins, and context.</h2>
-        <p>Ascent turns the phone unlock into a better cue, keeps the action small enough to complete, and adapts when your motivation is low.</p>
-      </div>
-      <div class="evidence-grid">
-        <article class="evidence-main">
-          <p class="kicker">Core argument</p>
-          <h3>Change the cue and the habit has a fighting chance.</h3>
-          <p>Your phone already triggers automatic behavior dozens of times a day. Ascent redirects that cue toward one concrete action, then makes the action small enough to complete on low-energy days.</p>
-        </article>
-        <div class="evidence-list">
-          <div class="evidence-item"><b>Cues beat willpower</b><span>Home-screen visibility makes the habit prompt unavoidable.</span></div>
-          <div class="evidence-item"><b>Small wins preserve identity</b><span>The fallback version keeps evidence accumulating.</span></div>
-          <div class="evidence-item"><b>Context-aware nudges</b><span>The coach responds to motivation state instead of pretending every day is equal.</span></div>
+        <div class="step reveal">
+          <div class="step-num">4</div>
+          <div><h3>Bad days still count</h3><p>The 2-minute version preserves the habit loop when the original task is too heavy. Showing up remains the win.</p></div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="compare">
-    <div class="section-inner">
-      <div class="section-head">
-        <h2>Different from streak counters.</h2>
-        <p>Most habit apps track what already happened. Ascent is designed to prompt the behavior before the old reflex takes over.</p>
-      </div>
-      <div class="compare-table">
-        <div class="compare-col">
-          <h3>Typical habit apps</h3>
-          <div class="compare-row"><b>Track after the fact</b>Open the app, log the behavior, protect the streak.</div>
-          <div class="compare-row"><b>Assume every day is equal</b>Miss once and the product mostly has one response: reset.</div>
-          <div class="compare-row"><b>Live behind an icon</b>The prompt disappears as soon as opening the app stops being novel.</div>
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="kicker" style="justify-content:center">Features</span>
+      <h2>Built for the way follow-through <em>actually happens.</em></h2>
+      <p>Visible system. Recoverable hard days. A coach with enough context to be useful instead of generic.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat reveal">
+        <div class="feat-body">
+          <span class="feat-tag">W</span>
+          <h3>Widgets first</h3>
+          <p>The home screen becomes the cue. The app supports the system instead of hiding it behind an icon.</p>
         </div>
-        <div class="compare-col ascent">
-          <h3>Ascent</h3>
-          <div class="compare-row"><b>Prompts before the behavior</b>The widget is visible before the old reflex takes over.</div>
-          <div class="compare-row"><b>Adapts the task</b>Low-motivation days get a smaller version, not a lecture.</div>
-          <div class="compare-row"><b>Turns unlocks into cues</b>The system meets attention where it already is.</div>
+        <div class="feat-shot"><img src="img/screen-widgets.webp" alt="Ascent widget screen" loading="lazy"></div>
+      </div>
+      <div class="feat reveal d1">
+        <div class="feat-body">
+          <span class="feat-tag">2′</span>
+          <h3>2-minute fallback</h3>
+          <p>A clear recovery path when the day goes sideways — without streak shame or fake cheerleading.</p>
         </div>
+        <div class="feat-shot"><img src="img/screen-complete.jpg" alt="Ascent completion screen" loading="lazy"></div>
+      </div>
+      <div class="feat reveal d2">
+        <div class="feat-body">
+          <span class="feat-tag">AI</span>
+          <h3>Adaptive coach</h3>
+          <p>Guidance based on your plan, progress, and motivation state — not generic "you got this" energy.</p>
+        </div>
+        <div class="feat-shot"><img src="img/screen-coach.webp" alt="Ascent coaching screen" loading="lazy"></div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="cta">
-    <div class="section-inner">
-      <h2>Build one habit without depending on perfect motivation.</h2>
-      <p>Start with a goal, get a focused 60-day plan, and put today’s action where you cannot miss it.</p>
-      <a class="button" href="https://apps.apple.com/us/app/ascent-habit-builder/id6756843194?utm_source=habitbuilding&utm_medium=site&utm_campaign=homepage&utm_content=final-cta">Get Ascent for iPhone</a>
+<section class="science-sec" id="science">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">The science</span>
+      <h2>Change the cue, and the habit has <em>a fighting chance.</em></h2>
+      <p>Your phone already triggers automatic behavior dozens of times a day. Ascent redirects that cue toward one concrete action, then makes the action small enough to complete on low-energy days.</p>
     </div>
-  </section>
+    <div class="sci-grid">
+      <div class="sci-card reveal">
+        <h3>Cues beat willpower</h3>
+        <p>Home-screen visibility makes the habit prompt unavoidable — no remembering required.</p>
+      </div>
+      <div class="sci-card reveal d1">
+        <h3>Small wins preserve identity</h3>
+        <p>The fallback version keeps evidence accumulating, even on the days that go sideways.</p>
+      </div>
+      <div class="sci-card reveal d2">
+        <h3>Context-aware nudges</h3>
+        <p>The coach responds to your motivation state instead of pretending every day is equal.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <footer class="footer">
-    <div class="footer-inner">
-      <span>© 2026 Ascent</span>
-      <span>
-        <a href="blog/">Blog</a>
-        <a href="science/">Science</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="terms.html">Terms</a>
-      </span>
+<section>
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="kicker" style="justify-content:center">The difference</span>
+      <h2>Different from <em>streak counters.</em></h2>
+      <p>Most habit apps track what already happened. Ascent prompts the behavior before the old reflex takes over.</p>
     </div>
-  </footer>
-  <script>
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-      link.addEventListener('click', event => {
-        const target = document.querySelector(link.getAttribute('href'));
-        if (!target) return;
-        event.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    });
-  </script>
+    <div class="cmp-grid">
+      <div class="cmp them reveal">
+        <h3>Typical habit apps</h3>
+        <ul>
+          <li><span class="mark x">✕</span><div><b>Track after the fact</b><span>Open the app, log the behavior, protect the streak.</span></div></li>
+          <li><span class="mark x">✕</span><div><b>Assume every day is equal</b><span>Miss once and the product mostly has one response: reset.</span></div></li>
+          <li><span class="mark x">✕</span><div><b>Live behind an icon</b><span>The prompt disappears once opening the app stops being novel.</span></div></li>
+        </ul>
+      </div>
+      <div class="cmp us reveal d1">
+        <h3>How Ascent works</h3>
+        <ul>
+          <li><span class="mark c">✓</span><div><b>Prompts before the behavior</b><span>The widget is visible before the old reflex takes over.</span></div></li>
+          <li><span class="mark c">✓</span><div><b>Adapts the task</b><span>Low-motivation days get a smaller version, not a lecture.</span></div></li>
+          <li><span class="mark c">✓</span><div><b>Turns unlocks into cues</b><span>The system meets your attention where it already is.</span></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-sec">
+  <div class="wrap">
+    <div class="reveal">
+      <h2>Build one habit without depending on <em>perfect motivation.</em></h2>
+      <p>Start with a goal, get a focused 60-day plan, and put today's action where you cannot miss it.</p>
+      <a class="btn primary" href="https://apps.apple.com/us/app/ascent-habit-builder/id6756843194?utm_source=habitbuilding&utm_medium=site&utm_campaign=homepage&utm_content=final-cta">
+        <svg width="16" height="19" viewBox="0 0 16 19" fill="currentColor" aria-hidden="true"><path d="M13.05 10.06c.02 2.3 2.02 3.07 2.04 3.08-.02.05-.32 1.1-1.06 2.17-.64.93-1.3 1.86-2.35 1.88-1.03.02-1.36-.61-2.53-.61-1.18 0-1.54.59-2.51.63-1.01.04-1.78-1-2.43-1.93C2.89 13.39 1.88 9.9 3.24 7.55c.67-1.16 1.88-1.9 3.18-1.92 1-.02 1.93.67 2.53.67.6 0 1.74-.82 2.94-.7.5.02 1.9.2 2.8 1.52-.07.05-1.67.98-1.64 2.94ZM11.1 4.32c.53-.65.89-1.55.8-2.45-.77.03-1.7.51-2.25 1.16-.5.57-.93 1.49-.81 2.37.85.07 1.73-.43 2.26-1.08Z"/></svg>
+        Get Ascent for iPhone
+      </a>
+      <p class="fineprint">Free to start · No credit card</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <span>© 2026 Ascent</span>
+    <div class="foot-links">
+      <a href="https://habitbuilding.xyz/blog/">Blog</a>
+      <a href="https://habitbuilding.xyz/science/">Science</a>
+      <a href="https://habitbuilding.xyz/privacy.html">Privacy</a>
+      <a href="https://habitbuilding.xyz/terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// nav border on scroll
+const hdr=document.getElementById('hdr');
+addEventListener('scroll',()=>hdr.classList.toggle('scrolled',scrollY>8),{passive:true});
+
+// scroll reveals
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
+},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
 </body>
 </html>
