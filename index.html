@@ -245,6 +245,20 @@ h2 em{font-style:italic;color:var(--pine)}
 }
 @media(max-width:900px){.feat-grid{grid-template-columns:1fr;max-width:440px;margin:0 auto}}
 
+/* ---------- screenshot gallery ---------- */
+.shots-scroll{
+  display:flex;gap:18px;overflow-x:auto;padding:8px 4px 22px;
+  scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;scrollbar-color:var(--line) transparent;
+}
+.shot-card{
+  flex:0 0 auto;width:256px;scroll-snap-align:start;
+  border-radius:18px;overflow:hidden;background:var(--card);
+  border:1px solid var(--line);box-shadow:var(--shadow-sm);
+}
+.shot-card img{width:100%;height:auto}
+@media(max-width:640px){.shot-card{width:216px}}
+
 /* ---------- science ---------- */
 .science-sec{background:#1A3D60;color:#EAF1F8;position:relative;overflow:hidden}
 .science-sec::after{
@@ -320,6 +334,7 @@ footer{border-top:1px solid var(--line);padding:36px 0;font-size:.92rem;color:va
       <div class="nav-links">
         <a href="#workflow">Workflow</a>
         <a href="#features">Features</a>
+        <a href="#screens">Screens</a>
         <a href="#science">Science</a>
         <a href="https://habitbuilding.xyz/blog/">Blog</a>
         <a class="btn primary" href="https://apps.apple.com/us/app/ascent-habit-builder/id6756843194?utm_source=habitbuilding&utm_medium=site&utm_campaign=homepage&utm_content=nav">Get the App</a>
@@ -465,6 +480,30 @@ footer{border-top:1px solid var(--line);padding:36px 0;font-size:.92rem;color:va
         </div>
         <div class="feat-shot"><img src="img/screen-2min.webp" alt="Ascent 2-minute version shrinking a task into one tiny action" loading="lazy"></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="screens">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="kicker" style="justify-content:center">Screenshots</span>
+      <h2>The whole system, <em>screen by screen.</em></h2>
+      <p>The same screenshots you'll find on the App Store — pause, plan, widgets, and the pet you unlock by showing up.</p>
+    </div>
+    <div class="shots-scroll reveal">
+      <div class="shot-card"><img src="img/gallery/01-pause-before-x-opens.webp" alt="Pause before X opens — a short delay before the app" loading="lazy"></div>
+      <div class="shot-card"><img src="img/gallery/02-next-step-already-chosen.webp" alt="The next step is already chosen — today's focus screen" loading="lazy"></div>
+      <div class="shot-card"><img src="img/gallery/03-tasks-before-the-unlock.webp" alt="Tasks on the Lock Screen before the unlock" loading="lazy"></div>
+      <div class="shot-card"><img src="img/gallery/04-two-minute-version.webp" alt="Too big? Make it two minutes — the 2-minute version" loading="lazy"></div>
+      <div class="shot-card"><img src="img/gallery/05-widget-and-island-pet.webp" alt="Widget on screen, pet in the Dynamic Island" loading="lazy"></div>
+      <div class="shot-card"><img src="img/gallery/06-set-a-window.webp" alt="Set a block window and keep it closed" loading="lazy"></div>
+      <div class="shot-card"><img src="img/gallery/07-blocked-by-your-plan.webp" alt="Blocked by your own plan — apps reopen when the window ends" loading="lazy"></div>
+      <div class="shot-card"><img src="img/gallery/08-clean-plan-for-today.webp" alt="A clean plan for today — goal, battery, and next step" loading="lazy"></div>
+      <div class="shot-card"><img src="img/gallery/09-when-time-is-up.webp" alt="When time is up, your plan appears" loading="lazy"></div>
+      <div class="shot-card"><img src="img/gallery/10-finish-day-unlock-pet.webp" alt="Finish the day, unlock a pet — the pet gallery" loading="lazy"></div>
+      <div class="shot-card"><img src="img/gallery/11-delay-the-reflex.webp" alt="Delay the reflex — Ascent shows what's still waiting" loading="lazy"></div>
+      <div class="shot-card"><img src="img/gallery/12-plan-on-home-screen.webp" alt="Your plan right on the Home Screen widget" loading="lazy"></div>
     </div>
   </div>
 </section>
