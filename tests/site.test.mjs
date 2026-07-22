@@ -597,6 +597,20 @@ test('habit tracker with app blocking guide satisfies the decision contract', ()
   });
 });
 
+test('decision content is connected to the authority graph', () => {
+  const contracts = [
+    ['index.html', ['href="best/app-blockers-iphone/"', 'href="best/habit-tracker-with-app-blocking/"']],
+    ['compare/index.html', ['href="../best/app-blockers-iphone/"']],
+    ['ascent/index.html', ['href="../best/habit-tracker-with-app-blocking/"']],
+    ['best/app-blockers-iphone/index.html', ['href="../habit-tracker-with-app-blocking/"', 'href="../../methodology/"']],
+    ['best/habit-tracker-with-app-blocking/index.html', ['href="../app-blockers-iphone/"', 'href="../../methodology/"']]
+  ];
+  for (const [page, fragments] of contracts) {
+    const html = read(page);
+    for (const fragment of fragments) assert.ok(html.includes(fragment), page + ' is missing ' + fragment);
+  }
+});
+
 test('Fabulous comparison satisfies the editorial contract', () => {
   assertHeadToHeadPage({
     slug: 'ascent-vs-fabulous',
