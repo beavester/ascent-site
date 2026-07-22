@@ -6,6 +6,7 @@ import { dirname, join } from 'node:path';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (path) => readFileSync(join(root, path), 'utf8');
+const canonicalAppStoreUrl = 'https://apps.apple.com/us/app/ascent-habit-builder-focus/id6756843194';
 
 test('homepage uses one 70-day promise', () => {
   const html = read('index.html');
@@ -16,6 +17,11 @@ test('homepage uses one 70-day promise', () => {
 test('navigation CTA has an explicit accessible foreground', () => {
   const html = read('index.html');
   assert.match(html, /\.nav-links \.btn\.primary\s*\{[^}]*color:var\(--paper\)/s);
+});
+
+test('comparison navigation CTA overrides the navigation link color', () => {
+  const html = read('compare/index.html');
+  assert.match(html, /\.nav-links \.btn\s*\{[^}]*color:var\(--paper\)/s);
 });
 
 test('above-the-fold hero is not hidden by reveal animation', () => {
@@ -29,6 +35,38 @@ test('homepage states the verified trust boundaries', () => {
   assert.match(html, /Free tier/i);
   assert.match(html, /Screen Time inputs are optional/i);
   assert.match(html, /do not sell personal data/i);
+});
+
+test('homepage declares the exact official Ascent app identity', () => {
+  const html = read('index.html');
+  assert.match(html, /<meta name="apple-itunes-app" content="app-id=6756843194, app-argument=https:\/\/habitbuilding\.xyz\/">/);
+  assert.match(html, /"@id"\s*:\s*"https:\/\/habitbuilding\.xyz\/#ascent-app"/);
+  assert.match(html, /"name"\s*:\s*"Ascent: Habit Builder & Focus"/);
+  assert.match(html, /"propertyID"\s*:\s*"Apple App Store ID"/);
+  assert.match(html, /"value"\s*:\s*"6756843194"/);
+  assert.ok(html.includes(`"downloadUrl": "${canonicalAppStoreUrl}"`));
+  assert.ok(html.includes(`"sameAs": ["${canonicalAppStoreUrl}"]`));
+  assert.match(html, />Official App Store listing<\/a>/);
+});
+
+test('every Ascent install link uses Apple\'s canonical product URL', () => {
+  const pages = [
+    'index.html',
+    'compare/index.html',
+    'science/index.html',
+    'blog/index.html',
+    'blog/youre-not-unmotivated/index.html',
+    'blog/_template/index.html'
+  ];
+  for (const page of pages) {
+    const html = read(page);
+    const urls = [...html.matchAll(/href="([^"]*id6756843194[^"]*)"/g)]
+      .map((match) => match[1].replaceAll('&amp;', '&'));
+    assert.ok(urls.length > 0, `${page} has no Ascent install link`);
+    for (const url of urls) {
+      assert.ok(url.startsWith(canonicalAppStoreUrl), `${page} uses a non-canonical Ascent URL: ${url}`);
+    }
+  }
 });
 
 const competitors = [
@@ -55,6 +93,8 @@ test('comparison page is a dated, canonical, structured article', () => {
   assert.match(html, /"@type"\s*:\s*"Article"/);
   assert.match(html, /"@type"\s*:\s*"ItemList"/);
   assert.match(html, /"@type"\s*:\s*"SoftwareApplication"/);
+  assert.match(html, /"@id"\s*:\s*"https:\/\/habitbuilding\.xyz\/#ascent-app"/);
+  assert.ok(html.includes(`"downloadUrl": "${canonicalAppStoreUrl}"`));
 });
 
 test('comparison page names the closest seven and the full Ascent loop', () => {
