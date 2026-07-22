@@ -16,6 +16,25 @@ const headToHeadSlugs = [
   'ascent-vs-one-sec',
   'ascent-vs-opal'
 ];
+const expectedPublicUrls = [
+  'https://habitbuilding.xyz/',
+  'https://habitbuilding.xyz/compare/',
+  ...headToHeadSlugs.map((slug) => 'https://habitbuilding.xyz/compare/' + slug + '/'),
+  'https://habitbuilding.xyz/science/',
+  'https://habitbuilding.xyz/blog/',
+  'https://habitbuilding.xyz/blog/youre-not-unmotivated/',
+  'https://habitbuilding.xyz/privacy.html',
+  'https://habitbuilding.xyz/terms.html'
+];
+const staleDurationPattern = /60[ \-\u2010\u2011\u2012\u2013\u2014\u2212]day/i;
+const metadataProhibitedPattern = new RegExp('AI coach|' + staleDurationPattern.source + '|[£€]', 'i');
+const parseSitemapEntries = (xml) => [...xml.matchAll(/<url>([\s\S]*?)<\/url>/g)].map((match) => {
+  const block = match[1];
+  return {
+    loc: block.match(/<loc>\s*([^<]+?)\s*<\/loc>/)?.[1],
+    lastmod: block.match(/<lastmod>\s*([^<]+?)\s*<\/lastmod>/)?.[1]
+  };
+});
 
 test('homepage uses one 70-day promise', () => {
   const html = read('index.html');
@@ -456,16 +475,22 @@ test('Opal comparison satisfies the editorial contract', () => {
 });
 
 test('sitemap discovers all comparison pages exactly once with current lastmod', () => {
-  const xml = read('sitemap.xml');
-  const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+  const entries = parseSitemapEntries(read('sitemap.xml'));
+  const urls = entries.map((entry) => entry.loc);
+  assert.equal(entries.length, expectedPublicUrls.length);
+  assert.equal(urls.length, 14);
   assert.equal(new Set(urls).size, urls.length);
+  assert.deepEqual(new Set(urls), new Set(expectedPublicUrls));
   for (const slug of headToHeadSlugs) {
     const url = 'https://habitbuilding.xyz/compare/' + slug + '/';
-    assert.equal(urls.filter((item) => item === url).length, 1, 'sitemap mismatch for ' + url);
-    assert.ok(xml.includes('<loc>' + url + '</loc>\n    <lastmod>2026-07-22</lastmod>'));
+    const matches = entries.filter((entry) => entry.loc === url);
+    assert.equal(matches.length, 1, 'sitemap mismatch for ' + url);
+    assert.equal(matches[0].lastmod, '2026-07-22', 'stale lastmod for ' + url);
   }
   for (const url of ['https://habitbuilding.xyz/', 'https://habitbuilding.xyz/compare/']) {
-    assert.ok(xml.includes('<loc>' + url + '</loc>\n    <lastmod>2026-07-22</lastmod>'));
+    const matches = entries.filter((entry) => entry.loc === url);
+    assert.equal(matches.length, 1, 'sitemap mismatch for ' + url);
+    assert.equal(matches[0].lastmod, '2026-07-22', 'stale lastmod for ' + url);
   }
 });
 
@@ -489,7 +514,7 @@ test('all public HTML uses current Ascent duration and App Store identity', () =
   ];
   for (const page of pages) {
     const html = read(page);
-    assert.doesNotMatch(html, /60[- ]day/i, page + ' contains stale duration');
+    assert.doesNotMatch(html, staleDurationPattern, page + ' contains stale duration');
     assert.doesNotMatch(html, /apps\.apple\.com\/us\/app\/ascent-habit-builder\/id6756843194/i, page + ' contains stale App Store slug');
     if (html.includes('application/ld+json')) parseJsonLd(html, page);
   }
@@ -519,5 +544,24 @@ test('App Store metadata proposal matches the website facts', () => {
   assert.match(copy, /two-minute/i);
   assert.match(copy, /Screen Time.*optional/i);
   assert.match(copy, /https:\/\/habitbuilding\.xyz\//);
-  assert.doesNotMatch(copy, /AI coach|60[- ]day|Â£|â‚¬/i);
+  assert.doesNotMatch(copy, metadataProhibitedPattern);
+});
+
+test('sitemap discovery check accepts CRLF XML fixtures', () => {
+  const xml = read('sitemap.xml');
+  const crlfFixture = xml.replaceAll('\n', '\r\n');
+  assert.deepEqual(parseSitemapEntries(crlfFixture), parseSitemapEntries(xml));
+  assert.deepEqual(
+    new Set(parseSitemapEntries(crlfFixture).map((entry) => entry.loc)),
+    new Set(expectedPublicUrls)
+  );
+});
+
+test('stale-copy guards catch typographic durations and real currency symbols', () => {
+  for (const duration of ['60 day', '60-day', '60‐day', '60‑day', '60‒day', '60–day', '60—day', '60−day']) {
+    assert.match(duration, staleDurationPattern, 'missing stale duration variant: ' + duration);
+  }
+  for (const currency of ['£', '€']) {
+    assert.match(currency, metadataProhibitedPattern, 'missing prohibited currency: ' + currency);
+  }
 });
