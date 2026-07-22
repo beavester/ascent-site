@@ -30,3 +30,46 @@ test('homepage states the verified trust boundaries', () => {
   assert.match(html, /Screen Time inputs are optional/i);
   assert.match(html, /do not sell personal data/i);
 });
+
+const competitors = [
+  'Streaks', 'Habitify', 'Productive', 'Way of Life', 'Tangerine',
+  'Fabulous', 'Routinery', 'Structured', 'Tiimo', 'Coach.me',
+  'Finch', 'Habitica', '(Not Boring) Habits', 'TaskHero',
+  'one sec', 'ScreenZen', 'Opal', 'Jomo'
+];
+
+test('comparison page contains every named competitor and category', () => {
+  assert.ok(existsSync(join(root, 'compare/index.html')), 'comparison page is missing');
+  const html = read('compare/index.html');
+  for (const name of competitors) assert.ok(html.includes(name), `missing ${name}`);
+  for (const id of ['traditional-trackers', 'guided-action', 'gamified', 'attention-interrupters']) {
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+});
+
+test('comparison page is a dated, canonical, structured article', () => {
+  assert.ok(existsSync(join(root, 'compare/index.html')), 'comparison page is missing');
+  const html = read('compare/index.html');
+  assert.match(html, /<link rel="canonical" href="https:\/\/habitbuilding\.xyz\/compare\/">/);
+  assert.match(html, /Last reviewed July 2026/);
+  assert.match(html, /"@type"\s*:\s*"Article"/);
+  assert.match(html, /"@type"\s*:\s*"ItemList"/);
+  assert.match(html, /"@type"\s*:\s*"SoftwareApplication"/);
+});
+
+test('comparison page names the closest seven and the full Ascent loop', () => {
+  assert.ok(existsSync(join(root, 'compare/index.html')), 'comparison page is missing');
+  const html = read('compare/index.html');
+  for (const name of ['Fabulous', 'Tiimo', 'Routinery', 'Finch', 'Streaks', 'one sec', 'Opal']) {
+    assert.ok(html.includes(name), `missing close benchmark ${name}`);
+  }
+  for (const step of ['Choose a meaningful goal', 'Generate daily actions', 'Shrink the action', 'Keep it visible', 'Interrupt competing behavior', 'Reflect and adapt']) {
+    assert.ok(html.includes(step), `missing chain step ${step}`);
+  }
+});
+
+test('homepage links to an honest comparison preview', () => {
+  const html = read('index.html');
+  assert.match(html, /href="compare\/"/);
+  assert.match(html, /six apps wearing the same trench coat/i);
+});
