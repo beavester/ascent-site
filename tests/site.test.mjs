@@ -126,3 +126,18 @@ test('science page avoids overconfident medical language', () => {
   assert.doesNotMatch(html, /60[- ]day/i);
   assert.match(html, /70 days/i);
 });
+
+test('key pages contain no missing local href targets', () => {
+  for (const page of ['index.html', 'compare/index.html', 'science/index.html', 'blog/index.html']) {
+    const html = read(page);
+    const base = dirname(join(root, page));
+    const hrefs = [...html.matchAll(/href="([^"]+)"/g)].map((match) => match[1]);
+    for (const href of hrefs) {
+      if (/^(https?:|mailto:|#)/.test(href)) continue;
+      const clean = href.split('#')[0].split('?')[0];
+      const target = join(base, clean || '.');
+      const resolved = existsSync(target) && statSync(target).isDirectory() ? join(target, 'index.html') : target;
+      assert.ok(existsSync(resolved), `${page} has missing href ${href}`);
+    }
+  }
+});
