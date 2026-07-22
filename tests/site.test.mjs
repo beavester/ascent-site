@@ -919,7 +919,12 @@ test('sitemap discovers all comparison pages exactly once with current lastmod',
     assert.equal(matches.length, 1, 'sitemap mismatch for ' + url);
     assert.equal(matches[0].lastmod, '2026-07-22', 'stale lastmod for ' + url);
   }
-  for (const url of ['https://habitbuilding.xyz/', 'https://habitbuilding.xyz/compare/']) {
+  for (const url of [
+    'https://habitbuilding.xyz/',
+    'https://habitbuilding.xyz/compare/',
+    'https://habitbuilding.xyz/science/',
+    ...guideRoutes.map(([, canonical]) => canonical)
+  ]) {
     const matches = entries.filter((entry) => entry.loc === url);
     assert.equal(matches.length, 1, 'sitemap mismatch for ' + url);
     assert.equal(matches[0].lastmod, '2026-07-22', 'stale lastmod for ' + url);
