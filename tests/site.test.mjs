@@ -527,6 +527,11 @@ test('head-to-head page helper enforces heading structure and canonical App Stor
   assert.ok(suite.includes("page + ' has no Ascent install link'"));
 });
 
+test('homepage footer links wrap on narrow screens', () => {
+  const html = read('index.html');
+  assert.match(html, /\.foot-links\s*\{[^}]*flex-wrap:\s*wrap/s);
+});
+
 test('editorial stylesheet is accessible, responsive, and visually restrained', () => {
   const css = read('editorial.css');
   assert.match(css, /a:focus-visible/);
