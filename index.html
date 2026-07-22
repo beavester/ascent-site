@@ -56,10 +56,10 @@
   --ink:#1C1A16;
   --ink-soft:#5C574D;
   --ink-faint:#6F695F;
-  --pine:#3D7FC1;
+  --pine:#2A66A6;
   --pine-deep:#1F4E7E;
   --pine-tint:#E2EEF9;
-  --ember:#C75B2B;
+  --ember:#A94C26;
   --line:#E5DFD3;
   --card:#FFFFFF;
   --shadow-sm:0 1px 2px rgba(28,26,22,.05),0 2px 8px rgba(28,26,22,.04);
@@ -100,10 +100,10 @@ header{
 }
 header.scrolled{border-bottom-color:var(--line)}
 nav{display:flex;align-items:center;justify-content:space-between;height:68px}
-.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:600;font-size:1.25rem;text-decoration:none;letter-spacing:-.01em}
+.brand{display:flex;min-height:44px;align-items:center;gap:10px;font-family:var(--display);font-weight:600;font-size:1.25rem;text-decoration:none;letter-spacing:-.01em}
 .brand img{width:30px;height:30px;border-radius:8px}
 .nav-links{display:flex;align-items:center;gap:30px;font-size:.95rem;font-weight:500}
-.nav-links a{text-decoration:none;color:var(--ink-soft);transition:color .2s}
+.nav-links a{display:inline-flex;min-height:44px;align-items:center;text-decoration:none;color:var(--ink-soft);transition:color .2s}
 .nav-links a:hover{color:var(--ink)}
 .btn{
   display:inline-flex;align-items:center;gap:8px;
@@ -149,7 +149,7 @@ h1.display em{font-style:italic;color:var(--pine)}
 .hero-ctas .btn{padding:15px 28px;font-size:1rem}
 .fineprint{font-size:.88rem;color:var(--ink-faint)}
 .hero-trust{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:18px;color:var(--ink-faint);font-size:.82rem}
-.hero-trust a{text-underline-offset:3px}
+.hero-trust a{display:inline-flex;min-height:44px;align-items:center;text-underline-offset:3px}
 
 /* phone collage */
 .hero-visual{position:relative;min-height:540px}
@@ -327,7 +327,7 @@ h2 em{font-style:italic;color:var(--pine)}
 footer{border-top:1px solid var(--line);padding:36px 0;font-size:.92rem;color:var(--ink-faint)}
 .foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
 .foot-links{display:flex;gap:24px}
-.foot-links a{text-decoration:none;color:var(--ink-soft)}
+.foot-links a{display:inline-flex;min-height:44px;align-items:center;text-decoration:none;color:var(--ink-soft)}
 .foot-links a:hover{color:var(--ink)}
 
 /* ---------- reveal animation ---------- */

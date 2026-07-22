@@ -394,6 +394,46 @@ test('homepage and comparison hub use opaque surfaces without hover lift', () =>
   }
 });
 
+test('homepage and hub interactive text has selector-specific 44px targets', () => {
+  const contracts = [
+    ['index.html', ['.brand', '.nav-links a', '.hero-trust a', '.foot-links a']],
+    ['compare/index.html', ['.brand', '.nav-links a', '.app-entry h3 a', '.benchmark a', '.faq-list summary', '.foot-links a']]
+  ];
+  for (const [page, selectors] of contracts) {
+    const source = read(page);
+    for (const selector of selectors) {
+      assert.match(
+        source,
+        new RegExp(selector.replaceAll('.', '\\.').replaceAll(' ', '\\s+') + '[^,{]*\\{[^}]*min-height:\\s*44px'),
+        page + ' ' + selector + ' needs a 44px target'
+      );
+    }
+  }
+});
+
+test('small accent text meets WCAG AA contrast on paper', () => {
+  const contracts = [
+    ['index.html', '--pine', ['.kicker']],
+    ['index.html', '--ember', ['.loop-time']],
+    ['compare/index.html', '--pine', ['.kicker', '.system-chain li::before']]
+  ];
+  for (const [page, token, selectors] of contracts) {
+    const source = read(page);
+    const color = source.match(new RegExp(token + ':\\s*(#[0-9A-F]{6})', 'i'))?.[1];
+    const paper = source.match(/--paper:\s*(#[0-9A-F]{6})/i)?.[1];
+    assert.ok(contrastRatio(color, paper) >= 4.5, page + ' ' + token + ' contrast is below 4.5:1');
+    for (const selector of selectors) {
+      assert.match(source, new RegExp(selector.replaceAll('.', '\\.').replaceAll(' ', '\\s+') + '[^{]*\\{[^}]*color:\\s*var\\(' + token + '\\)'), selector + ' must use ' + token);
+    }
+  }
+});
+
+test('head-to-head FAQ summaries retain a visible disclosure marker', () => {
+  const css = read('compare/head-to-head.css');
+  assert.match(css, /\.faq-list summary::after\{[^}]*content:\s*"\+"/);
+  assert.match(css, /\.faq-list details\[open\] summary::after\{[^}]*content:\s*"[−-]"/);
+});
+
 test('head-to-head page helper enforces heading structure and canonical App Store links', () => {
   const suite = read('tests/site.test.mjs');
   assert.ok(suite.includes('const h1s = [...html.matchAll(/<h1\\b[^>]*>[\\s\\S]*?<\\/h1>/gi)];'));

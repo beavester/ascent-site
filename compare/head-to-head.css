@@ -45,7 +45,10 @@ h2{font-size:clamp(2rem,4vw,3rem);line-height:1.08;letter-spacing:-.025em}
 .limitation p{margin-top:8px;color:var(--ink-soft)}
 .faq-list,.source-list,.related-list{max-width:850px;margin-top:32px;border-top:1px solid var(--line)}
 .faq-list details{padding:20px 0;border-bottom:1px solid var(--line)}
-.faq-list summary{display:flex;min-height:44px;align-items:center;cursor:pointer;font-family:var(--display);font-size:1.14rem;font-weight:600}
+.faq-list summary{display:flex;min-height:44px;align-items:center;justify-content:space-between;gap:20px;cursor:pointer;list-style:none;font-family:var(--display);font-size:1.14rem;font-weight:600}
+.faq-list summary::-webkit-details-marker{display:none}
+.faq-list summary::after{content:"+";flex:0 0 auto;color:var(--pine-deep);font-family:var(--body);font-weight:600}
+.faq-list details[open] summary::after{content:"−"}
 .faq-list p{max-width:740px;padding-top:12px;color:var(--ink-soft)}
 .source-list,.related-list{list-style:none}
 .source-list li,.related-list li{padding:14px 0;border-bottom:1px solid var(--line)}
