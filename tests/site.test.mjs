@@ -201,6 +201,25 @@ test('sitemap contains each live page once', () => {
   assert.ok(!urls.includes('https://habitbuilding.xyz/blog/scrolling-is-the-new-smoking/'));
 });
 
+test('every sitemap HTML document declares its own canonical URL', () => {
+  const xml = read('sitemap.xml');
+  const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+
+  for (const canonical of urls) {
+    const { pathname } = new URL(canonical);
+    const page = pathname === '/'
+      ? 'index.html'
+      : pathname.endsWith('/')
+        ? pathname.slice(1) + 'index.html'
+        : pathname.slice(1);
+    const html = read(page);
+    assert.ok(
+      html.includes('<link rel="canonical" href="' + canonical + '">'),
+      page + ' needs a self-canonical URL',
+    );
+  }
+});
+
 test('blog post is present in static markup', () => {
   const html = read('blog/index.html');
   assert.match(html, /<div class="post-list"[\s\S]*href="youre-not-unmotivated\/"/);
