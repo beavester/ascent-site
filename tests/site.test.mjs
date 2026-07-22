@@ -740,10 +740,10 @@ test('iPhone habit system guide satisfies the evidence contract', () => {
     title: 'How to Build a Habit on iPhone Using Widgets and Screen Time',
     h1: 'Build an iPhone habit system around cues, not more notifications',
     sources: [
-      'https://support.apple.com/en-in/guide/iphone/iphb8f1bf206/ios',
+      'https://support.apple.com/en-in/guide/iphone/-iphb8f1bf206/ios',
       'https://support.apple.com/en-gb/guide/iphone/iph5c3f5b77b/ios',
       'https://support.apple.com/en-sg/guide/iphone/iphb0c7313c9/ios',
-      'https://support.apple.com/en-ie/guide/shortcuts/apd690170742/ios',
+      'https://support.apple.com/en-ie/guide/shortcuts/-apd690170742/ios',
       'https://pmc.ncbi.nlm.nih.gov/articles/PMC9226889/'
     ]
   });
