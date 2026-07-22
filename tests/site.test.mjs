@@ -206,3 +206,68 @@ test('key pages contain no missing local href targets', () => {
     }
   }
 });
+
+function parseJsonLd(html, page) {
+  const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+  assert.ok(blocks.length > 0, page + ' has no JSON-LD');
+  return blocks.flatMap((match) => {
+    const value = JSON.parse(match[1]);
+    return Array.isArray(value) ? value : [value];
+  });
+}
+
+function assertHeadToHeadPage(spec) {
+  const page = 'compare/' + spec.slug + '/index.html';
+  assert.ok(existsSync(join(root, page)), page + ' is missing');
+  const html = read(page);
+
+  assert.ok(html.includes('<title>' + spec.title + '</title>'));
+  assert.match(html, new RegExp('<link rel="canonical" href="https:\\/\\/habitbuilding\\.xyz\\/compare\\/' + spec.slug + '\\/">'));
+  assert.ok(html.includes('<h1>' + spec.h1 + '</h1>'));
+  assert.match(html, new RegExp(spec.competitor, 'i'));
+  assert.match(html, /<h2[^>]*>Short answer<\/h2>/);
+  const shortAnswer = html.match(/<section class="short-answer"[\s\S]*?<p>([^<]+)<\/p>/)?.[1] ?? '';
+  const shortAnswerWords = shortAnswer.trim().split(/\s+/).filter(Boolean).length;
+  assert.ok(shortAnswerWords >= 120 && shortAnswerWords <= 180, page + ' short answer must be 120–180 words');
+  assert.equal((html.match(/data-dimension="/g) || []).length, 5, page + ' needs five dimensions');
+  assert.match(html, new RegExp('Choose ' + spec.competitor + ' if'));
+  assert.match(html, /Choose Ascent if/);
+  assert.match(html, /When Ascent is not the better choice/);
+  assert.ok(html.includes('href="' + spec.source + '"'));
+  assert.ok(html.includes(canonicalAppStoreUrl));
+  assert.match(html, /href="\.\.\/"/);
+  assert.match(html, /href="\.\.\/\.\.\/"/);
+  assert.match(html, /Updated July 22, 2026/);
+
+  const entities = parseJsonLd(html, page);
+  const article = entities.find((item) => item['@type'] === 'Article');
+  assert.ok(article);
+  assert.equal(article.dateModified, '2026-07-22');
+  assert.equal(article.mainEntityOfPage, 'https://habitbuilding.xyz/compare/' + spec.slug + '/');
+  const faq = entities.find((item) => item['@type'] === 'FAQPage');
+  assert.ok(faq);
+  assert.equal(faq.mainEntity.length, 3);
+  for (const item of faq.mainEntity) {
+    assert.ok(html.includes(item.name), page + ' is missing visible FAQ question');
+    assert.ok(html.includes(item.acceptedAnswer.text), page + ' is missing visible FAQ answer');
+  }
+  const ascent = entities.find((item) => item['@id'] === 'https://habitbuilding.xyz/#ascent-app');
+  assert.ok(ascent, page + ' is missing the shared Ascent entity');
+  assert.equal(ascent.downloadUrl, canonicalAppStoreUrl);
+  assert.deepEqual(ascent.sameAs, [canonicalAppStoreUrl]);
+  assert.equal(ascent.identifier.value, '6756843194');
+  assert.ok(entities.some((item) => item['@type'] === 'SoftwareApplication' && item.name === spec.competitor));
+  assert.ok(!entities.some((item) => ['Review', 'AggregateRating'].includes(item['@type'])));
+
+  for (const question of spec.questions) {
+    assert.ok(html.split(question).length >= 3, page + ' must mirror FAQ question: ' + question);
+  }
+}
+
+test('head-to-head stylesheet is responsive and accessible', () => {
+  const css = read('compare/head-to-head.css');
+  assert.match(css, /a:focus-visible/);
+  assert.match(css, /min-height:\s*44px/);
+  assert.match(css, /@media\s*\(max-width:\s*700px\)/);
+  assert.doesNotMatch(css, /translateY|text-shadow|box-shadow:\s*0\s+0/);
+});
