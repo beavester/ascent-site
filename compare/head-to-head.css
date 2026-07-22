@@ -6,7 +6,7 @@ a{color:inherit}
 a:focus-visible{outline:3px solid var(--ember);outline-offset:4px;border-radius:2px}
 .wrap{width:min(1120px,calc(100% - 56px));margin:0 auto}
 .reading{max-width:800px}
-header{position:sticky;top:0;z-index:20;background:#FAF7F2F2;border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+header{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--line)}
 .top-nav{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
 .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:1.25rem;font-weight:600;text-decoration:none}
 .brand img{width:30px;height:30px;border-radius:8px}

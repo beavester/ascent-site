@@ -224,6 +224,14 @@ function assertHeadToHeadPage(spec) {
   assert.ok(html.includes('<title>' + spec.title + '</title>'));
   assert.match(html, new RegExp('<link rel="canonical" href="https:\\/\\/habitbuilding\\.xyz\\/compare\\/' + spec.slug + '\\/">'));
   assert.ok(html.includes('<h1>' + spec.h1 + '</h1>'));
+  const h1s = [...html.matchAll(/<h1\b[^>]*>[\s\S]*?<\/h1>/gi)];
+  assert.equal(h1s.length, 1, page + ' must have exactly one H1');
+  const headings = [...html.matchAll(/<h([1-6])\b[^>]*>/gi)].map((match) => Number(match[1]));
+  for (let index = 1; index < headings.length; index++) {
+    const previousLevel = headings[index - 1];
+    const level = headings[index];
+    assert.ok(level <= previousLevel || level === previousLevel + 1, page + ' skips heading hierarchy');
+  }
   assert.match(html, new RegExp(spec.competitor, 'i'));
   assert.match(html, /<h2[^>]*>Short answer<\/h2>/);
   const shortAnswer = html.match(/<section class="short-answer"[\s\S]*?<p>([^<]+)<\/p>/)?.[1] ?? '';
@@ -234,7 +242,12 @@ function assertHeadToHeadPage(spec) {
   assert.match(html, /Choose Ascent if/);
   assert.match(html, /When Ascent is not the better choice/);
   assert.ok(html.includes('href="' + spec.source + '"'));
-  assert.ok(html.includes(canonicalAppStoreUrl));
+  const appStoreUrls = [...html.matchAll(/href="([^"]*id6756843194[^"]*)"/g)]
+    .map((match) => match[1].replaceAll('&amp;', '&'));
+  assert.ok(appStoreUrls.length > 0, page + ' has no Ascent install link');
+  for (const url of appStoreUrls) {
+    assert.ok(url.startsWith(canonicalAppStoreUrl), page + ' uses a non-canonical Ascent URL: ' + url);
+  }
   assert.match(html, /href="\.\.\/"/);
   assert.match(html, /href="\.\.\/\.\.\/"/);
   assert.match(html, /Updated July 22, 2026/);
@@ -270,4 +283,17 @@ test('head-to-head stylesheet is responsive and accessible', () => {
   assert.match(css, /min-height:\s*44px/);
   assert.match(css, /@media\s*\(max-width:\s*700px\)/);
   assert.doesNotMatch(css, /translateY|text-shadow|box-shadow:\s*0\s+0/);
+  assert.match(css, /header\{[^}]*background:var\(--paper\)/);
+  assert.doesNotMatch(css, /backdrop-filter/);
+});
+
+test('head-to-head page helper enforces heading structure and canonical App Store links', () => {
+  const suite = read('tests/site.test.mjs');
+  assert.ok(suite.includes('const h1s = [...html.matchAll(/<h1\\b[^>]*>[\\s\\S]*?<\\/h1>/gi)];'));
+  assert.ok(suite.includes("assert.equal(h1s.length, 1, page + ' must have exactly one H1');"));
+  assert.ok(suite.includes('const headings = [...html.matchAll(/<h([1-6])\\b[^>]*>/gi)].map'));
+  assert.ok(suite.includes('level <= previousLevel || level === previousLevel + 1'));
+  assert.ok(suite.includes('const appStoreUrls = [...html.matchAll(/href="([^\"]*id6756843194[^\"]*)"/g)]'));
+  assert.ok(suite.includes("replaceAll('&amp;', '&')"));
+  assert.ok(suite.includes("page + ' has no Ascent install link'"));
 });
