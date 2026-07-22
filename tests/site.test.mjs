@@ -305,7 +305,18 @@ test('science page avoids overconfident medical language', () => {
     'This is molecular proof',
     'That flatness is the treatment working',
     'Most people report noticeable sensitivity improvement within 2-4 weeks',
-    'Getting your receptors back'
+    'Getting your receptors back',
+    'why willpower always loses',
+    'The first two weeks are supposed to hurt',
+    'Two minutes is enough',
+    'the molecular biology backs it up',
+    'a 2-minute practice session plus good sleep is neurologically superior',
+    'Environment design beats discipline. Every time',
+    "Your dorsolateral striatum doesn't care if you did 2 minutes or 20",
+    'The habenula stays quiet',
+    'dopamine crash',
+    'specific neurological structure with a specific address',
+    'around week two to three, the transfer begins'
   ]) {
     assert.ok(!html.includes(phrase), `overstatement remains: ${phrase}`);
   }
@@ -313,6 +324,11 @@ test('science page avoids overconfident medical language', () => {
   assert.match(html, /not, by itself, proof/i);
   assert.doesNotMatch(html, /60[- ]day/i);
   assert.match(html, /70 days/i);
+  assert.match(html, /Habit formation timelines vary/i);
+  assert.match(html, /Two minutes is a product design choice, not a scientifically established threshold/i);
+  assert.match(html, /70 days is Ascent's program structure/i);
+  assert.match(html, /https:\/\/pmc\.ncbi\.nlm\.nih\.gov\/articles\/PMC11641623\//);
+  assert.match(html, /https:\/\/pmc\.ncbi\.nlm\.nih\.gov\/articles\/PMC9226889\//);
 });
 
 test('key pages contain no missing local href targets', () => {
@@ -384,6 +400,12 @@ function assertGuidePage(spec) {
   assert.ok(html.includes('<link rel="canonical" href="' + spec.canonical + '">'));
   assert.ok(html.includes('<h1>' + spec.h1 + '</h1>'));
   assert.equal((html.match(/<h1\b/gi) || []).length, 1, spec.page + ' needs one H1');
+  const description = html.match(/<meta name="description" content="([^"]+)">/)?.[1] ?? '';
+  assert.ok(description.length >= 100 && description.length <= 170, spec.page + ' needs a 100-170 character description');
+  const headings = [...html.matchAll(/<h([1-6])\b[^>]*>/gi)].map((match) => Number(match[1]));
+  for (let index = 1; index < headings.length; index++) {
+    assert.ok(headings[index] <= headings[index - 1] || headings[index] === headings[index - 1] + 1, spec.page + ' skips heading hierarchy');
+  }
   assert.match(html, /Updated July 22, 2026/);
   assert.match(html, /<section class="answer-block"/);
   assert.match(html, /How we researched this/);
