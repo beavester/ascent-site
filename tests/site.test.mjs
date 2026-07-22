@@ -16,8 +16,13 @@ const headToHeadSlugs = [
   'ascent-vs-one-sec',
   'ascent-vs-opal'
 ];
+const authorityRoutes = [
+  ['ascent/index.html', 'https://habitbuilding.xyz/ascent/'],
+  ['methodology/index.html', 'https://habitbuilding.xyz/methodology/']
+];
 const expectedPublicUrls = [
   'https://habitbuilding.xyz/',
+  ...authorityRoutes.map(([, canonical]) => canonical),
   'https://habitbuilding.xyz/compare/',
   ...headToHeadSlugs.map((slug) => 'https://habitbuilding.xyz/compare/' + slug + '/'),
   'https://habitbuilding.xyz/science/',
@@ -80,6 +85,7 @@ test('homepage declares the exact official Ascent app identity', () => {
 test('every Ascent install link uses Apple\'s canonical product URL', () => {
   const pages = [
     'index.html',
+    'ascent/index.html',
     'compare/index.html',
     'science/index.html',
     'blog/index.html',
@@ -195,6 +201,80 @@ test('ChatGPT referral analytics records source and path only', () => {
   assert.doesNotMatch(js, /search_term|prompt_text|query_text/);
 });
 
+test('authority foundation pages are canonical static documents', () => {
+  for (const [page, canonical] of authorityRoutes) {
+    assert.ok(existsSync(join(root, page)), page + ' is missing');
+    const html = read(page);
+    assert.match(html, /<meta name="description" content="[^"]{100,170}">/);
+    assert.ok(html.includes('<link rel="canonical" href="' + canonical + '">'));
+    assert.equal((html.match(/<h1\b/gi) || []).length, 1, page + ' needs one H1');
+    assert.match(html, /Updated July 22, 2026|Effective July 22, 2026/);
+    parseJsonLd(html, page);
+  }
+});
+
+test('methodology discloses ownership and document-based research', () => {
+  const html = read('methodology/index.html');
+  assert.match(html, /published by the maker of Ascent/i);
+  assert.match(html, /public product documentation and App Store listings/i);
+  assert.match(html, /not hands-on product tests/i);
+  assert.match(html, /documented fact/i);
+  assert.match(html, /editorial judgment/i);
+  assert.match(html, /correction/i);
+});
+
+test('canonical Ascent page owns the exact product identity', () => {
+  const html = read('ascent/index.html');
+  assert.match(html, /<title>Ascent: Habit Builder &amp; Focus \| Official Guide<\/title>/);
+  assert.match(html, /<h1>Ascent: Habit Builder &amp; Focus<\/h1>/);
+  assert.match(html, /who should choose something else/i);
+  assert.match(html, /Screen Time access is optional/i);
+  const entities = parseJsonLd(html, 'ascent/index.html');
+  const app = entities.find((item) => item['@id'] === 'https://habitbuilding.xyz/#ascent-app');
+  assert.ok(app);
+  assert.equal(app.name, 'Ascent: Habit Builder & Focus');
+  assert.equal(app.downloadUrl, canonicalAppStoreUrl);
+  assert.equal(app.identifier.value, '6756843194');
+});
+
+test('homepage routes readers to authority destinations and discloses ownership', () => {
+  const html = read('index.html');
+  for (const href of ['ascent/', 'compare/', 'methodology/']) {
+    assert.ok(html.includes('href="' + href + '"'), 'homepage is missing ' + href);
+  }
+  assert.match(html, /HabitBuilding\.xyz is published by the maker of Ascent/i);
+});
+
+test('answer-engine referral analytics classifies known sources without query collection', () => {
+  const js = read('analytics.js');
+  assert.match(js, /answer_engine_referral/);
+  for (const source of ['chatgpt', 'perplexity', 'claude', 'copilot', 'gemini']) {
+    assert.match(js, new RegExp(source));
+  }
+  assert.match(js, /landing_path/);
+  assert.match(js, /traffic_source/);
+  assert.doesNotMatch(js, /search_term|prompt_text|query_text|URLSearchParams.*[?&]q=/s);
+});
+
+test('search and retrieval crawlers are explicitly allowed', () => {
+  const robots = read('robots.txt');
+  for (const bot of ['OAI-SearchBot', 'PerplexityBot', 'Claude-SearchBot']) {
+    assert.match(robots, new RegExp('User-agent: ' + bot + '\\s+Allow: /'));
+  }
+  assert.match(robots, /Sitemap: https:\/\/habitbuilding\.xyz\/sitemap\.xml/);
+});
+
+test('IndexNow support contains a valid root key and safe submission utility', () => {
+  const config = JSON.parse(read('indexnow.json'));
+  assert.match(config.key, /^[A-Za-z0-9-]{8,128}$/);
+  assert.equal(config.keyLocation, 'https://habitbuilding.xyz/' + config.key + '.txt');
+  assert.equal(read(config.key + '.txt').trim(), config.key);
+  const script = read('scripts/submit-indexnow.mjs');
+  assert.match(script, /api\.indexnow\.org\/indexnow/);
+  assert.match(script, /https:\/\/habitbuilding\.xyz\//);
+  assert.match(script, /process\.argv\.slice\(2\)/);
+});
+
 test('secondary navigation points to the live homepage workflow section', () => {
   for (const page of ['science/index.html', 'blog/index.html']) {
     const html = read(page);
@@ -227,6 +307,8 @@ test('key pages contain no missing local href targets', () => {
     'compare/ascent-vs-fabulous/index.html',
     'compare/ascent-vs-tiimo/index.html',
     'compare/ascent-vs-routinery/index.html',
+    'ascent/index.html',
+    'methodology/index.html',
     'science/index.html',
     'blog/index.html'
   ]) {
@@ -445,6 +527,16 @@ test('head-to-head page helper enforces heading structure and canonical App Stor
   assert.ok(suite.includes("page + ' has no Ascent install link'"));
 });
 
+test('editorial stylesheet is accessible, responsive, and visually restrained', () => {
+  const css = read('editorial.css');
+  assert.match(css, /a:focus-visible/);
+  assert.match(css, /min-height:\s*44px/);
+  assert.match(css, /@media\s*\(max-width:\s*760px\)/);
+  assert.match(css, /header[^{}]*\{[^}]*background:\s*var\(--paper\)/s);
+  assert.doesNotMatch(css, /backdrop-filter|translateY|background-clip:\s*text|text-shadow/i);
+  assert.doesNotMatch(css, /rgba\(255\s*,\s*255\s*,\s*255/i);
+});
+
 test('Fabulous comparison satisfies the editorial contract', () => {
   assertHeadToHeadPage({
     slug: 'ascent-vs-fabulous',
@@ -559,7 +651,7 @@ test('sitemap discovers all comparison pages exactly once with current lastmod',
   const entries = parseSitemapEntries(read('sitemap.xml'));
   const urls = entries.map((entry) => entry.loc);
   assert.equal(entries.length, expectedPublicUrls.length);
-  assert.equal(urls.length, 14);
+  assert.equal(urls.length, expectedPublicUrls.length);
   assert.equal(new Set(urls).size, urls.length);
   assert.deepEqual(new Set(urls), new Set(expectedPublicUrls));
   for (const slug of headToHeadSlugs) {
@@ -585,6 +677,8 @@ test('comparison hub links all seven direct comparisons', () => {
 test('all public HTML uses current Ascent duration and App Store identity', () => {
   const pages = [
     'index.html',
+    'ascent/index.html',
+    'methodology/index.html',
     'compare/index.html',
     ...headToHeadSlugs.map((slug) => 'compare/' + slug + '/index.html'),
     'science/index.html',
