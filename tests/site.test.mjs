@@ -252,6 +252,17 @@ function parseJsonLd(html, page) {
   });
 }
 
+function contrastRatio(foreground, background) {
+  const luminance = (hex) => {
+    const channels = hex.match(/[0-9a-f]{2}/gi).map((value) => parseInt(value, 16) / 255);
+    const linear = channels.map((value) => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
+    return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+  };
+  const first = luminance(foreground);
+  const second = luminance(background);
+  return (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05);
+}
+
 function assertHeadToHeadPage(spec) {
   const page = 'compare/' + spec.slug + '/index.html';
   assert.ok(existsSync(join(root, page)), page + ' is missing');
@@ -336,7 +347,15 @@ function assertHeadToHeadPage(spec) {
   const competitor = entities.find((item) => item['@type'] === 'SoftwareApplication' && item.name === spec.competitor);
   assert.ok(competitor, page + ' is missing the competitor SoftwareApplication entity');
   assert.equal(competitor.url, spec.entityUrl ?? spec.source);
+  assert.equal(competitor['@id'], (spec.entityUrl ?? spec.source) + '#software-application');
+  assert.deepEqual(article.about, [
+    {'@id': 'https://habitbuilding.xyz/#ascent-app'},
+    {'@id': competitor['@id']}
+  ], page + ' Article.about must connect both application entities');
   assert.ok(!entities.some((item) => ['Review', 'AggregateRating'].includes(item['@type'])));
+
+  assert.match(html, /<nav class="breadcrumbs wrap" aria-label="Breadcrumb">/);
+  assert.doesNotMatch(html, /<div class="breadcrumbs wrap" aria-label="Breadcrumb">/);
 
   for (const question of spec.questions) {
     assert.ok(html.split(question).length >= 3, page + ' must mirror FAQ question: ' + question);
@@ -346,11 +365,33 @@ function assertHeadToHeadPage(spec) {
 test('head-to-head stylesheet is responsive and accessible', () => {
   const css = read('compare/head-to-head.css');
   assert.match(css, /a:focus-visible/);
-  assert.match(css, /min-height:\s*44px/);
+  for (const selector of ['.brand', '.nav-links a', '.breadcrumbs a', '.faq-list summary', '.source-list a', '.related-list a', '.foot-links a']) {
+    assert.match(css, new RegExp(selector.replace('.', '\\.') + '[^,{]*\\{[^}]*min-height:\\s*44px'), selector + ' needs a 44px target');
+  }
   assert.match(css, /@media\s*\(max-width:\s*700px\)/);
   assert.doesNotMatch(css, /translateY|text-shadow|box-shadow:\s*0\s+0/);
   assert.match(css, /header\{[^}]*background:var\(--paper\)/);
   assert.doesNotMatch(css, /backdrop-filter/);
+});
+
+test('small muted text tokens meet WCAG AA contrast on paper surfaces', () => {
+  for (const page of ['index.html', 'compare/index.html', 'compare/head-to-head.css']) {
+    const source = read(page);
+    const faint = source.match(/--ink-faint:\s*(#[0-9A-F]{6})/i)?.[1];
+    const paper = source.match(/--paper:\s*(#[0-9A-F]{6})/i)?.[1];
+    assert.ok(faint && paper, page + ' must define ink-faint and paper');
+    assert.ok(contrastRatio(faint, paper) >= 4.5, page + ' ink-faint contrast is below 4.5:1');
+  }
+});
+
+test('homepage and comparison hub use opaque surfaces without hover lift', () => {
+  for (const page of ['index.html', 'compare/index.html']) {
+    const html = read(page);
+    assert.doesNotMatch(html, /backdrop-filter/i, page + ' uses a backdrop surface');
+    assert.doesNotMatch(html, /background:\s*rgba\(255\s*,\s*255\s*,\s*255/i, page + ' uses a transparent white surface');
+    assert.doesNotMatch(html, /:hover[^{}]*\{[^}]*translateY\(/i, page + ' uses hover lift');
+    assert.doesNotMatch(html, /header\{[^}]*background:\s*rgba\(/i, page + ' uses a translucent header');
+  }
 });
 
 test('head-to-head page helper enforces heading structure and canonical App Store links', () => {
