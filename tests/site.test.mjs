@@ -91,21 +91,12 @@ test('comparison page is a dated, canonical, structured article', () => {
   assert.match(html, /<link rel="canonical" href="https:\/\/habitbuilding\.xyz\/compare\/">/);
   assert.match(html, /Last reviewed July 22, 2026/);
   assert.match(html, /"@type"\s*:\s*"Article"/);
+  assert.match(html, /"headline"\s*:\s*"18 iPhone habit apps compared honestly"/);
   assert.match(html, /"@type"\s*:\s*"ItemList"/);
   assert.match(html, /"@type"\s*:\s*"SoftwareApplication"/);
   assert.match(html, /"@id"\s*:\s*"https:\/\/habitbuilding\.xyz\/#ascent-app"/);
   assert.ok(html.includes(`"downloadUrl": "${canonicalAppStoreUrl}"`));
 });
-
-const headToHeadSlugs = [
-  'ascent-vs-fabulous',
-  'ascent-vs-tiimo',
-  'ascent-vs-routinery',
-  'ascent-vs-finch',
-  'ascent-vs-streaks',
-  'ascent-vs-one-sec',
-  'ascent-vs-opal'
-];
 
 test('homepage owns the iPhone habit-builder and app-blocker intent', () => {
   const html = read('index.html');
@@ -121,6 +112,7 @@ test('comparison hub owns the best iPhone habit-app intent', () => {
   assert.match(html, /<h1>18 iPhone habit apps compared honestly<\/h1>/);
   assert.match(html, /id="short-answer"/);
   assert.match(html, /There is no universally best habit app/i);
+  assert.match(html, /\.contents a\{[^}]*min-height:44px/);
 });
 
 test('hub answers which habit tracker also blocks distracting apps', () => {
