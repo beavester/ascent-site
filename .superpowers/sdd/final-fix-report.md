@@ -37,3 +37,24 @@ Production/test commit: `527f817` (`fix: harden comparison accessibility schema`
 ## Concerns
 
 None. Editorial claims, canonical URLs, sitemap entries, App Store identity, pricing/duration language, and proposal publication status were left unchanged.
+
+## Second review cycle — RED evidence
+
+Command: `node --test tests/site.test.mjs`
+
+- 42 tests: 39 passed, 3 failed.
+- Homepage/hub selector contract failed first on homepage `.brand`, proving interactive text still lacked selector-specific 44px targets outside the head-to-head stylesheet.
+- Small-accent contrast contract failed on homepage `--pine`, proving the actual `.kicker` token remained below 4.5:1 on paper.
+- Head-to-head FAQ marker contract failed because flex summaries had no visible `::after` disclosure marker or open-state treatment.
+
+## Second review cycle — GREEN evidence
+
+Production/test commit: `429861d` (`fix: complete site accessibility targets`)
+
+- `node --test tests/site.test.mjs`: 42 passed, 0 failed.
+- `git diff --check`: clean (no output).
+- Production/test files changed: `index.html`, `compare/index.html`, `compare/head-to-head.css`, and `tests/site.test.mjs`.
+- Touch targets now cover the named homepage/hub brand, navigation, trust, app-entry, benchmark, FAQ, and footer selectors while retaining the existing mobile link-hiding rules.
+- Small text uses darker paper-safe accents (`#2A66A6` blue and `#A94C26` ember), both enforced at their actual selector usage.
+- Head-to-head FAQ summaries expose a visible plus marker and minus open state while retaining native `details`/`summary` semantics.
+- No editorial content, URLs, sitemap data, application identity, or deployment state changed.
