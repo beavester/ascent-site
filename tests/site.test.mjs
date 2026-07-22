@@ -251,8 +251,8 @@ function assertHeadToHeadPage(spec) {
   for (const dimension of dimensions) {
     assert.doesNotMatch(dimension, /<\/strong>[^\s<]/, page + ' dimension label needs whitespace before body text');
   }
-  assert.match(html, new RegExp('Choose ' + spec.competitor + ' if'));
-  assert.match(html, /Choose Ascent if/);
+  assert.match(html, new RegExp('<h3>Choose ' + spec.competitor + ' if…</h3>'));
+  assert.match(html, /<h3>Choose Ascent if…<\/h3>/);
   assert.match(html, /When Ascent is not the better choice/);
   assert.ok(html.includes('href="' + spec.source + '"'));
   const appStoreUrls = [...html.matchAll(/href="([^"]*id6756843194[^"]*)"/g)]
