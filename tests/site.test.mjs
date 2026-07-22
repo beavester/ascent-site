@@ -7,6 +7,15 @@ import { dirname, join } from 'node:path';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (path) => readFileSync(join(root, path), 'utf8');
 const canonicalAppStoreUrl = 'https://apps.apple.com/us/app/ascent-habit-builder-focus/id6756843194';
+const headToHeadSlugs = [
+  'ascent-vs-fabulous',
+  'ascent-vs-tiimo',
+  'ascent-vs-routinery',
+  'ascent-vs-finch',
+  'ascent-vs-streaks',
+  'ascent-vs-one-sec',
+  'ascent-vs-opal'
+];
 
 test('homepage uses one 70-day promise', () => {
   const html = read('index.html');
@@ -444,4 +453,71 @@ test('Opal comparison satisfies the editorial contract', () => {
       'Can Ascent and Opal be used together?'
     ]
   });
+});
+
+test('sitemap discovers all comparison pages exactly once with current lastmod', () => {
+  const xml = read('sitemap.xml');
+  const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+  assert.equal(new Set(urls).size, urls.length);
+  for (const slug of headToHeadSlugs) {
+    const url = 'https://habitbuilding.xyz/compare/' + slug + '/';
+    assert.equal(urls.filter((item) => item === url).length, 1, 'sitemap mismatch for ' + url);
+    assert.ok(xml.includes('<loc>' + url + '</loc>\n    <lastmod>2026-07-22</lastmod>'));
+  }
+  for (const url of ['https://habitbuilding.xyz/', 'https://habitbuilding.xyz/compare/']) {
+    assert.ok(xml.includes('<loc>' + url + '</loc>\n    <lastmod>2026-07-22</lastmod>'));
+  }
+});
+
+test('comparison hub links all seven direct comparisons', () => {
+  const html = read('compare/index.html');
+  for (const slug of headToHeadSlugs) {
+    assert.match(html, new RegExp('href="' + slug + '/"'), 'missing hub link for ' + slug);
+  }
+});
+
+test('all public HTML uses current Ascent duration and App Store identity', () => {
+  const pages = [
+    'index.html',
+    'compare/index.html',
+    ...headToHeadSlugs.map((slug) => 'compare/' + slug + '/index.html'),
+    'science/index.html',
+    'blog/index.html',
+    'blog/youre-not-unmotivated/index.html',
+    'privacy.html',
+    'terms.html'
+  ];
+  for (const page of pages) {
+    const html = read(page);
+    assert.doesNotMatch(html, /60[- ]day/i, page + ' contains stale duration');
+    assert.doesNotMatch(html, /apps\.apple\.com\/us\/app\/ascent-habit-builder\/id6756843194/i, page + ' contains stale App Store slug');
+    if (html.includes('application/ld+json')) parseJsonLd(html, page);
+  }
+});
+
+test('all comparison local links resolve in both directions', () => {
+  const pages = ['compare/index.html', ...headToHeadSlugs.map((slug) => 'compare/' + slug + '/index.html')];
+  for (const page of pages) {
+    const html = read(page);
+    const base = dirname(join(root, page));
+    for (const match of html.matchAll(/href="([^"]+)"/g)) {
+      const href = match[1];
+      if (/^(https?:|mailto:|#)/.test(href)) continue;
+      const clean = href.split('#')[0].split('?')[0];
+      const target = join(base, clean || '.');
+      const resolved = existsSync(target) && statSync(target).isDirectory() ? join(target, 'index.html') : target;
+      assert.ok(existsSync(resolved), page + ' has missing href ' + href);
+    }
+  }
+});
+
+test('App Store metadata proposal matches the website facts', () => {
+  const copy = read('docs/app-store-metadata-2026-07.md');
+  assert.match(copy, /Ascent: Habit Builder & Focus/);
+  assert.match(copy, /Block apps\. Build habits\./);
+  assert.match(copy, /70-day/i);
+  assert.match(copy, /two-minute/i);
+  assert.match(copy, /Screen Time.*optional/i);
+  assert.match(copy, /https:\/\/habitbuilding\.xyz\//);
+  assert.doesNotMatch(copy, /AI coach|60[- ]day|Â£|â‚¬/i);
 });
