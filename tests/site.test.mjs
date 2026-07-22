@@ -375,3 +375,35 @@ test('Routinery comparison satisfies the editorial contract', () => {
     ]
   });
 });
+
+test('Finch comparison satisfies the editorial contract', () => {
+  assertHeadToHeadPage({
+    slug: 'ascent-vs-finch',
+    competitor: 'Finch',
+    title: 'Ascent vs Finch (2026): Habit Goal or Self-Care Pet?',
+    h1: 'Ascent vs Finch: focused habit or self-care companion?',
+    source: 'https://help.finchcare.com/hc/en-us/articles/37935669335309-Our-Approach-to-Self-Care',
+    entityUrl: 'https://finchcare.com/',
+    questions: [
+      'Is Ascent or Finch better for self-care?',
+      'Does Finch block distracting apps?',
+      'Can Ascent and Finch be used together?'
+    ]
+  });
+});
+
+test('Streaks comparison satisfies the editorial contract', () => {
+  assertHeadToHeadPage({
+    slug: 'ascent-vs-streaks',
+    competitor: 'Streaks',
+    title: 'Ascent vs Streaks (2026): Habit Builder or Tracker?',
+    h1: 'Ascent vs Streaks: build the behavior or track it?',
+    source: 'https://streaksapp.com/',
+    entityUrl: 'https://streaksapp.com/',
+    questions: [
+      'Is Ascent or Streaks the better iPhone habit tracker?',
+      'Does Streaks block distracting apps?',
+      'Can Ascent and Streaks be used together?'
+    ]
+  });
+});
