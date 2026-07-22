@@ -230,6 +230,11 @@ function assertHeadToHeadPage(spec) {
   const html = read(page);
 
   assert.ok(html.includes('<title>' + spec.title + '</title>'));
+  if (spec.metaDescription) {
+    const description = html.match(/<meta name="description" content="([^"]+)">/)?.[1];
+    assert.equal(description, spec.metaDescription, page + ' has the wrong meta description');
+    assert.ok(description.length >= 150 && description.length <= 165, page + ' meta description must be 150–165 characters');
+  }
   assert.match(html, new RegExp('<link rel="canonical" href="https:\\/\\/habitbuilding\\.xyz\\/compare\\/' + spec.slug + '\\/">'));
   assert.ok(html.includes('<h1>' + spec.h1 + '</h1>'));
   const h1s = [...html.matchAll(/<h1\b[^>]*>[\s\S]*?<\/h1>/gi)];
@@ -404,6 +409,39 @@ test('Streaks comparison satisfies the editorial contract', () => {
       'Is Ascent or Streaks the better iPhone habit tracker?',
       'Does Streaks block distracting apps?',
       'Can Ascent and Streaks be used together?'
+    ]
+  });
+});
+
+test('one sec comparison satisfies the editorial contract', () => {
+  assertHeadToHeadPage({
+    slug: 'ascent-vs-one-sec',
+    competitor: 'one sec',
+    title: 'Ascent vs one sec (2026): Build Habits or Stop Scrolling?',
+    h1: 'Ascent vs one sec: build the replacement or interrupt the reflex?',
+    metaDescription: 'Compare Ascent and one sec for stopping doomscrolling: specialized app and browser interruptions, or a 70-day goal plan with daily actions and a fallback.',
+    source: 'https://one-sec.app/',
+    questions: [
+      'Is Ascent or one sec better for stopping doomscrolling?',
+      'Does one sec help build positive habits?',
+      'Can Ascent and one sec be used together?'
+    ]
+  });
+});
+
+test('Opal comparison satisfies the editorial contract', () => {
+  assertHeadToHeadPage({
+    slug: 'ascent-vs-opal',
+    competitor: 'Opal',
+    title: 'Ascent vs Opal (2026): Habit Builder or App Blocker?',
+    h1: 'Ascent vs Opal: build a habit or protect your focus?',
+    metaDescription: 'Compare Ascent and Opal: choose strict focus rules, app blocking and screen-time analytics, or a 70-day positive habit plan with a visible daily fallback.',
+    source: 'https://opalapp.com/screentime',
+    entityUrl: 'https://opalapp.com/',
+    questions: [
+      'Is Ascent or Opal the better app blocker?',
+      'Does Opal help build positive habits?',
+      'Can Ascent and Opal be used together?'
     ]
   });
 });
