@@ -89,12 +89,45 @@ test('comparison page is a dated, canonical, structured article', () => {
   assert.ok(existsSync(join(root, 'compare/index.html')), 'comparison page is missing');
   const html = read('compare/index.html');
   assert.match(html, /<link rel="canonical" href="https:\/\/habitbuilding\.xyz\/compare\/">/);
-  assert.match(html, /Last reviewed July 2026/);
+  assert.match(html, /Last reviewed July 22, 2026/);
   assert.match(html, /"@type"\s*:\s*"Article"/);
   assert.match(html, /"@type"\s*:\s*"ItemList"/);
   assert.match(html, /"@type"\s*:\s*"SoftwareApplication"/);
   assert.match(html, /"@id"\s*:\s*"https:\/\/habitbuilding\.xyz\/#ascent-app"/);
   assert.ok(html.includes(`"downloadUrl": "${canonicalAppStoreUrl}"`));
+});
+
+const headToHeadSlugs = [
+  'ascent-vs-fabulous',
+  'ascent-vs-tiimo',
+  'ascent-vs-routinery',
+  'ascent-vs-finch',
+  'ascent-vs-streaks',
+  'ascent-vs-one-sec',
+  'ascent-vs-opal'
+];
+
+test('homepage owns the iPhone habit-builder and app-blocker intent', () => {
+  const html = read('index.html');
+  assert.match(html, /<title>Ascent: iPhone Habit Builder &amp; App Blocker<\/title>/);
+  assert.match(html, /<h1 class="display">Build habits on iPhone\. Block the apps that get in the way\.<\/h1>/);
+  assert.match(html, /70-day daily plan/i);
+  assert.match(html, /optional Screen Time/i);
+});
+
+test('comparison hub owns the best iPhone habit-app intent', () => {
+  const html = read('compare/index.html');
+  assert.match(html, /<title>Best Habit Tracker Apps for iPhone \(2026\): 18 Compared \| Ascent<\/title>/);
+  assert.match(html, /<h1>18 iPhone habit apps compared honestly<\/h1>/);
+  assert.match(html, /id="short-answer"/);
+  assert.match(html, /There is no universally best habit app/i);
+});
+
+test('hub answers which habit tracker also blocks distracting apps', () => {
+  const html = read('compare/index.html');
+  const question = 'Which iPhone habit tracker also blocks distracting apps?';
+  assert.ok(html.split(question).length >= 3, 'question must appear visibly and in FAQ JSON-LD');
+  assert.match(html, /one sec, Opal, Jomo, and ScreenZen/i);
 });
 
 test('comparison page names the closest seven and the full Ascent loop', () => {
