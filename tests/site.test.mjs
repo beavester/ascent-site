@@ -20,9 +20,14 @@ const authorityRoutes = [
   ['ascent/index.html', 'https://habitbuilding.xyz/ascent/'],
   ['methodology/index.html', 'https://habitbuilding.xyz/methodology/']
 ];
+const decisionRoutes = [
+  ['best/app-blockers-iphone/index.html', 'https://habitbuilding.xyz/best/app-blockers-iphone/'],
+  ['best/habit-tracker-with-app-blocking/index.html', 'https://habitbuilding.xyz/best/habit-tracker-with-app-blocking/']
+];
 const expectedPublicUrls = [
   'https://habitbuilding.xyz/',
   ...authorityRoutes.map(([, canonical]) => canonical),
+  ...decisionRoutes.map(([, canonical]) => canonical),
   'https://habitbuilding.xyz/compare/',
   ...headToHeadSlugs.map((slug) => 'https://habitbuilding.xyz/compare/' + slug + '/'),
   'https://habitbuilding.xyz/science/',
@@ -86,6 +91,7 @@ test('every Ascent install link uses Apple\'s canonical product URL', () => {
   const pages = [
     'index.html',
     'ascent/index.html',
+    ...decisionRoutes.map(([page]) => page),
     'compare/index.html',
     'science/index.html',
     'blog/index.html',
@@ -309,6 +315,7 @@ test('key pages contain no missing local href targets', () => {
     'compare/ascent-vs-routinery/index.html',
     'ascent/index.html',
     'methodology/index.html',
+    ...decisionRoutes.map(([page]) => page),
     'science/index.html',
     'blog/index.html'
   ]) {
@@ -332,6 +339,32 @@ function parseJsonLd(html, page) {
     const value = JSON.parse(match[1]);
     return Array.isArray(value) ? value : [value];
   });
+}
+
+function assertDecisionPage(spec) {
+  const html = read(spec.page);
+  assert.equal((html.match(/<h1\b/gi) || []).length, 1, spec.page + ' needs one H1');
+  assert.ok(html.includes('<title>' + spec.title + '</title>'));
+  assert.ok(html.includes('<link rel="canonical" href="' + spec.canonical + '">'));
+  assert.ok(html.includes('<h1>' + spec.h1 + '</h1>'));
+  assert.match(html, /Updated July 22, 2026/);
+  assert.match(html, /There is no universally best|There is no single best/i);
+  assert.match(html, /document-based editorial research/i);
+  assert.match(html, /published by the maker of Ascent/i);
+  assert.match(html, /href="\.\.\/\.\.\/methodology\/"/);
+  for (const product of spec.products) assert.match(html, new RegExp(product, 'i'));
+  for (const source of spec.sources) assert.ok(html.includes('href="' + source + '"'), spec.page + ' is missing ' + source);
+  const entities = parseJsonLd(html, spec.page);
+  assert.ok(entities.some((item) => item['@type'] === 'Article'));
+  assert.ok(entities.some((item) => item['@type'] === 'BreadcrumbList'));
+  assert.ok(entities.some((item) => item['@type'] === 'ItemList'));
+  const faq = entities.find((item) => item['@type'] === 'FAQPage');
+  assert.ok(faq);
+  for (const item of faq.mainEntity) {
+    assert.ok(html.includes(item.name));
+    assert.ok(html.includes(item.acceptedAnswer.text));
+  }
+  assert.ok(!entities.some((item) => ['Review', 'AggregateRating'].includes(item['@type'])));
 }
 
 function contrastRatio(foreground, background) {
@@ -542,6 +575,28 @@ test('editorial stylesheet is accessible, responsive, and visually restrained', 
   assert.doesNotMatch(css, /rgba\(255\s*,\s*255\s*,\s*255/i);
 });
 
+test('iPhone app blocker guide satisfies the decision contract', () => {
+  assertDecisionPage({
+    page: 'best/app-blockers-iphone/index.html',
+    canonical: 'https://habitbuilding.xyz/best/app-blockers-iphone/',
+    title: 'Best App Blockers for iPhone (2026), Compared by Need',
+    h1: 'The best iPhone app blocker depends on how you get distracted',
+    products: ['Apple Screen Time', 'one sec', 'ScreenZen', 'Opal', 'Jomo', 'Ascent'],
+    sources: ['https://support.apple.com/en-sg/guide/iphone/iphb0c7313c9/ios', 'https://one-sec.app/', 'https://screenzen.co/', 'https://opalapp.com/screentime', 'https://jomo.so/features']
+  });
+});
+
+test('habit tracker with app blocking guide satisfies the decision contract', () => {
+  assertDecisionPage({
+    page: 'best/habit-tracker-with-app-blocking/index.html',
+    canonical: 'https://habitbuilding.xyz/best/habit-tracker-with-app-blocking/',
+    title: 'Habit Trackers With App Blocking: Honest 2026 Guide',
+    h1: 'Which habit trackers also block distracting apps?',
+    products: ['Ascent', 'Habit Doom', 'Streaks', 'one sec', 'ScreenZen', 'Opal'],
+    sources: ['https://habitdoom.com/blog/how-habit-doom-works', 'https://apps.apple.com/us/app/habit-doom-anti-doomscroll/id6757255783', 'https://streaksapp.com/', 'https://one-sec.app/', 'https://screenzen.co/', 'https://opalapp.com/screentime']
+  });
+});
+
 test('Fabulous comparison satisfies the editorial contract', () => {
   assertHeadToHeadPage({
     slug: 'ascent-vs-fabulous',
@@ -684,6 +739,7 @@ test('all public HTML uses current Ascent duration and App Store identity', () =
     'index.html',
     'ascent/index.html',
     'methodology/index.html',
+    ...decisionRoutes.map(([page]) => page),
     'compare/index.html',
     ...headToHeadSlugs.map((slug) => 'compare/' + slug + '/index.html'),
     'science/index.html',
