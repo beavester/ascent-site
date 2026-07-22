@@ -73,3 +73,39 @@ test('homepage links to an honest comparison preview', () => {
   assert.match(html, /href="compare\/"/);
   assert.match(html, /six apps wearing the same trench coat/i);
 });
+
+test('OAI-SearchBot is explicitly allowed', () => {
+  const robots = read('robots.txt');
+  assert.match(robots, /User-agent: OAI-SearchBot\s+Allow: \//);
+});
+
+test('sitemap contains each live page once', () => {
+  const xml = read('sitemap.xml');
+  const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+  assert.equal(new Set(urls).size, urls.length);
+  assert.ok(urls.includes('https://habitbuilding.xyz/compare/'));
+  assert.ok(!urls.includes('https://habitbuilding.xyz/blog/scrolling-is-the-new-smoking/'));
+});
+
+test('blog post is present in static markup', () => {
+  const html = read('blog/index.html');
+  assert.match(html, /<div class="post-list"[\s\S]*href="youre-not-unmotivated\/"/);
+  assert.match(html, /<h2>You.re Not Unmotivated\. You.re Desensitized\.<\/h2>/);
+});
+
+test('ChatGPT referral analytics records source and path only', () => {
+  assert.ok(existsSync(join(root, 'analytics.js')), 'analytics file is missing');
+  const js = read('analytics.js');
+  assert.match(js, /chatgpt_referral/);
+  assert.match(js, /landing_path/);
+  assert.match(js, /traffic_source/);
+  assert.doesNotMatch(js, /search_term|prompt_text|query_text/);
+});
+
+test('secondary navigation points to the live homepage workflow section', () => {
+  for (const page of ['science/index.html', 'blog/index.html']) {
+    const html = read(page);
+    assert.doesNotMatch(html, /href="\.\.\/#how"/, `${page} links to a missing section`);
+    assert.match(html, /href="\.\.\/#workflow"/);
+  }
+});
