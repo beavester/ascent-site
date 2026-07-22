@@ -245,7 +245,12 @@ function assertHeadToHeadPage(spec) {
   const shortAnswer = html.match(/<section class="short-answer"[\s\S]*?<p>([^<]+)<\/p>/)?.[1] ?? '';
   const shortAnswerWords = shortAnswer.trim().split(/\s+/).filter(Boolean).length;
   assert.ok(shortAnswerWords >= 120 && shortAnswerWords <= 180, page + ' short answer must be 120–180 words');
-  assert.equal((html.match(/data-dimension="/g) || []).length, 5, page + ' needs five dimensions');
+  const dimensions = [...html.matchAll(/<article class="dimension"[^>]*>[\s\S]*?<\/article>/g)]
+    .map((match) => match[0]);
+  assert.equal(dimensions.length, 5, page + ' needs five dimensions');
+  for (const dimension of dimensions) {
+    assert.doesNotMatch(dimension, /<\/strong>[^\s<]/, page + ' dimension label needs whitespace before body text');
+  }
   assert.match(html, new RegExp('Choose ' + spec.competitor + ' if'));
   assert.match(html, /Choose Ascent if/);
   assert.match(html, /When Ascent is not the better choice/);
@@ -268,16 +273,36 @@ function assertHeadToHeadPage(spec) {
   const faq = entities.find((item) => item['@type'] === 'FAQPage');
   assert.ok(faq);
   assert.equal(faq.mainEntity.length, 3);
-  for (const item of faq.mainEntity) {
-    assert.ok(html.includes(item.name), page + ' is missing visible FAQ question');
-    assert.ok(html.includes(item.acceptedAnswer.text), page + ' is missing visible FAQ answer');
-  }
+  const visibleFaqs = [...html.matchAll(/<details\b[^>]*>[\s\S]*?<summary>([^<]+)<\/summary>[\s\S]*?<p>([^<]+)<\/p>[\s\S]*?<\/details>/g)]
+    .map((match) => ({
+      question: match[1].trim(),
+      answer: match[2].trim()
+    }));
+  assert.equal(visibleFaqs.length, 3, page + ' needs three visible FAQ details');
+  const schemaFaqs = faq.mainEntity.map((item) => ({
+    question: item.name,
+    answer: item.acceptedAnswer.text
+  }));
+  assert.deepEqual(visibleFaqs, schemaFaqs, page + ' visible FAQ copy must match FAQPage schema in order');
   const ascent = entities.find((item) => item['@id'] === 'https://habitbuilding.xyz/#ascent-app');
   assert.ok(ascent, page + ' is missing the shared Ascent entity');
+  assert.equal(ascent.name, 'Ascent: Habit Builder & Focus');
+  assert.equal(ascent.alternateName, 'Ascent');
+  assert.equal(ascent.applicationCategory, 'ProductivityApplication');
+  assert.equal(ascent.operatingSystem, 'iOS 15.1 or later');
+  assert.equal(ascent.url, 'https://habitbuilding.xyz/');
   assert.equal(ascent.downloadUrl, canonicalAppStoreUrl);
   assert.deepEqual(ascent.sameAs, [canonicalAppStoreUrl]);
+  assert.equal(ascent.identifier.propertyID, 'Apple App Store ID');
   assert.equal(ascent.identifier.value, '6756843194');
-  assert.ok(entities.some((item) => item['@type'] === 'SoftwareApplication' && item.name === spec.competitor));
+  assert.equal(ascent.image, 'https://habitbuilding.xyz/img/icon.png');
+  assert.equal(
+    ascent.description,
+    'An iPhone habit system that combines a 70-day action plan, home-screen visibility, two-minute fallback tasks, reflection, and optional app-blocking friction.'
+  );
+  const competitor = entities.find((item) => item['@type'] === 'SoftwareApplication' && item.name === spec.competitor);
+  assert.ok(competitor, page + ' is missing the competitor SoftwareApplication entity');
+  assert.equal(competitor.url, spec.entityUrl ?? spec.source);
   assert.ok(!entities.some((item) => ['Review', 'AggregateRating'].includes(item['@type'])));
 
   for (const question of spec.questions) {
