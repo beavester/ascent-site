@@ -109,3 +109,20 @@ test('secondary navigation points to the live homepage workflow section', () => 
     assert.match(html, /href="\.\.\/#workflow"/);
   }
 });
+
+test('science page avoids overconfident medical language', () => {
+  const html = read('science/index.html');
+  for (const phrase of [
+    'the receivers are shot',
+    'This is molecular proof',
+    'That flatness is the treatment working',
+    'Most people report noticeable sensitivity improvement within 2-4 weeks',
+    'Getting your receptors back'
+  ]) {
+    assert.ok(!html.includes(phrase), `overstatement remains: ${phrase}`);
+  }
+  assert.match(html, /does not establish the same mechanism for ordinary phone use/i);
+  assert.match(html, /not, by itself, proof/i);
+  assert.doesNotMatch(html, /60[- ]day/i);
+  assert.match(html, /70 days/i);
+});
