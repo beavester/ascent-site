@@ -753,6 +753,27 @@ test('iPhone habit system guide satisfies the evidence contract', () => {
   assert.match(html, /Screen Time limits or schedules app access/i);
 });
 
+test('guide content is connected to the authority graph', () => {
+  const contracts = [
+    ['index.html', [
+      'href="guides/why-habit-trackers-fail/"',
+      'href="guides/habit-tracker-vs-habit-builder/"',
+      'href="guides/how-to-stop-doomscrolling/"',
+      'href="guides/two-minute-habit/"',
+      'href="guides/how-to-build-a-habit-on-iphone/"'
+    ]],
+    ['ascent/index.html', ['href="../guides/how-to-build-a-habit-on-iphone/"', 'href="../guides/habit-tracker-vs-habit-builder/"']],
+    ['science/index.html', ['href="../guides/why-habit-trackers-fail/"', 'href="../guides/two-minute-habit/"']],
+    ['best/app-blockers-iphone/index.html', ['href="../../guides/how-to-stop-doomscrolling/"']],
+    ['best/habit-tracker-with-app-blocking/index.html', ['href="../../guides/habit-tracker-vs-habit-builder/"']],
+    ['compare/index.html', ['href="../guides/habit-tracker-vs-habit-builder/"']]
+  ];
+  for (const [page, fragments] of contracts) {
+    const html = read(page);
+    for (const fragment of fragments) assert.ok(html.includes(fragment), page + ' is missing ' + fragment);
+  }
+});
+
 test('Fabulous comparison satisfies the editorial contract', () => {
   assertHeadToHeadPage({
     slug: 'ascent-vs-fabulous',
