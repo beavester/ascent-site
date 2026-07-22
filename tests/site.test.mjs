@@ -24,10 +24,18 @@ const decisionRoutes = [
   ['best/app-blockers-iphone/index.html', 'https://habitbuilding.xyz/best/app-blockers-iphone/'],
   ['best/habit-tracker-with-app-blocking/index.html', 'https://habitbuilding.xyz/best/habit-tracker-with-app-blocking/']
 ];
+const guideRoutes = [
+  ['guides/why-habit-trackers-fail/index.html', 'https://habitbuilding.xyz/guides/why-habit-trackers-fail/'],
+  ['guides/habit-tracker-vs-habit-builder/index.html', 'https://habitbuilding.xyz/guides/habit-tracker-vs-habit-builder/'],
+  ['guides/how-to-stop-doomscrolling/index.html', 'https://habitbuilding.xyz/guides/how-to-stop-doomscrolling/'],
+  ['guides/two-minute-habit/index.html', 'https://habitbuilding.xyz/guides/two-minute-habit/'],
+  ['guides/how-to-build-a-habit-on-iphone/index.html', 'https://habitbuilding.xyz/guides/how-to-build-a-habit-on-iphone/']
+];
 const expectedPublicUrls = [
   'https://habitbuilding.xyz/',
   ...authorityRoutes.map(([, canonical]) => canonical),
   ...decisionRoutes.map(([, canonical]) => canonical),
+  ...guideRoutes.map(([, canonical]) => canonical),
   'https://habitbuilding.xyz/compare/',
   ...headToHeadSlugs.map((slug) => 'https://habitbuilding.xyz/compare/' + slug + '/'),
   'https://habitbuilding.xyz/science/',
@@ -92,6 +100,7 @@ test('every Ascent install link uses Apple\'s canonical product URL', () => {
     'index.html',
     'ascent/index.html',
     ...decisionRoutes.map(([page]) => page),
+    ...guideRoutes.map(([page]) => page),
     'compare/index.html',
     'science/index.html',
     'blog/index.html',
@@ -316,6 +325,7 @@ test('key pages contain no missing local href targets', () => {
     'ascent/index.html',
     'methodology/index.html',
     ...decisionRoutes.map(([page]) => page),
+    ...guideRoutes.map(([page]) => page),
     'science/index.html',
     'blog/index.html'
   ]) {
@@ -364,6 +374,47 @@ function assertDecisionPage(spec) {
     assert.ok(html.includes(item.name));
     assert.ok(html.includes(item.acceptedAnswer.text));
   }
+  assert.ok(!entities.some((item) => ['Review', 'AggregateRating'].includes(item['@type'])));
+}
+
+function assertGuidePage(spec) {
+  assert.ok(existsSync(join(root, spec.page)), spec.page + ' is missing');
+  const html = read(spec.page);
+  assert.ok(html.includes('<title>' + spec.title + '</title>'));
+  assert.ok(html.includes('<link rel="canonical" href="' + spec.canonical + '">'));
+  assert.ok(html.includes('<h1>' + spec.h1 + '</h1>'));
+  assert.equal((html.match(/<h1\b/gi) || []).length, 1, spec.page + ' needs one H1');
+  assert.match(html, /Updated July 22, 2026/);
+  assert.match(html, /<section class="answer-block"/);
+  assert.match(html, /How we researched this/);
+  assert.match(html, /document-based editorial research/i);
+  assert.match(html, /published by the maker of Ascent/i);
+  assert.match(html, /href="\.\.\/\.\.\/methodology\/"/);
+  for (const source of spec.sources) {
+    assert.ok(html.includes('href="' + source + '"'), spec.page + ' is missing source ' + source);
+  }
+  const appStoreUrls = [...html.matchAll(/href="([^"]*id6756843194[^"]*)"/g)]
+    .map((match) => match[1].replaceAll('&amp;', '&'));
+  assert.ok(appStoreUrls.length > 0, spec.page + ' has no Ascent install link');
+  for (const url of appStoreUrls) {
+    assert.ok(url.startsWith(canonicalAppStoreUrl), spec.page + ' uses a non-canonical Ascent URL: ' + url);
+  }
+  const entities = parseJsonLd(html, spec.page);
+  const article = entities.find((item) => item['@type'] === 'Article');
+  assert.ok(article, spec.page + ' is missing Article schema');
+  assert.equal(article.dateModified, '2026-07-22');
+  assert.equal(article.mainEntityOfPage, spec.canonical);
+  assert.ok(entities.some((item) => item['@type'] === 'BreadcrumbList'));
+  const faq = entities.find((item) => item['@type'] === 'FAQPage');
+  assert.ok(faq, spec.page + ' is missing FAQPage schema');
+  assert.equal(faq.mainEntity.length, 3, spec.page + ' needs three FAQ schema entries');
+  const visibleFaqs = [...html.matchAll(/<details\b[^>]*>[\s\S]*?<summary>([^<]+)<\/summary>[\s\S]*?<p>([^<]+)<\/p>[\s\S]*?<\/details>/g)]
+    .map((match) => ({ question: match[1].trim(), answer: match[2].trim() }));
+  assert.equal(visibleFaqs.length, 3, spec.page + ' needs three visible FAQs');
+  assert.deepEqual(visibleFaqs, faq.mainEntity.map((item) => ({
+    question: item.name,
+    answer: item.acceptedAnswer.text
+  })), spec.page + ' visible FAQ copy must match schema');
   assert.ok(!entities.some((item) => ['Review', 'AggregateRating'].includes(item['@type'])));
 }
 
@@ -611,6 +662,97 @@ test('decision content is connected to the authority graph', () => {
   }
 });
 
+test('why habit trackers fail guide satisfies the evidence contract', () => {
+  assertGuidePage({
+    page: 'guides/why-habit-trackers-fail/index.html',
+    canonical: 'https://habitbuilding.xyz/guides/why-habit-trackers-fail/',
+    title: 'Why Habit Trackers Fail (and What to Add) | HabitBuilding.xyz',
+    h1: 'Why habit trackers fail even when you keep logging',
+    sources: [
+      'https://pmc.ncbi.nlm.nih.gov/articles/PMC4566897/',
+      'https://pmc.ncbi.nlm.nih.gov/articles/PMC9226889/',
+      'https://pmc.ncbi.nlm.nih.gov/articles/PMC6693254/',
+      'https://pmc.ncbi.nlm.nih.gov/articles/PMC7571594/'
+    ]
+  });
+  const html = read('guides/why-habit-trackers-fail/index.html');
+  assert.match(html, /evidence.*varies|varies.*evidence/is);
+  assert.doesNotMatch(html, /tracking never works/i);
+});
+
+test('habit tracker versus habit builder guide satisfies the evidence contract', () => {
+  assertGuidePage({
+    page: 'guides/habit-tracker-vs-habit-builder/index.html',
+    canonical: 'https://habitbuilding.xyz/guides/habit-tracker-vs-habit-builder/',
+    title: 'Habit Tracker vs Habit Builder: Which Do You Need?',
+    h1: 'Habit tracker or habit builder? Choose by what is missing',
+    sources: [
+      'https://pmc.ncbi.nlm.nih.gov/articles/PMC4566897/',
+      'https://pmc.ncbi.nlm.nih.gov/articles/PMC4147713/',
+      'https://pmc.ncbi.nlm.nih.gov/articles/PMC7571594/'
+    ]
+  });
+  const html = read('guides/habit-tracker-vs-habit-builder/index.html');
+  assert.match(html, /tracker records/i);
+  assert.match(html, /builder helps.*define.*cue.*shrink.*adapt/is);
+});
+
+test('doomscrolling guide satisfies the evidence contract', () => {
+  assertGuidePage({
+    page: 'guides/how-to-stop-doomscrolling/index.html',
+    canonical: 'https://habitbuilding.xyz/guides/how-to-stop-doomscrolling/',
+    title: 'How to Stop Doomscrolling Without Relying on Willpower',
+    h1: 'How to stop doomscrolling by changing the moment before it starts',
+    sources: [
+      'https://pmc.ncbi.nlm.nih.gov/articles/PMC9974409/',
+      'https://support.apple.com/en-sg/guide/iphone/iphb0c7313c9/ios'
+    ]
+  });
+  const html = read('guides/how-to-stop-doomscrolling/index.html');
+  assert.doesNotMatch(html, /dopamine addiction/i);
+  assert.match(html, /company involvement|founder.*co-author/is);
+  for (const phrase of ['Identify the trigger', 'Add friction', 'Choose a replacement', 'Time-box access', 'Review and adjust']) {
+    assert.ok(html.includes(phrase), 'doomscrolling guide is missing ' + phrase);
+  }
+});
+
+test('two-minute habit guide satisfies the evidence contract', () => {
+  assertGuidePage({
+    page: 'guides/two-minute-habit/index.html',
+    canonical: 'https://habitbuilding.xyz/guides/two-minute-habit/',
+    title: 'The Two-Minute Habit: How to Make a Smaller Fallback',
+    h1: 'Use a two-minute fallback when the full habit does not fit',
+    sources: [
+      'https://pmc.ncbi.nlm.nih.gov/articles/PMC11641623/',
+      'https://pmc.ncbi.nlm.nih.gov/articles/PMC3505409/'
+    ]
+  });
+  const html = read('guides/two-minute-habit/index.html');
+  assert.match(html, /not a magic threshold/i);
+  assert.doesNotMatch(html, /habits take (?:21|66|70) days/i);
+  assert.match(html, /70 days is Ascent's program design/i);
+});
+
+test('iPhone habit system guide satisfies the evidence contract', () => {
+  assertGuidePage({
+    page: 'guides/how-to-build-a-habit-on-iphone/index.html',
+    canonical: 'https://habitbuilding.xyz/guides/how-to-build-a-habit-on-iphone/',
+    title: 'How to Build a Habit on iPhone Using Widgets and Screen Time',
+    h1: 'Build an iPhone habit system around cues, not more notifications',
+    sources: [
+      'https://support.apple.com/en-in/guide/iphone/iphb8f1bf206/ios',
+      'https://support.apple.com/en-gb/guide/iphone/iph5c3f5b77b/ios',
+      'https://support.apple.com/en-sg/guide/iphone/iphb0c7313c9/ios',
+      'https://support.apple.com/en-ie/guide/shortcuts/apd690170742/ios',
+      'https://pmc.ncbi.nlm.nih.gov/articles/PMC9226889/'
+    ]
+  });
+  const html = read('guides/how-to-build-a-habit-on-iphone/index.html');
+  for (const term of ['Widgets', 'Focus', 'Screen Time', 'Shortcuts']) assert.match(html, new RegExp(term));
+  assert.match(html, /Focus silences or filters notifications/i);
+  assert.match(html, /Screen Time limits or schedules app access/i);
+});
+
 test('Fabulous comparison satisfies the editorial contract', () => {
   assertHeadToHeadPage({
     slug: 'ascent-vs-fabulous',
@@ -754,6 +896,7 @@ test('all public HTML uses current Ascent duration and App Store identity', () =
     'ascent/index.html',
     'methodology/index.html',
     ...decisionRoutes.map(([page]) => page),
+    ...guideRoutes.map(([page]) => page),
     'compare/index.html',
     ...headToHeadSlugs.map((slug) => 'compare/' + slug + '/index.html'),
     'science/index.html',
