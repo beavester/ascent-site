@@ -193,7 +193,15 @@ test('science page avoids overconfident medical language', () => {
 });
 
 test('key pages contain no missing local href targets', () => {
-  for (const page of ['index.html', 'compare/index.html', 'science/index.html', 'blog/index.html']) {
+  for (const page of [
+    'index.html',
+    'compare/index.html',
+    'compare/ascent-vs-fabulous/index.html',
+    'compare/ascent-vs-tiimo/index.html',
+    'compare/ascent-vs-routinery/index.html',
+    'science/index.html',
+    'blog/index.html'
+  ]) {
     const html = read(page);
     const base = dirname(join(root, page));
     const hrefs = [...html.matchAll(/href="([^"]+)"/g)].map((match) => match[1]);
@@ -296,4 +304,49 @@ test('head-to-head page helper enforces heading structure and canonical App Stor
   assert.ok(suite.includes('const appStoreUrls = [...html.matchAll(/href="([^\"]*id6756843194[^\"]*)"/g)]'));
   assert.ok(suite.includes("replaceAll('&amp;', '&')"));
   assert.ok(suite.includes("page + ' has no Ascent install link'"));
+});
+
+test('Fabulous comparison satisfies the editorial contract', () => {
+  assertHeadToHeadPage({
+    slug: 'ascent-vs-fabulous',
+    competitor: 'Fabulous',
+    title: 'Ascent vs Fabulous (2026): Which Habit App Fits You?',
+    h1: 'Ascent vs Fabulous: focused action or guided coaching?',
+    source: 'https://www.thefabulous.co/',
+    questions: [
+      'Is Ascent or Fabulous better for building routines?',
+      'Does Fabulous block distracting apps?',
+      'Can Ascent and Fabulous be used together?'
+    ]
+  });
+});
+
+test('Tiimo comparison satisfies the editorial contract', () => {
+  assertHeadToHeadPage({
+    slug: 'ascent-vs-tiimo',
+    competitor: 'Tiimo',
+    title: 'Ascent vs Tiimo (2026): Habit Builder or Daily Planner?',
+    h1: 'Ascent vs Tiimo: one habit goal or your whole day?',
+    source: 'https://www.tiimoapp.com/',
+    questions: [
+      'Is Ascent or Tiimo better for ADHD?',
+      'Does Tiimo block distracting apps?',
+      'Can Ascent and Tiimo be used together?'
+    ]
+  });
+});
+
+test('Routinery comparison satisfies the editorial contract', () => {
+  assertHeadToHeadPage({
+    slug: 'ascent-vs-routinery',
+    competitor: 'Routinery',
+    title: 'Ascent vs Routinery (2026): Habit Goal or Routine Timer?',
+    h1: 'Ascent vs Routinery: build a goal or run a routine?',
+    source: 'https://www.routinery.app/',
+    questions: [
+      'Is Ascent or Routinery better for morning routines?',
+      'Does Routinery block distracting apps?',
+      'Can Ascent and Routinery be used together?'
+    ]
+  });
 });
