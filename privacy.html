@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privacy Policy | Ascent</title>
-  <meta name="description" content="Privacy policy for Ascent (habitbuilding.xyz).">
+  <meta name="description" content="Privacy policy for Ascent, HabitBuilding.xyz, and the anonymous Ascent ChatGPT app and first-party plan handoff.">
   <link rel="canonical" href="https://habitbuilding.xyz/privacy.html">
   <style>
     body{font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif;max-width:760px;margin:0 auto;padding:40px 20px;line-height:1.7;color:#1a1a1c;background:#fafaf7}
@@ -22,7 +22,7 @@
 <body>
   <a class="back" href="/">← Back to Ascent</a>
   <h1>Privacy Policy</h1>
-  <p>Last updated: February 2026</p>
+  <p>Last updated: July 23, 2026</p>
   <p>Ascent respects your privacy. This page describes what we collect and how we use it.</p>
 
   <h2>What we collect</h2>
@@ -38,6 +38,19 @@
     <li>To improve performance, quality, and user experience.</li>
     <li>To communicate important product updates.</li>
   </ul>
+
+  <h2>Ascent ChatGPT app</h2>
+  <p>The first version of the Ascent ChatGPT app is anonymous and read-only. When a connected user invokes an Ascent tool, the Ascent MCP endpoint receives the arguments for that selected tool. It does not receive the rest of your ChatGPT conversation.</p>
+  <ul>
+    <li>The planning tools compute a result in memory and the website does not store generated plans on the website server.</li>
+    <li>The review tool analyzes only the snapshot supplied to that tool. It does not automatically access your Ascent account, iPhone, Screen Time history, health data, contacts, or calendar.</li>
+    <li>The focus tool prepares a handoff. It does not start a focus session or change device restrictions inside ChatGPT.</li>
+    <li>No ChatGPT-app tool in this version requires an Ascent account, OAuth token, or advertising identifier.</li>
+  </ul>
+
+  <h2>Plan handoff links</h2>
+  <p>A generated handoff carries plan details in the URL fragment, which is the part after the <code>#</code>. Browsers do not include a URL fragment in the ordinary request sent to the website server. The handoff page decodes the plan in the browser and does not use analytics, cookies, local storage, session storage, or a server database.</p>
+  <p>Anyone who receives the complete handoff link may be able to read the plan in it. Treat the link like the plan itself and avoid putting sensitive personal, medical, financial, or account information into a handoff.</p>
 
   <h2>Sharing</h2>
   <p>We do not sell personal data. We only share data with service providers needed to operate Ascent (for example hosting, analytics, and payments), subject to contractual safeguards.</p>

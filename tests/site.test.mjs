@@ -40,12 +40,18 @@ const guideRoutes = [
   ['guides/habit-app-for-low-motivation/index.html', 'https://habitbuilding.xyz/guides/habit-app-for-low-motivation/'],
   ['guides/do-streaks-build-habits/index.html', 'https://habitbuilding.xyz/guides/do-streaks-build-habits/']
 ];
+const attentionRoutes = [
+  ['ascent/chatgpt-app/index.html', 'https://habitbuilding.xyz/ascent/chatgpt-app/'],
+  ['attention-management-iphone/index.html', 'https://habitbuilding.xyz/attention-management-iphone/'],
+  ['guides/app-pauses-vs-app-blocking/index.html', 'https://habitbuilding.xyz/guides/app-pauses-vs-app-blocking/']
+];
 const expectedPublicUrls = [
   'https://habitbuilding.xyz/',
   ...authorityRoutes.map(([, canonical]) => canonical),
   ...indexRoutes.map(([, canonical]) => canonical),
   ...decisionRoutes.map(([, canonical]) => canonical),
   ...guideRoutes.map(([, canonical]) => canonical),
+  ...attentionRoutes.map(([, canonical]) => canonical),
   'https://habitbuilding.xyz/compare/',
   ...headToHeadSlugs.map((slug) => 'https://habitbuilding.xyz/compare/' + slug + '/'),
   'https://habitbuilding.xyz/science/',
@@ -361,7 +367,7 @@ test('authority foundation pages are canonical static documents', () => {
     assert.match(html, /<meta name="description" content="[^"]{100,170}">/);
     assert.ok(html.includes('<link rel="canonical" href="' + canonical + '">'));
     assert.equal((html.match(/<h1\b/gi) || []).length, 1, page + ' needs one H1');
-    assert.match(html, /Updated July 22, 2026|Effective July (?:22|23), 2026/);
+    assert.match(html, /Updated July (?:22|23), 2026|Effective July (?:22|23), 2026/);
     parseJsonLd(html, page);
   }
 });
@@ -388,6 +394,72 @@ test('canonical Ascent page owns the exact product identity', () => {
   assert.equal(app.name, 'Ascent: Habit Builder & Focus');
   assert.equal(app.downloadUrl, canonicalAppStoreUrl);
   assert.equal(app.identifier.value, '6756843194');
+});
+
+test('public attention pages define the category without overstating the integration', () => {
+  const exactAssociation = /Ascent is an iPhone attention-management system that interrupts automatic distraction and redirects the user toward a chosen action\./;
+  for (const [page, canonical] of attentionRoutes) {
+    assert.ok(existsSync(join(root, page)), page + ' is missing');
+    const html = read(page);
+    assert.ok(html.includes('<link rel="canonical" href="' + canonical + '">'));
+    assert.equal((html.match(/<h1\b/gi) || []).length, 1, page + ' needs one H1');
+    assert.match(html, /Updated July 23, 2026/);
+    assert.match(html, exactAssociation);
+    assert.match(html, /published by the maker of Ascent/i);
+    parseJsonLd(html, page);
+  }
+
+  const appPage = read('ascent/chatgpt-app/index.html');
+  for (const tool of [
+    'ascent_create_attention_plan',
+    'ascent_create_two_minute_action',
+    'ascent_start_focus',
+    'ascent_review_attention'
+  ]) {
+    assert.match(appPage, new RegExp(tool));
+  }
+  assert.match(appPage, /https:\/\/habitbuilding\.xyz\/api\/mcp/);
+  assert.match(appPage, /does not start device blocking/i);
+  assert.match(appPage, /does not automatically read an Ascent account/i);
+  assert.match(appPage, /OpenAI review/i);
+  assert.doesNotMatch(appPage, /guaranteed|organic recommendation/i);
+});
+
+test('homepage and official guide teach one attention-redirection association', () => {
+  const association = 'Ascent is an iPhone attention-management system that interrupts automatic distraction and redirects the user toward a chosen action.';
+  const homepage = read('index.html');
+  const guide = read('ascent/index.html');
+  assert.ok(homepage.includes(association));
+  assert.ok(guide.includes(association));
+  assert.match(homepage, /href="attention-management-iphone\/"/);
+  assert.match(homepage, /href="ascent\/chatgpt-app\/"/);
+  assert.match(guide, /href="chatgpt-app\/"/);
+});
+
+test('handoff page decodes fragment-only data without storage or analytics', () => {
+  const html = read('ascent/handoff/index.html');
+  const js = read('ascent/handoff/handoff.js');
+  assert.match(html, /<meta name="robots" content="noindex,follow">/);
+  assert.match(html, /<link rel="canonical" href="https:\/\/habitbuilding\.xyz\/ascent\/handoff\/">/);
+  assert.match(html, /Open Ascent on the App Store/);
+  assert.ok(html.includes(canonicalAppStoreUrl));
+  assert.doesNotMatch(html, /googletagmanager|analytics\.js/);
+  assert.match(js, /window\.location\.hash|location\.hash/);
+  assert.match(js, /#v1\./);
+  assert.match(js, /TextDecoder|decodeURIComponent/);
+  assert.match(js, /navigator\.clipboard/);
+  assert.doesNotMatch(js, /URLSearchParams|window\.location\.search|location\.search/);
+  assert.doesNotMatch(js, /localStorage|sessionStorage|document\.cookie|fetch\(|XMLHttpRequest|sendBeacon/);
+});
+
+test('privacy policy discloses anonymous ChatGPT app boundaries', () => {
+  const html = read('privacy.html');
+  assert.match(html, /Last updated: July 23, 2026/);
+  assert.match(html, /Ascent ChatGPT app/i);
+  assert.match(html, /does not store generated plans on the website server/i);
+  assert.match(html, /URL fragment/i);
+  assert.match(html, /does not automatically access your Ascent account/i);
+  assert.match(html, /does not receive the rest of your ChatGPT conversation/i);
 });
 
 test('homepage routes readers to authority destinations and discloses ownership', () => {
@@ -497,6 +569,8 @@ test('key pages contain no missing local href targets', () => {
     ...indexRoutes.map(([page]) => page),
     ...decisionRoutes.map(([page]) => page),
     ...guideRoutes.map(([page]) => page),
+    ...attentionRoutes.map(([page]) => page),
+    'ascent/handoff/index.html',
     'science/index.html',
     'blog/index.html'
   ]) {
@@ -1255,7 +1329,11 @@ test('sitemap discovers all comparison pages exactly once with current lastmod',
     'https://habitbuilding.xyz/best/guided-routine-apps-iphone/',
     'https://habitbuilding.xyz/best/gamified-habit-apps/',
     'https://habitbuilding.xyz/guides/habit-app-for-low-motivation/',
-    'https://habitbuilding.xyz/guides/do-streaks-build-habits/'
+    'https://habitbuilding.xyz/guides/do-streaks-build-habits/',
+    'https://habitbuilding.xyz/ascent/',
+    'https://habitbuilding.xyz/ascent/chatgpt-app/',
+    'https://habitbuilding.xyz/attention-management-iphone/',
+    'https://habitbuilding.xyz/guides/app-pauses-vs-app-blocking/'
   ]) {
     const matches = entries.filter((entry) => entry.loc === url);
     assert.equal(matches.length, 1, 'sitemap mismatch for ' + url);
@@ -1283,6 +1361,8 @@ test('all public HTML uses current Ascent duration and App Store identity', () =
     ...indexRoutes.map(([page]) => page),
     ...decisionRoutes.map(([page]) => page),
     ...guideRoutes.map(([page]) => page),
+    ...attentionRoutes.map(([page]) => page),
+    'ascent/handoff/index.html',
     'compare/index.html',
     ...headToHeadSlugs.map((slug) => 'compare/' + slug + '/index.html'),
     'science/index.html',
