@@ -125,6 +125,59 @@ const competitors = [
   'one sec', 'ScreenZen', 'Opal', 'Jomo'
 ];
 
+test('habit app data contains 19 sourced records with controlled capability values', () => {
+  const apps = JSON.parse(read('data/habit-apps.json'));
+  const expectedNames = ['Ascent: Habit Builder & Focus', ...competitors];
+  const categories = new Set([
+    'combined-system',
+    'traditional-tracker',
+    'guided-routine',
+    'emotional-gamification',
+    'attention-intervention'
+  ]);
+  const capabilityValues = new Set(['yes', 'limited', 'no', 'not-confirmed']);
+  const pricingModels = new Set([
+    'Free',
+    'Paid download with optional subscription',
+    'Free with premium upgrade',
+    'Free with optional subscription',
+    'Free tracker with paid coaching',
+    'Free with optional subscription and in-app currency',
+    'Free with optional subscription or lifetime purchase',
+    'Free with in-app purchases',
+    'Free, donation-supported'
+  ]);
+
+  assert.equal(apps.length, 19);
+  assert.equal(new Set(apps.map(({ slug }) => slug)).size, 19);
+  assert.equal(new Set(apps.map(({ name }) => name)).size, 19);
+  assert.deepEqual(new Set(apps.map(({ name }) => name)), new Set(expectedNames));
+
+  for (const app of apps) {
+    assert.match(app.slug, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+    assert.ok(categories.has(app.category), `${app.name} has an invalid category`);
+    assert.ok(app.primaryJob.length >= 30, `${app.name} needs a specific primary job`);
+    assert.ok(app.bestFor.length >= 30, `${app.name} needs a specific best-for statement`);
+    assert.ok(app.mainLimitation.length >= 30, `${app.name} needs a specific limitation`);
+    assert.ok(Array.isArray(app.platforms) && app.platforms.includes('iPhone'));
+    assert.ok(pricingModels.has(app.pricingModel), `${app.name} has an invalid pricing model`);
+    assert.equal(app.verifiedDate, '2026-07-23');
+    assert.equal(app.researchMode, 'document-based editorial research');
+    assert.deepEqual(
+      Object.keys(app.capabilities).sort(),
+      ['appBlocking', 'appleWatch', 'emotionalMotivation', 'guidedRoutines', 'healthIntegration', 'tracking', 'widgets'].sort()
+    );
+    for (const [capability, value] of Object.entries(app.capabilities)) {
+      assert.ok(capabilityValues.has(value), `${app.name} has invalid ${capability}: ${value}`);
+    }
+    assert.ok(Array.isArray(app.sources) && app.sources.length >= 1);
+    for (const source of app.sources) {
+      assert.ok(source.label.length >= 8);
+      assert.match(source.url, /^https:\/\//);
+    }
+  }
+});
+
 test('comparison page contains every named competitor and category', () => {
   assert.ok(existsSync(join(root, 'compare/index.html')), 'comparison page is missing');
   const html = read('compare/index.html');

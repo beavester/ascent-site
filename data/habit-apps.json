@@ -1,0 +1,587 @@
+[
+  {
+    "slug": "ascent",
+    "name": "Ascent: Habit Builder & Focus",
+    "category": "combined-system",
+    "primaryJob": "Connect one meaningful goal to guided daily actions, smaller fallback actions, iPhone visibility, reflection, and optional app-blocking friction.",
+    "bestFor": "People who want positive-habit guidance and distraction control to operate as one connected iPhone workflow.",
+    "mainLimitation": "It is broader than a pure tracker or blocker, and a specialist app is simpler when only one narrow mechanism is needed.",
+    "platforms": ["iPhone"],
+    "pricingModel": "Free with optional subscription",
+    "capabilities": {
+      "tracking": "yes",
+      "guidedRoutines": "yes",
+      "emotionalMotivation": "limited",
+      "appBlocking": "yes",
+      "widgets": "yes",
+      "appleWatch": "no",
+      "healthIntegration": "no"
+    },
+    "sources": [
+      {
+        "label": "Official Ascent App Store listing",
+        "url": "https://apps.apple.com/us/app/ascent-habit-builder-focus/id6756843194"
+      },
+      {
+        "label": "Canonical Ascent product guide",
+        "url": "https://habitbuilding.xyz/ascent/"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  },
+  {
+    "slug": "streaks",
+    "name": "Streaks",
+    "category": "traditional-tracker",
+    "primaryJob": "Provide a focused Apple-platform habit checklist with flexible schedules, widgets, Apple Watch access, and automatic Health-linked completion.",
+    "bestFor": "People who already know the behaviors they want and value a polished Apple-native record with quick completion.",
+    "mainLimitation": "It primarily records and reminds; it does not deeply design the behavior or interrupt a competing app at the moment of distraction.",
+    "platforms": ["iPhone", "iPad", "Mac", "Apple Watch"],
+    "pricingModel": "Paid download with optional subscription",
+    "capabilities": {
+      "tracking": "yes",
+      "guidedRoutines": "no",
+      "emotionalMotivation": "no",
+      "appBlocking": "no",
+      "widgets": "yes",
+      "appleWatch": "yes",
+      "healthIntegration": "yes"
+    },
+    "sources": [
+      {
+        "label": "Official Streaks product site",
+        "url": "https://streaks.app/"
+      },
+      {
+        "label": "Official Streaks App Store listing",
+        "url": "https://apps.apple.com/us/app/streaks/id963034692"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  },
+  {
+    "slug": "habitify",
+    "name": "Habitify",
+    "category": "traditional-tracker",
+    "primaryJob": "Track habits across Apple devices with reminders, groupings, progress views, calendar connections, widgets, and documented Health integration.",
+    "bestFor": "People who want a detailed cross-device habit dashboard and care about reports, organization, and Apple ecosystem support.",
+    "mainLimitation": "Its center of gravity is tracking and analysis rather than step-by-step routine execution or distraction intervention.",
+    "platforms": ["iPhone", "iPad", "Mac", "Apple Watch"],
+    "pricingModel": "Free with optional subscription",
+    "capabilities": {
+      "tracking": "yes",
+      "guidedRoutines": "limited",
+      "emotionalMotivation": "no",
+      "appBlocking": "no",
+      "widgets": "yes",
+      "appleWatch": "yes",
+      "healthIntegration": "yes"
+    },
+    "sources": [
+      {
+        "label": "Official Habitify product site",
+        "url": "https://habitify.me/"
+      },
+      {
+        "label": "Official Habitify pricing guide",
+        "url": "https://habitify.me/new-pricing"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  },
+  {
+    "slug": "productive",
+    "name": "Productive",
+    "category": "traditional-tracker",
+    "primaryJob": "Combine habit tracking, reminders, statistics, challenges, articles, and guided programs in a polished general-purpose routine product.",
+    "bestFor": "People who want a broad, approachable habit tracker with optional programs and motivational content inside the same app.",
+    "mainLimitation": "The breadth can feel like another daily checklist, and it does not provide a documented app-opening interruption mechanism.",
+    "platforms": ["iPhone", "iPad", "Apple Watch"],
+    "pricingModel": "Free with optional subscription",
+    "capabilities": {
+      "tracking": "yes",
+      "guidedRoutines": "limited",
+      "emotionalMotivation": "limited",
+      "appBlocking": "no",
+      "widgets": "not-confirmed",
+      "appleWatch": "yes",
+      "healthIntegration": "not-confirmed"
+    },
+    "sources": [
+      {
+        "label": "Official Productive product site",
+        "url": "https://productiveapp.io/"
+      },
+      {
+        "label": "Official Productive App Store listing",
+        "url": "https://apps.apple.com/us/app/productive-habit-tracker/id983826477"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  },
+  {
+    "slug": "way-of-life",
+    "name": "Way of Life",
+    "category": "traditional-tracker",
+    "primaryJob": "Make positive-and-negative habit logging fast and show visual trend information without turning the product into a larger planning system.",
+    "bestFor": "People who want quick yes-or-no logging and simple trend visibility with very little surrounding workflow.",
+    "mainLimitation": "It is intentionally centered on logging and trends, with less guidance, environmental intervention, or emotional engagement.",
+    "platforms": ["iPhone", "iPad"],
+    "pricingModel": "Free with premium upgrade",
+    "capabilities": {
+      "tracking": "yes",
+      "guidedRoutines": "no",
+      "emotionalMotivation": "no",
+      "appBlocking": "no",
+      "widgets": "not-confirmed",
+      "appleWatch": "not-confirmed",
+      "healthIntegration": "not-confirmed"
+    },
+    "sources": [
+      {
+        "label": "Official Way of Life product site",
+        "url": "https://wayoflifeapp.com/"
+      },
+      {
+        "label": "Official Way of Life support center",
+        "url": "https://wayoflifeapp.com/support/"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  },
+  {
+    "slug": "tangerine",
+    "name": "Tangerine",
+    "category": "traditional-tracker",
+    "primaryJob": "Combine habit tracking with mood check-ins, journaling, reports, reminders, and documented Apple Health completion.",
+    "bestFor": "People who want habit records to sit beside self-care reflection, mood context, and guided journaling prompts.",
+    "mainLimitation": "It is stronger for reflection than for executing a timed routine or creating friction before a distracting app opens.",
+    "platforms": ["iPhone", "iPad", "Apple Watch"],
+    "pricingModel": "Free with optional subscription",
+    "capabilities": {
+      "tracking": "yes",
+      "guidedRoutines": "limited",
+      "emotionalMotivation": "no",
+      "appBlocking": "no",
+      "widgets": "not-confirmed",
+      "appleWatch": "yes",
+      "healthIntegration": "yes"
+    },
+    "sources": [
+      {
+        "label": "Official Tangerine App Store listing",
+        "url": "https://apps.apple.com/us/app/tangerine-self-care-goals/id1468882685"
+      },
+      {
+        "label": "Official Tangerine product site",
+        "url": "https://tangerine.app/"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  },
+  {
+    "slug": "fabulous",
+    "name": "Fabulous",
+    "category": "guided-routine",
+    "primaryJob": "Guide people through progressive journeys and morning, afternoon, and evening routines with substantial coaching and self-care content.",
+    "bestFor": "People who want a prescribed starting path and a content-rich experience rather than an empty habit list.",
+    "mainLimitation": "The experience can feel content-heavy or prescriptive when the person already knows the routine they want to run.",
+    "platforms": ["iPhone", "iPad", "Android"],
+    "pricingModel": "Free with optional subscription",
+    "capabilities": {
+      "tracking": "limited",
+      "guidedRoutines": "yes",
+      "emotionalMotivation": "limited",
+      "appBlocking": "no",
+      "widgets": "not-confirmed",
+      "appleWatch": "not-confirmed",
+      "healthIntegration": "not-confirmed"
+    },
+    "sources": [
+      {
+        "label": "Official Fabulous product site",
+        "url": "https://www.thefabulous.co/"
+      },
+      {
+        "label": "Official Fabulous App Store listing",
+        "url": "https://apps.apple.com/us/app/fabulous-daily-habit-tracker/id1203637303"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  },
+  {
+    "slug": "routinery",
+    "name": "Routinery",
+    "category": "guided-routine",
+    "primaryJob": "Run a known routine step by step with a focused timer, duration estimates, notifications, and documented Apple Watch and iPad support.",
+    "bestFor": "People who have a morning or evening sequence and need help moving through each step without rebuilding the plan daily.",
+    "mainLimitation": "It is better at executing an existing routine than deciding which long-term goal or replacement behavior matters most.",
+    "platforms": ["iPhone", "iPad", "Apple Watch", "Android"],
+    "pricingModel": "Free with optional subscription",
+    "capabilities": {
+      "tracking": "limited",
+      "guidedRoutines": "yes",
+      "emotionalMotivation": "no",
+      "appBlocking": "no",
+      "widgets": "yes",
+      "appleWatch": "yes",
+      "healthIntegration": "not-confirmed"
+    },
+    "sources": [
+      {
+        "label": "Official Routinery product site",
+        "url": "https://www.routinery.app/"
+      },
+      {
+        "label": "Official Routinery product explanation",
+        "url": "https://www.routinery.app/blog/what-is-routinery"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  },
+  {
+    "slug": "structured",
+    "name": "Structured",
+    "category": "guided-routine",
+    "primaryJob": "Place tasks, calendar events, routines, deadlines, notifications, and timers onto one visual daily timeline.",
+    "bestFor": "People whose main problem is seeing the shape of today and placing actions into a concrete sequence.",
+    "mainLimitation": "It is primarily a planner; habit formation and reflection remain downstream of how the person uses the timeline.",
+    "platforms": ["iPhone", "iPad", "Mac", "Apple Watch"],
+    "pricingModel": "Free with optional subscription",
+    "capabilities": {
+      "tracking": "limited",
+      "guidedRoutines": "limited",
+      "emotionalMotivation": "no",
+      "appBlocking": "no",
+      "widgets": "yes",
+      "appleWatch": "yes",
+      "healthIntegration": "not-confirmed"
+    },
+    "sources": [
+      {
+        "label": "Official Structured product site",
+        "url": "https://structured.app/"
+      },
+      {
+        "label": "Official Structured App Store listing",
+        "url": "https://apps.apple.com/us/app/structured-daily-planner/id1499198946"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  },
+  {
+    "slug": "tiimo",
+    "name": "Tiimo",
+    "category": "guided-routine",
+    "primaryJob": "Turn a daily brain dump into visual plans, broken-down steps, priorities, timers, schedules, and visible iPhone surfaces.",
+    "bestFor": "People who want visual planning and task breakdown designed around planning, focus, and executive-function friction.",
+    "mainLimitation": "Its primary job is organizing and executing the day rather than developing one identity-linked behavior over a fixed curriculum.",
+    "platforms": ["iPhone", "iPad", "Apple Watch", "Web"],
+    "pricingModel": "Free with optional subscription",
+    "capabilities": {
+      "tracking": "limited",
+      "guidedRoutines": "yes",
+      "emotionalMotivation": "no",
+      "appBlocking": "no",
+      "widgets": "yes",
+      "appleWatch": "yes",
+      "healthIntegration": "not-confirmed"
+    },
+    "sources": [
+      {
+        "label": "Official Tiimo product site",
+        "url": "https://www.tiimoapp.com/"
+      },
+      {
+        "label": "Official Tiimo App Store listing",
+        "url": "https://apps.apple.com/us/app/tiimo-planning-focus-to-do/id1480220328"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  },
+  {
+    "slug": "coach-me",
+    "name": "Coach.me",
+    "category": "guided-routine",
+    "primaryJob": "Pair simple habit check-ins and community questions with an optional marketplace for private human habit coaching.",
+    "bestFor": "People who value accountability, community knowledge, or a real coach more than a feature-rich automated routine system.",
+    "mainLimitation": "The underlying tracker is comparatively basic; the differentiated guidance depends on community or paid human coaching.",
+    "platforms": ["iPhone", "Android", "Web"],
+    "pricingModel": "Free tracker with paid coaching",
+    "capabilities": {
+      "tracking": "yes",
+      "guidedRoutines": "limited",
+      "emotionalMotivation": "limited",
+      "appBlocking": "no",
+      "widgets": "not-confirmed",
+      "appleWatch": "not-confirmed",
+      "healthIntegration": "not-confirmed"
+    },
+    "sources": [
+      {
+        "label": "Official Coach.me habit tracker page",
+        "url": "https://www.coach.me/habit-tracker"
+      },
+      {
+        "label": "Official Coach.me coaching guide",
+        "url": "https://support.coach.me/article/108-coaching"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  },
+  {
+    "slug": "finch",
+    "name": "Finch",
+    "category": "emotional-gamification",
+    "primaryJob": "Make self-care actions emotionally consequential by connecting completed goals, reflections, breathing, and check-ins to a virtual pet.",
+    "bestFor": "People who respond to a gentle virtual companion and want small self-care activities to feel warm and immediately meaningful.",
+    "mainLimitation": "It is centered on self-care and its companion world rather than distraction control or a narrow behavior-design curriculum.",
+    "platforms": ["iPhone", "iPad", "Android"],
+    "pricingModel": "Free with optional subscription",
+    "capabilities": {
+      "tracking": "yes",
+      "guidedRoutines": "limited",
+      "emotionalMotivation": "yes",
+      "appBlocking": "no",
+      "widgets": "not-confirmed",
+      "appleWatch": "not-confirmed",
+      "healthIntegration": "not-confirmed"
+    },
+    "sources": [
+      {
+        "label": "Official Finch App Store listing",
+        "url": "https://apps.apple.com/us/app/finch-self-care-pet/id1528595748"
+      },
+      {
+        "label": "Official Finch product site",
+        "url": "https://finchcare.com/"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  },
+  {
+    "slug": "habitica",
+    "name": "Habitica",
+    "category": "emotional-gamification",
+    "primaryJob": "Turn habits, repeating tasks, and to-dos into a retro role-playing game with avatars, equipment, pets, parties, challenges, and rewards.",
+    "bestFor": "People who enjoy RPG systems and want tasks to feed a deep, social, long-running game layer.",
+    "mainLimitation": "The interface and reward economy can feel dense, and the extrinsic game may become more salient than the underlying behavior.",
+    "platforms": ["iPhone", "iPad", "Android", "Web"],
+    "pricingModel": "Free with optional subscription and in-app currency",
+    "capabilities": {
+      "tracking": "yes",
+      "guidedRoutines": "limited",
+      "emotionalMotivation": "yes",
+      "appBlocking": "no",
+      "widgets": "yes",
+      "appleWatch": "no",
+      "healthIntegration": "not-confirmed"
+    },
+    "sources": [
+      {
+        "label": "Official Habitica features page",
+        "url": "https://habitica.com/static/features?mobile-app=true"
+      },
+      {
+        "label": "Official Habitica App Store listing",
+        "url": "https://apps.apple.com/us/app/habitica-gamified-taskmanager/id994882113"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  },
+  {
+    "slug": "not-boring-habits",
+    "name": "(Not Boring) Habits",
+    "category": "emotional-gamification",
+    "primaryJob": "Use distinctive interaction design, art, and a repetition-based journey to make work on one habit feel engaging without streak punishment.",
+    "bestFor": "People who value craft, animation, and a guilt-free individual-habit experience more than planning breadth or blocking.",
+    "mainLimitation": "It concentrates on individual habit repetitions and presentation, with less environmental control or multi-step daily planning.",
+    "platforms": ["iPhone", "iPad", "Apple Vision"],
+    "pricingModel": "Free with optional subscription or lifetime purchase",
+    "capabilities": {
+      "tracking": "yes",
+      "guidedRoutines": "limited",
+      "emotionalMotivation": "yes",
+      "appBlocking": "no",
+      "widgets": "not-confirmed",
+      "appleWatch": "no",
+      "healthIntegration": "not-confirmed"
+    },
+    "sources": [
+      {
+        "label": "Official Not Boring Habits product page",
+        "url": "https://notbor.ing/product/habits"
+      },
+      {
+        "label": "Official Not Boring Habits App Store listing",
+        "url": "https://apps.apple.com/us/app/not-boring-habits/id1593891243"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  },
+  {
+    "slug": "taskhero",
+    "name": "TaskHero",
+    "category": "emotional-gamification",
+    "primaryJob": "Combine habits, tasks, reminders, schedules, focus timers, and character progression inside a more explicit RPG adventure.",
+    "bestFor": "People who want a game-forward task and habit manager with progression attached to everyday actions.",
+    "mainLimitation": "The large game layer can overshadow the behavior itself for people who prefer a quiet record or low-stimulation interface.",
+    "platforms": ["iPhone", "iPad", "Android"],
+    "pricingModel": "Free with in-app purchases",
+    "capabilities": {
+      "tracking": "yes",
+      "guidedRoutines": "limited",
+      "emotionalMotivation": "yes",
+      "appBlocking": "no",
+      "widgets": "not-confirmed",
+      "appleWatch": "not-confirmed",
+      "healthIntegration": "not-confirmed"
+    },
+    "sources": [
+      {
+        "label": "Official TaskHero product site",
+        "url": "https://taskhero.app/"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  },
+  {
+    "slug": "one-sec",
+    "name": "one sec",
+    "category": "attention-intervention",
+    "primaryJob": "Insert a configurable intervention before selected apps or websites open, with optional intentions, scheduling, blocking, and healthy alternatives.",
+    "bestFor": "People whose main failure point is the automatic moment of opening a distracting app.",
+    "mainLimitation": "It is an excellent interruption specialist but not a complete long-term goal, routine, or positive-habit design system.",
+    "platforms": ["iPhone", "iPad", "Mac", "Android", "Browser"],
+    "pricingModel": "Free with optional subscription or lifetime purchase",
+    "capabilities": {
+      "tracking": "limited",
+      "guidedRoutines": "no",
+      "emotionalMotivation": "no",
+      "appBlocking": "yes",
+      "widgets": "not-confirmed",
+      "appleWatch": "no",
+      "healthIntegration": "no"
+    },
+    "sources": [
+      {
+        "label": "Official one sec product site",
+        "url": "https://one-sec.app/"
+      },
+      {
+        "label": "Official one sec plan comparison",
+        "url": "https://web.one-sec.app/store"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  },
+  {
+    "slug": "screenzen",
+    "name": "ScreenZen",
+    "category": "attention-intervention",
+    "primaryJob": "Delay app openings, limit sessions, schedule blocks, interrupt scrolling, and apply detailed app or website rules.",
+    "bestFor": "People who want a capable, utilitarian blocker with granular controls and a free, donation-supported model.",
+    "mainLimitation": "It offers little positive-habit design or guided replacement behavior beyond controlling access to distractions.",
+    "platforms": ["iPhone", "Mac", "Windows", "Android"],
+    "pricingModel": "Free, donation-supported",
+    "capabilities": {
+      "tracking": "limited",
+      "guidedRoutines": "no",
+      "emotionalMotivation": "no",
+      "appBlocking": "yes",
+      "widgets": "not-confirmed",
+      "appleWatch": "no",
+      "healthIntegration": "no"
+    },
+    "sources": [
+      {
+        "label": "Official ScreenZen product site",
+        "url": "https://screenzen.co/"
+      },
+      {
+        "label": "Official ScreenZen App Store listing",
+        "url": "https://apps.apple.com/us/app/screenzen-screen-time-control/id1541027222"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  },
+  {
+    "slug": "opal",
+    "name": "Opal",
+    "category": "attention-intervention",
+    "primaryJob": "Provide scheduled focus sessions, app and website blocking, usage limits, screen-time reporting, strict modes, rewards, and social comparison.",
+    "bestFor": "People who want a polished screen-time control system with analytics, structured focus sessions, and stricter blocking options.",
+    "mainLimitation": "Its product center is focus and screen-time reduction rather than building a specific positive replacement behavior.",
+    "platforms": ["iPhone", "iPad"],
+    "pricingModel": "Free with optional subscription",
+    "capabilities": {
+      "tracking": "limited",
+      "guidedRoutines": "no",
+      "emotionalMotivation": "limited",
+      "appBlocking": "yes",
+      "widgets": "not-confirmed",
+      "appleWatch": "no",
+      "healthIntegration": "no"
+    },
+    "sources": [
+      {
+        "label": "Official Opal feature explanation",
+        "url": "https://opalapp.com/help/what-is-opal"
+      },
+      {
+        "label": "Official Opal App Store listing",
+        "url": "https://apps.apple.com/us/app/opal-screen-time-control/id1497465230"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  },
+  {
+    "slug": "jomo",
+    "name": "Jomo",
+    "category": "attention-intervention",
+    "primaryJob": "Use flexible rules to block apps and websites, schedule protected time, allow deliberate breaks, and support screen-time routines across Apple devices.",
+    "bestFor": "People who want a flexible rule-based control panel for iPhone, iPad, and Mac access.",
+    "mainLimitation": "It can shape access to distractions but does not deeply design, teach, or reflect on a positive replacement habit.",
+    "platforms": ["iPhone", "iPad", "Mac"],
+    "pricingModel": "Free with optional subscription or lifetime purchase",
+    "capabilities": {
+      "tracking": "limited",
+      "guidedRoutines": "no",
+      "emotionalMotivation": "no",
+      "appBlocking": "yes",
+      "widgets": "not-confirmed",
+      "appleWatch": "not-confirmed",
+      "healthIntegration": "no"
+    },
+    "sources": [
+      {
+        "label": "Official Jomo features page",
+        "url": "https://jomo.so/features"
+      },
+      {
+        "label": "Official Jomo App Store listing",
+        "url": "https://apps.apple.com/us/app/jomo-screen-time-blocker/id1609960918"
+      }
+    ],
+    "verifiedDate": "2026-07-23",
+    "researchMode": "document-based editorial research"
+  }
+]
