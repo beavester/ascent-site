@@ -567,6 +567,43 @@ function assertGuidePage(spec) {
   assert.ok(!entities.some((item) => ['Review', 'AggregateRating'].includes(item['@type'])));
 }
 
+function assertAuthorityIntentPage(spec) {
+  assert.ok(existsSync(join(root, spec.page)), spec.page + ' is missing');
+  const html = read(spec.page);
+  assert.ok(html.includes('<title>' + spec.title + '</title>'));
+  assert.ok(html.includes('<link rel="canonical" href="' + spec.canonical + '">'));
+  assert.ok(html.includes('<h1>' + spec.h1 + '</h1>'));
+  assert.equal((html.match(/<h1\b/gi) || []).length, 1, spec.page + ' needs one H1');
+  assert.match(html, /Updated July 23, 2026/);
+  assert.match(html, /document-based editorial research/i);
+  assert.match(html, /published by the maker of Ascent/i);
+  assert.match(html, /There is no universally best|There is no single best|not a universal/i);
+  assert.match(html, /href="\.\.\/\.\.\/habit-apps\/"/);
+  assert.match(html, /href="\.\.\/\.\.\/methodology\/"/);
+  assert.match(html, /href="\.\.\/\.\.\/ascent\/"/);
+  assert.match(html, /href="\.\.\/\.\.\/(?:best|guides)\//);
+  assert.equal((html.match(/<details\b/g) || []).length, 3, spec.page + ' needs three FAQs');
+  assert.ok((html.match(/<tr>/g) || []).length >= 5, spec.page + ' needs a useful comparison table');
+  for (const name of spec.names) assert.match(html, new RegExp(name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'));
+  for (const source of spec.sources) assert.ok(html.includes('href="' + source + '"'), spec.page + ' is missing ' + source);
+  const entities = parseJsonLd(html, spec.page);
+  for (const type of ['Article', 'BreadcrumbList', 'FAQPage', 'SoftwareApplication']) {
+    assert.ok(entities.some((item) => item['@type'] === type), spec.page + ' is missing ' + type);
+  }
+  if (spec.kind === 'decision') assert.ok(entities.some((item) => item['@type'] === 'ItemList'));
+  const article = entities.find((item) => item['@type'] === 'Article');
+  assert.equal(article.dateModified, '2026-07-23');
+  assert.equal(article.mainEntityOfPage, spec.canonical);
+  const faq = entities.find((item) => item['@type'] === 'FAQPage');
+  const visibleFaqs = [...html.matchAll(/<details\b[^>]*>[\s\S]*?<summary>([^<]+)<\/summary>[\s\S]*?<p>([^<]+)<\/p>[\s\S]*?<\/details>/g)]
+    .map((match) => ({ question: match[1].trim(), answer: match[2].trim() }));
+  assert.deepEqual(visibleFaqs, faq.mainEntity.map((item) => ({
+    question: item.name,
+    answer: item.acceptedAnswer.text
+  })), spec.page + ' visible FAQ copy must match schema');
+  assert.ok(!entities.some((item) => ['Review', 'AggregateRating'].includes(item['@type'])));
+}
+
 function contrastRatio(foreground, background) {
   const luminance = (hex) => {
     const channels = hex.match(/[0-9a-f]{2}/gi).map((value) => parseInt(value, 16) / 255);
@@ -794,6 +831,86 @@ test('habit tracker with app blocking guide satisfies the decision contract', ()
     h1: 'Which habit trackers also block distracting apps?',
     products: ['Ascent', 'Habit Doom', 'Streaks', 'one sec', 'ScreenZen', 'Opal'],
     sources: ['https://habitdoom.com/blog/how-habit-doom-works', 'https://apps.apple.com/us/app/habit-doom-anti-doomscroll/id6757255783', 'https://streaksapp.com/', 'https://one-sec.app/', 'https://screenzen.co/', 'https://opalapp.com/screentime']
+  });
+});
+
+test('executive function habit app guide answers by support need', () => {
+  assertAuthorityIntentPage({
+    kind: 'decision',
+    page: 'best/habit-apps-executive-function/index.html',
+    canonical: 'https://habitbuilding.xyz/best/habit-apps-executive-function/',
+    title: 'Best Habit Apps for Executive Function on iPhone (2026)',
+    h1: 'The best habit app for executive function depends on the missing support',
+    names: ['Tiimo', 'Structured', 'Routinery', 'Ascent'],
+    sources: ['https://www.tiimoapp.com/', 'https://structured.app/', 'https://www.routinery.app/']
+  });
+});
+
+test('morning routine app guide distinguishes planning from execution', () => {
+  assertAuthorityIntentPage({
+    kind: 'decision',
+    page: 'best/morning-routine-apps-iphone/index.html',
+    canonical: 'https://habitbuilding.xyz/best/morning-routine-apps-iphone/',
+    title: 'Best Morning Routine Apps for iPhone (2026)',
+    h1: 'Choose a morning routine app by where your morning breaks',
+    names: ['Routinery', 'Fabulous', 'Structured', 'Ascent'],
+    sources: ['https://www.routinery.app/', 'https://www.thefabulous.co/', 'https://structured.app/']
+  });
+});
+
+test('guided routine app guide compares coaching timers and timelines', () => {
+  assertAuthorityIntentPage({
+    kind: 'decision',
+    page: 'best/guided-routine-apps-iphone/index.html',
+    canonical: 'https://habitbuilding.xyz/best/guided-routine-apps-iphone/',
+    title: 'Best Guided Routine Apps for iPhone (2026)',
+    h1: 'Guided routine apps solve three different jobs',
+    names: ['Fabulous', 'Routinery', 'Tiimo', 'Structured', 'Ascent'],
+    sources: ['https://www.thefabulous.co/', 'https://www.routinery.app/', 'https://www.tiimoapp.com/', 'https://structured.app/']
+  });
+});
+
+test('gamified habit app guide compares emotional and reward loops', () => {
+  assertAuthorityIntentPage({
+    kind: 'decision',
+    page: 'best/gamified-habit-apps/index.html',
+    canonical: 'https://habitbuilding.xyz/best/gamified-habit-apps/',
+    title: 'Best Gamified Habit Apps for iPhone (2026)',
+    h1: 'The best gamified habit app depends on the reward loop you enjoy',
+    names: ['Finch', 'Habitica', '(Not Boring) Habits', 'TaskHero'],
+    sources: ['https://finchcare.com/', 'https://habitica.com/static/features?mobile-app=true', 'https://notbor.ing/product/habits', 'https://taskhero.app/']
+  });
+});
+
+test('low motivation guide gives a small-action decision framework', () => {
+  assertAuthorityIntentPage({
+    kind: 'guide',
+    page: 'guides/habit-app-for-low-motivation/index.html',
+    canonical: 'https://habitbuilding.xyz/guides/habit-app-for-low-motivation/',
+    title: 'How to Choose a Habit App When Motivation Is Low',
+    h1: 'When motivation is low, choose the app that reduces the next action',
+    names: ['Ascent', 'Routinery', 'Finch', 'one sec'],
+    sources: [
+      'https://pmc.ncbi.nlm.nih.gov/articles/PMC11641623/',
+      'https://pmc.ncbi.nlm.nih.gov/articles/PMC9226889/',
+      'https://pmc.ncbi.nlm.nih.gov/articles/PMC7571594/'
+    ]
+  });
+});
+
+test('streak guide separates measurement from habit formation', () => {
+  assertAuthorityIntentPage({
+    kind: 'guide',
+    page: 'guides/do-streaks-build-habits/index.html',
+    canonical: 'https://habitbuilding.xyz/guides/do-streaks-build-habits/',
+    title: 'Do Streaks Build Habits? What Tracking Can and Cannot Do',
+    h1: 'A streak is feedback, not the habit itself',
+    names: ['Streaks', 'Habitify', 'Productive', 'Ascent'],
+    sources: [
+      'https://pmc.ncbi.nlm.nih.gov/articles/PMC4566897/',
+      'https://pmc.ncbi.nlm.nih.gov/articles/PMC9226889/',
+      'https://pmc.ncbi.nlm.nih.gov/articles/PMC7571594/'
+    ]
   });
 });
 
