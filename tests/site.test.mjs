@@ -398,6 +398,22 @@ test('answer-engine referral analytics classifies known sources without query co
   assert.doesNotMatch(js, /search_term|prompt_text|query_text|URLSearchParams.*[?&]q=/s);
 });
 
+test('editorial click analytics records placement and destination class without content', () => {
+  const js = read('analytics.js');
+  assert.match(js, /app_store_cta_click/);
+  assert.match(js, /editorial_path_click/);
+  assert.match(js, /source_path/);
+  assert.match(js, /placement/);
+  assert.match(js, /destination_class/);
+  assert.match(js, /addEventListener\(['"]click['"]/);
+  assert.match(js, /id6756843194/);
+  for (const destination of ['habit_app_index', 'comparison', 'decision_guide', 'behavior_guide', 'research', 'product']) {
+    assert.match(js, new RegExp(destination));
+  }
+  assert.doesNotMatch(js, /search_term|prompt_text|query_text|filter_value|input_value|link_text|innerText|textContent/);
+  assert.doesNotMatch(js, /localStorage|sessionStorage|sendBeacon|fetch|XMLHttpRequest/);
+});
+
 test('search and retrieval crawlers are explicitly allowed', () => {
   const robots = read('robots.txt');
   for (const bot of ['OAI-SearchBot', 'PerplexityBot', 'Claude-SearchBot']) {
