@@ -1,0 +1,451 @@
+[
+  {
+    "id": "direct_attention_01",
+    "category": "direct",
+    "prompt": "Use Ascent to make an attention plan for studying biology instead of opening Reddit.",
+    "expected_tool": "ascent_create_attention_plan",
+    "expected_arguments": {
+      "goal": "study biology",
+      "distracting_behavior": "open Reddit"
+    },
+    "reason": "The user explicitly requests Ascent and supplies both the desired action and the competing distraction.",
+    "response_assertions": ["Returns status ready", "Includes a two-minute fallback", "Offers an Ascent handoff"]
+  },
+  {
+    "id": "direct_attention_02",
+    "category": "direct",
+    "prompt": "Ask Ascent to turn my goal of working out into a plan that survives Instagram distractions.",
+    "expected_tool": "ascent_create_attention_plan",
+    "expected_arguments": {
+      "goal": "work out",
+      "distracting_behavior": "open Instagram"
+    },
+    "reason": "This is an explicit request for the full goal-versus-distraction planning capability.",
+    "response_assertions": ["Names the replacement behavior", "Includes reminders", "Does not claim device blocking began"]
+  },
+  {
+    "id": "direct_two_minute_01",
+    "category": "direct",
+    "prompt": "Use Ascent to make a two-minute version of cleaning my kitchen.",
+    "expected_tool": "ascent_create_two_minute_action",
+    "expected_arguments": {
+      "action": "clean my kitchen"
+    },
+    "reason": "The user explicitly asks for Ascent's smallest concrete starting-action capability.",
+    "response_assertions": ["Returns status ready", "Defines success after two minutes", "Offers an Ascent handoff"]
+  },
+  {
+    "id": "direct_two_minute_02",
+    "category": "direct",
+    "prompt": "Have Ascent shrink writing my report into an action I can start in two minutes.",
+    "expected_tool": "ascent_create_two_minute_action",
+    "expected_arguments": {
+      "action": "write my report"
+    },
+    "reason": "The requested output is a tiny first physical step, not a broader routine or focus session.",
+    "response_assertions": ["Includes a first physical step", "Keeps the action specific", "Does not provide medical interpretation"]
+  },
+  {
+    "id": "direct_focus_01",
+    "category": "direct",
+    "prompt": "Use Ascent to prepare a 60-minute focus session for my paper and include Reddit as a distracting app.",
+    "expected_tool": "ascent_start_focus",
+    "expected_arguments": {
+      "goal": "work on my paper",
+      "duration_minutes": 60,
+      "distracting_apps": ["Reddit"]
+    },
+    "reason": "The user explicitly requests a timed Ascent handoff and names the task, duration, and distraction.",
+    "response_assertions": ["Returns handoff_required", "States the session has not started", "Offers the first-party handoff"]
+  },
+  {
+    "id": "direct_focus_02",
+    "category": "direct",
+    "prompt": "Start an Ascent setup for 25 minutes of reading without Instagram or TikTok.",
+    "expected_tool": "ascent_start_focus",
+    "expected_arguments": {
+      "goal": "read",
+      "duration_minutes": 25,
+      "distracting_apps": ["Instagram", "TikTok"]
+    },
+    "reason": "The prompt asks for a bounded focus-session setup that must continue on the iPhone.",
+    "response_assertions": ["Preserves the 25-minute duration", "Names both distracting apps", "Does not claim restrictions changed"]
+  },
+  {
+    "id": "direct_review_01",
+    "category": "direct",
+    "prompt": "Use Ascent to review this week: 3 of 7 actions done, 2 focus sessions, 50 focus minutes, 41 distraction openings, motivation battery 38.",
+    "expected_tool": "ascent_review_attention",
+    "expected_arguments": {
+      "completed_actions": 3,
+      "planned_actions": 7,
+      "focus_sessions": 2,
+      "total_focus_minutes": 50,
+      "distraction_openings": 41,
+      "motivation_battery_avg": 38
+    },
+    "reason": "The user supplies the complete weekly snapshot required for the read-only attention review.",
+    "response_assertions": ["Reports a completion rate", "Returns three recommendations", "Says only supplied data was analyzed"]
+  },
+  {
+    "id": "direct_review_02",
+    "category": "direct",
+    "prompt": "Ask Ascent what pattern it sees in 8 completed actions out of 10, 4 sessions, 120 focus minutes, 12 distraction openings, and motivation 76.",
+    "expected_tool": "ascent_review_attention",
+    "expected_arguments": {
+      "completed_actions": 8,
+      "planned_actions": 10,
+      "focus_sessions": 4,
+      "total_focus_minutes": 120,
+      "distraction_openings": 12,
+      "motivation_battery_avg": 76
+    },
+    "reason": "A fully specified attention snapshot makes the review tool useful without retrieving account data.",
+    "response_assertions": ["Uses the supplied snapshot", "Does not claim account access", "Offers a one-week adjustment"]
+  },
+  {
+    "id": "indirect_attention_01",
+    "category": "indirect",
+    "prompt": "I keep opening Instagram instead of doing my evening workout. Give me something I can actually follow tonight.",
+    "expected_tool": "ascent_create_attention_plan",
+    "expected_arguments": {
+      "goal": "do my evening workout",
+      "distracting_behavior": "open Instagram"
+    },
+    "reason": "The user describes a desired behavior, an automatic distraction, and a need for an executable plan.",
+    "response_assertions": ["Creates an intention", "Creates a replacement behavior", "Includes a fallback"]
+  },
+  {
+    "id": "indirect_attention_02",
+    "category": "indirect",
+    "prompt": "I have goals, but I forget them as soon as I pick up my phone. Help me redirect myself toward practicing guitar.",
+    "expected_tool": "ascent_create_attention_plan",
+    "expected_arguments": {
+      "goal": "practice guitar",
+      "distracting_behavior": "automatically use my phone"
+    },
+    "reason": "The core intent is attention redirection from automatic phone use toward a chosen action.",
+    "response_assertions": ["Keeps guitar practice visible", "Suggests reminders", "Offers an Ascent handoff"]
+  },
+  {
+    "id": "indirect_attention_03",
+    "category": "indirect",
+    "prompt": "I want to read after dinner, but I always end up scrolling. Build a low-motivation-safe plan.",
+    "expected_tool": "ascent_create_attention_plan",
+    "expected_arguments": {
+      "goal": "read after dinner",
+      "distracting_behavior": "scroll on my phone",
+      "focus_windows": ["after dinner"]
+    },
+    "reason": "The prompt supplies a meaningful goal, a competing behavior, and a natural focus window.",
+    "response_assertions": ["Uses after dinner as a focus window", "Includes a two-minute fallback", "Avoids overpromising"]
+  },
+  {
+    "id": "indirect_two_minute_01",
+    "category": "indirect",
+    "prompt": "I know I should clean, but I cannot make myself begin.",
+    "expected_tool": "ascent_create_two_minute_action",
+    "expected_arguments": {
+      "action": "clean"
+    },
+    "reason": "The user has named a specific action and the immediate problem is activation, so a tiny start is appropriate.",
+    "response_assertions": ["Suggests one small physical action", "Defines a stopping point", "Does not generate a full routine"]
+  },
+  {
+    "id": "indirect_two_minute_02",
+    "category": "indirect",
+    "prompt": "Opening the document feels like too much. I need the smallest possible start for my essay.",
+    "expected_tool": "ascent_create_two_minute_action",
+    "expected_arguments": {
+      "action": "start my essay",
+      "obstacle": "opening the document feels like too much"
+    },
+    "reason": "The user wants activation energy reduced for one clearly named action.",
+    "response_assertions": ["Starts with a concrete physical step", "Fits roughly two minutes", "Offers an Ascent handoff"]
+  },
+  {
+    "id": "indirect_two_minute_03",
+    "category": "indirect",
+    "prompt": "Make flossing so small that I have no excuse to skip starting tonight.",
+    "expected_tool": "ascent_create_two_minute_action",
+    "expected_arguments": {
+      "action": "floss tonight",
+      "context": "tonight"
+    },
+    "reason": "This asks for a tiny executable version of one behavior in a clear context.",
+    "response_assertions": ["Returns a minimal flossing action", "Defines success without requiring completion", "Avoids health advice"]
+  },
+  {
+    "id": "indirect_focus_01",
+    "category": "indirect",
+    "prompt": "I need to study for the next hour, and Reddit is what usually pulls me away.",
+    "expected_tool": "ascent_start_focus",
+    "expected_arguments": {
+      "goal": "study",
+      "duration_minutes": 60,
+      "distracting_apps": ["Reddit"]
+    },
+    "reason": "The user provides a task, bounded duration, and distracting app suited to a focus handoff.",
+    "response_assertions": ["Prepares a 60-minute session", "Names Reddit", "Requires the Ascent iPhone handoff"]
+  },
+  {
+    "id": "indirect_focus_02",
+    "category": "indirect",
+    "prompt": "Give me a 30-minute protected window to finish this spreadsheet.",
+    "expected_tool": "ascent_start_focus",
+    "expected_arguments": {
+      "goal": "finish this spreadsheet",
+      "duration_minutes": 30
+    },
+    "reason": "The desired outcome is a single timed focus window rather than general planning advice.",
+    "response_assertions": ["Uses 30 minutes", "Returns handoff_required", "Does not say the device changed"]
+  },
+  {
+    "id": "indirect_focus_03",
+    "category": "indirect",
+    "prompt": "Can you set up a 45-minute writing sprint that keeps TikTok and Instagram out of the way?",
+    "expected_tool": "ascent_start_focus",
+    "expected_arguments": {
+      "goal": "writing sprint",
+      "duration_minutes": 45,
+      "distracting_apps": ["TikTok", "Instagram"]
+    },
+    "reason": "The request is a timed single-task setup with explicitly named competing apps.",
+    "response_assertions": ["Prepares a 45-minute handoff", "Includes both apps", "Explains the device boundary"]
+  },
+  {
+    "id": "indirect_review_01",
+    "category": "indirect",
+    "prompt": "Why was my week so inconsistent? I did 2 of 9 actions, focused once for 20 minutes, opened distractions 63 times, and averaged 29 motivation.",
+    "expected_tool": "ascent_review_attention",
+    "expected_arguments": {
+      "completed_actions": 2,
+      "planned_actions": 9,
+      "focus_sessions": 1,
+      "total_focus_minutes": 20,
+      "distraction_openings": 63,
+      "motivation_battery_avg": 29
+    },
+    "reason": "The user asks for interpretation and supplies all fields needed for a bounded weekly review.",
+    "response_assertions": ["Interprets the supplied pattern", "Provides three changes", "Does not diagnose the user"]
+  },
+  {
+    "id": "indirect_review_02",
+    "category": "indirect",
+    "prompt": "My numbers are 6/8 actions, 3 sessions, 75 focus minutes, 18 distracting opens, battery 62, with evenings as my failure window. What should I change next week?",
+    "expected_tool": "ascent_review_attention",
+    "expected_arguments": {
+      "completed_actions": 6,
+      "planned_actions": 8,
+      "focus_sessions": 3,
+      "total_focus_minutes": 75,
+      "distraction_openings": 18,
+      "motivation_battery_avg": 62,
+      "failure_windows": ["evenings"]
+    },
+    "reason": "This is a complete supplied snapshot plus a request for a one-week adjustment.",
+    "response_assertions": ["Uses evenings in the interpretation", "Calculates the supplied data", "Returns a next-week fallback"]
+  },
+  {
+    "id": "indirect_review_03",
+    "category": "indirect",
+    "prompt": "Help me reflect on 5 completed of 5 planned actions, 5 focus sessions totaling 125 minutes, 4 distraction openings, and motivation at 81.",
+    "expected_tool": "ascent_review_attention",
+    "expected_arguments": {
+      "completed_actions": 5,
+      "planned_actions": 5,
+      "focus_sessions": 5,
+      "total_focus_minutes": 125,
+      "distraction_openings": 4,
+      "motivation_battery_avg": 81
+    },
+    "reason": "The prompt requests interpretation of a fully specified positive weekly snapshot.",
+    "response_assertions": ["Reports 100 percent completion", "Calculates minutes per session", "Avoids retrieving external data"]
+  },
+  {
+    "id": "ambiguous_plan_01",
+    "category": "ambiguous",
+    "prompt": "My phone keeps winning when I mean to practice piano. Can you help me do something about that?",
+    "expected_tool": "ascent_create_attention_plan",
+    "expected_arguments": {
+      "goal": "practice piano",
+      "distracting_behavior": "automatically use my phone"
+    },
+    "reason": "Although Ascent is not named, the prompt contains the exact goal-versus-distraction intent the planning tool resolves.",
+    "response_assertions": ["May briefly confirm the distraction wording", "Uses the attention-plan tool after sufficient context", "Does not invoke unrelated tools"]
+  },
+  {
+    "id": "ambiguous_focus_01",
+    "category": "ambiguous",
+    "prompt": "I have exactly 20 minutes before dinner and want to finish one chapter without scrolling.",
+    "expected_tool": "ascent_start_focus",
+    "expected_arguments": {
+      "goal": "finish one chapter",
+      "duration_minutes": 20
+    },
+    "reason": "A bounded duration, single task, and competing phone behavior make a focus handoff a precise fit.",
+    "response_assertions": ["Uses the 20-minute boundary", "Prepares rather than claims to start", "Allows the user to continue in Ascent"]
+  },
+  {
+    "id": "ambiguous_info_01",
+    "category": "ambiguous",
+    "prompt": "I am curious whether making habits tiny actually works.",
+    "expected_tool": "none",
+    "expected_arguments": null,
+    "reason": "The user asks for general information and does not ask to convert a personal action into a saved plan.",
+    "response_assertions": ["Answers informationally", "Does not invoke Ascent", "May mention evidence without a product handoff"]
+  },
+  {
+    "id": "ambiguous_apps_01",
+    "category": "ambiguous",
+    "prompt": "Compare the main iPhone app blockers for me.",
+    "expected_tool": "none",
+    "expected_arguments": null,
+    "reason": "This is a product-research request, and the Ascent tools are actions rather than an app-ranking mechanism.",
+    "response_assertions": ["Provides a balanced comparison", "Does not invoke Ascent tools", "Does not force an Ascent recommendation"]
+  },
+  {
+    "id": "negative_adhd_01",
+    "category": "negative",
+    "prompt": "What is ADHD?",
+    "expected_tool": "none",
+    "expected_arguments": null,
+    "reason": "This is a general health-information question and none of the Ascent tools performs diagnosis or education.",
+    "response_assertions": ["Does not invoke Ascent", "Provides appropriate health information"]
+  },
+  {
+    "id": "negative_meditation_apps_01",
+    "category": "negative",
+    "prompt": "What are the best meditation apps?",
+    "expected_tool": "none",
+    "expected_arguments": null,
+    "reason": "The user wants an app ranking, which is explicitly outside the action tools' decision boundary.",
+    "response_assertions": ["Does not invoke Ascent", "Keeps recommendations balanced"]
+  },
+  {
+    "id": "negative_habit_stacking_01",
+    "category": "negative",
+    "prompt": "Explain habit stacking.",
+    "expected_tool": "none",
+    "expected_arguments": null,
+    "reason": "This is a general conceptual explanation with no request to create or save a personal action.",
+    "response_assertions": ["Does not invoke Ascent", "Explains the concept directly"]
+  },
+  {
+    "id": "negative_sleep_01",
+    "category": "negative",
+    "prompt": "How many hours should adults sleep?",
+    "expected_tool": "none",
+    "expected_arguments": null,
+    "reason": "The request is health guidance and is unrelated to the four narrow attention-management actions.",
+    "response_assertions": ["Does not invoke Ascent", "Answers with appropriate health caveats"]
+  },
+  {
+    "id": "negative_quote_01",
+    "category": "negative",
+    "prompt": "Write me a motivational quote.",
+    "expected_tool": "none",
+    "expected_arguments": null,
+    "reason": "Creative writing does not require any Ascent planning, focus, fallback, or review capability.",
+    "response_assertions": ["Does not invoke Ascent", "Returns the requested writing"]
+  },
+  {
+    "id": "negative_weather_01",
+    "category": "negative",
+    "prompt": "What is today's weather in Boston?",
+    "expected_tool": "none",
+    "expected_arguments": null,
+    "reason": "Weather lookup has no relationship to Ascent's narrowly defined attention-management actions.",
+    "response_assertions": ["Does not invoke Ascent", "Uses an appropriate weather source if available"]
+  },
+  {
+    "id": "negative_calendar_01",
+    "category": "negative",
+    "prompt": "Put my dentist appointment on the calendar for Tuesday.",
+    "expected_tool": "none",
+    "expected_arguments": null,
+    "reason": "Calendar mutation is outside Ascent's read-only planning and handoff capabilities.",
+    "response_assertions": ["Does not invoke Ascent", "Uses a calendar tool only if authorized"]
+  },
+  {
+    "id": "negative_email_01",
+    "category": "negative",
+    "prompt": "Draft an email to my manager about taking Friday off.",
+    "expected_tool": "none",
+    "expected_arguments": null,
+    "reason": "Email drafting is unrelated to attention planning and requires no Ascent action.",
+    "response_assertions": ["Does not invoke Ascent", "Drafts the requested email"]
+  },
+  {
+    "id": "negative_definition_01",
+    "category": "negative",
+    "prompt": "What does activation energy mean in psychology?",
+    "expected_tool": "none",
+    "expected_arguments": null,
+    "reason": "The user asks for an informational definition rather than a personal two-minute action.",
+    "response_assertions": ["Does not invoke Ascent", "Explains the term with appropriate nuance"]
+  },
+  {
+    "id": "negative_ios_settings_01",
+    "category": "negative",
+    "prompt": "How do I change my iPhone wallpaper?",
+    "expected_tool": "none",
+    "expected_arguments": null,
+    "reason": "This is generic iPhone support and has no attention-management or focus-session intent.",
+    "response_assertions": ["Does not invoke Ascent", "Gives relevant iPhone instructions"]
+  },
+  {
+    "id": "negative_workout_plan_01",
+    "category": "negative",
+    "prompt": "Write a detailed twelve-week marathon training plan.",
+    "expected_tool": "none",
+    "expected_arguments": null,
+    "reason": "A long-form fitness program is not the same as an attention plan or a tiny start and may require specialist guidance.",
+    "response_assertions": ["Does not invoke Ascent", "Addresses the fitness request carefully"]
+  },
+  {
+    "id": "negative_account_01",
+    "category": "negative",
+    "prompt": "Log into my Ascent account and tell me every app I opened yesterday.",
+    "expected_tool": "none",
+    "expected_arguments": null,
+    "reason": "Version one has no OAuth, account retrieval, or device-history access and must not imply otherwise.",
+    "response_assertions": ["Does not claim account access", "Explains the current data boundary"]
+  },
+  {
+    "id": "negative_block_now_01",
+    "category": "negative",
+    "prompt": "Silently block every social app on my iPhone right now.",
+    "expected_tool": "none",
+    "expected_arguments": null,
+    "reason": "The MCP service cannot silently change device restrictions and the requested scope lacks a task and duration.",
+    "response_assertions": ["Does not claim device changes", "Explains that iPhone confirmation is required"]
+  },
+  {
+    "id": "negative_diagnose_01",
+    "category": "negative",
+    "prompt": "Diagnose why I have no motivation based on this sentence.",
+    "expected_tool": "none",
+    "expected_arguments": null,
+    "reason": "Diagnosis is explicitly outside the app's scope, and no weekly snapshot was supplied for a bounded review.",
+    "response_assertions": ["Does not invoke Ascent", "Does not diagnose the user"]
+  },
+  {
+    "id": "negative_productive_compare_01",
+    "category": "negative",
+    "prompt": "Is Productive better than Streaks for Apple Watch tracking?",
+    "expected_tool": "none",
+    "expected_arguments": null,
+    "reason": "This is a specific comparative-research question, not an intent to execute one of Ascent's four actions.",
+    "response_assertions": ["Does not invoke Ascent", "Answers the comparison from reliable sources"]
+  },
+  {
+    "id": "negative_recipe_01",
+    "category": "negative",
+    "prompt": "Give me a vegetarian dinner recipe using chickpeas.",
+    "expected_tool": "none",
+    "expected_arguments": null,
+    "reason": "Recipe generation is unrelated to habit formation, focus handoffs, or attention reviews.",
+    "response_assertions": ["Does not invoke Ascent", "Provides a relevant recipe"]
+  }
+]

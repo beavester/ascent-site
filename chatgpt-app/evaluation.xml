@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<evaluation name="Ascent ChatGPT app deterministic tool checks" version="1.0">
+  <qa_pair id="attention-plan-fallback">
+    <question>Call ascent_create_attention_plan with goal "study biology", distracting_behavior "open Reddit", and available_minutes 30. What is the exact value of status?</question>
+    <answer>ready</answer>
+  </qa_pair>
+  <qa_pair id="two-minute-status">
+    <question>Call ascent_create_two_minute_action with action "clean my kitchen". What is the exact value of status?</question>
+    <answer>ready</answer>
+  </qa_pair>
+  <qa_pair id="focus-boundary">
+    <question>Call ascent_start_focus with goal "write my introduction", duration_minutes 60, and distracting_apps ["Reddit"]. What is the exact value of status?</question>
+    <answer>handoff_required</answer>
+  </qa_pair>
+  <qa_pair id="focus-device-action">
+    <question>Call ascent_start_focus with goal "read", duration_minutes 25. Has the iPhone focus session already started? Answer exactly yes or no.</question>
+    <answer>no</answer>
+  </qa_pair>
+  <qa_pair id="review-completion">
+    <question>Call ascent_review_attention with 3 completed_actions, 7 planned_actions, 2 focus_sessions, 50 total_focus_minutes, 41 distraction_openings, and 38 motivation_battery_avg. What integer completion_rate_percent is returned?</question>
+    <answer>43</answer>
+  </qa_pair>
+  <qa_pair id="review-session-average">
+    <question>Call ascent_review_attention with 3 completed_actions, 7 planned_actions, 2 focus_sessions, 50 total_focus_minutes, 41 distraction_openings, and 38 motivation_battery_avg. What integer focus_minutes_per_session is returned?</question>
+    <answer>25</answer>
+  </qa_pair>
+  <qa_pair id="review-data-boundary">
+    <question>Does ascent_review_attention retrieve an Ascent account when it analyzes a supplied snapshot? Answer exactly yes or no.</question>
+    <answer>no</answer>
+  </qa_pair>
+  <qa_pair id="handoff-host">
+    <question>After any successful Ascent tool call, what exact hostname begins the returned first-party handoff_url?</question>
+    <answer>habitbuilding.xyz</answer>
+  </qa_pair>
+  <qa_pair id="official-product-name">
+    <question>What exact product_name is returned by every Ascent tool?</question>
+    <answer>Ascent: Habit Builder &amp; Focus</answer>
+  </qa_pair>
+  <qa_pair id="tool-count">
+    <question>How many tools are returned by tools/list on the Ascent MCP endpoint? Answer with one integer.</question>
+    <answer>4</answer>
+  </qa_pair>
+</evaluation>
