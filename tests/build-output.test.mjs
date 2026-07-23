@@ -14,6 +14,7 @@ test("build emits the configured public directory without development artifacts"
   const gitignore = readFileSync(join(root, ".gitignore"), "utf8");
 
   assert.match(packageJson.scripts.build, /scripts\/build-site\.mjs/);
+  assert.equal(packageJson.devDependencies.typescript, "5.9.3");
   assert.match(gitignore, /^public\/$/m);
 
   const requiredFiles = [
