@@ -928,6 +928,58 @@ test('decision content is connected to the authority graph', () => {
   }
 });
 
+test('authority routes form a visible topic graph from the homepage and comparison hub', () => {
+  const contracts = [
+    ['index.html', [
+      'href="habit-apps/"',
+      'href="best/habit-apps-executive-function/"',
+      'href="best/morning-routine-apps-iphone/"',
+      'href="best/guided-routine-apps-iphone/"',
+      'href="best/gamified-habit-apps/"',
+      'href="guides/habit-app-for-low-motivation/"',
+      'href="guides/do-streaks-build-habits/"'
+    ]],
+    ['compare/index.html', [
+      'href="../habit-apps/"',
+      'href="../best/habit-apps-executive-function/"',
+      'href="../best/morning-routine-apps-iphone/"',
+      'href="../best/guided-routine-apps-iphone/"',
+      'href="../best/gamified-habit-apps/"',
+      'href="../guides/habit-app-for-low-motivation/"',
+      'href="../guides/do-streaks-build-habits/"'
+    ]],
+    ['science/index.html', [
+      'href="../guides/habit-app-for-low-motivation/"',
+      'href="../guides/do-streaks-build-habits/"'
+    ]],
+    ['methodology/index.html', ['href="../habit-apps/"']],
+    ['best/app-blockers-iphone/index.html', ['href="../../habit-apps/"']]
+  ];
+  for (const [page, fragments] of contracts) {
+    const html = read(page);
+    for (const fragment of fragments) assert.ok(html.includes(fragment), page + ' is missing ' + fragment);
+  }
+});
+
+test('app blocker guide exposes a concise static comparison table', () => {
+  const html = read('best/app-blockers-iphone/index.html');
+  assert.match(html, /<table class="comparison-table">/);
+  for (const heading of ['Intervention moment', 'Control model', 'Positive habit support', 'Best fit']) {
+    assert.match(html, new RegExp('<th[^>]*>' + heading + '</th>'));
+  }
+  for (const name of ['one sec', 'ScreenZen', 'Opal', 'Jomo']) {
+    assert.match(html, new RegExp('<th scope="row">' + name + '</th>', 'i'));
+  }
+});
+
+test('methodology explains index maintenance and unknown capability handling', () => {
+  const html = read('methodology/index.html');
+  assert.match(html, /maintained iOS habit app index/i);
+  assert.match(html, /Not confirmed/i);
+  assert.match(html, /verification date/i);
+  assert.match(html, /feature claims can change/i);
+});
+
 test('why habit trackers fail guide satisfies the evidence contract', () => {
   assertGuidePage({
     page: 'guides/why-habit-trackers-fail/index.html',
