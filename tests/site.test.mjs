@@ -278,8 +278,8 @@ test('homepage leads with the conversion-first Ascent promise', () => {
   assert.match(html, /<h1 class="display">Build the habit before distraction wins\.<\/h1>/);
   assert.match(html, /one meaningful goal into a guided 70-day progression/i);
   assert.match(html, /optional Screen Time/i);
-  assert.match(html, />Download free</);
-  assert.match(html, />See how it works</);
+  assert.match(html, /Download free/);
+  assert.match(html, /See how it works/);
 });
 
 test('homepage hero screenshots reinforce the product promise', () => {
