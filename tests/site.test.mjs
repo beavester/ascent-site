@@ -20,20 +20,30 @@ const authorityRoutes = [
   ['ascent/index.html', 'https://habitbuilding.xyz/ascent/'],
   ['methodology/index.html', 'https://habitbuilding.xyz/methodology/']
 ];
+const indexRoutes = [
+  ['habit-apps/index.html', 'https://habitbuilding.xyz/habit-apps/']
+];
 const decisionRoutes = [
   ['best/app-blockers-iphone/index.html', 'https://habitbuilding.xyz/best/app-blockers-iphone/'],
-  ['best/habit-tracker-with-app-blocking/index.html', 'https://habitbuilding.xyz/best/habit-tracker-with-app-blocking/']
+  ['best/habit-tracker-with-app-blocking/index.html', 'https://habitbuilding.xyz/best/habit-tracker-with-app-blocking/'],
+  ['best/habit-apps-executive-function/index.html', 'https://habitbuilding.xyz/best/habit-apps-executive-function/'],
+  ['best/morning-routine-apps-iphone/index.html', 'https://habitbuilding.xyz/best/morning-routine-apps-iphone/'],
+  ['best/guided-routine-apps-iphone/index.html', 'https://habitbuilding.xyz/best/guided-routine-apps-iphone/'],
+  ['best/gamified-habit-apps/index.html', 'https://habitbuilding.xyz/best/gamified-habit-apps/']
 ];
 const guideRoutes = [
   ['guides/why-habit-trackers-fail/index.html', 'https://habitbuilding.xyz/guides/why-habit-trackers-fail/'],
   ['guides/habit-tracker-vs-habit-builder/index.html', 'https://habitbuilding.xyz/guides/habit-tracker-vs-habit-builder/'],
   ['guides/how-to-stop-doomscrolling/index.html', 'https://habitbuilding.xyz/guides/how-to-stop-doomscrolling/'],
   ['guides/two-minute-habit/index.html', 'https://habitbuilding.xyz/guides/two-minute-habit/'],
-  ['guides/how-to-build-a-habit-on-iphone/index.html', 'https://habitbuilding.xyz/guides/how-to-build-a-habit-on-iphone/']
+  ['guides/how-to-build-a-habit-on-iphone/index.html', 'https://habitbuilding.xyz/guides/how-to-build-a-habit-on-iphone/'],
+  ['guides/habit-app-for-low-motivation/index.html', 'https://habitbuilding.xyz/guides/habit-app-for-low-motivation/'],
+  ['guides/do-streaks-build-habits/index.html', 'https://habitbuilding.xyz/guides/do-streaks-build-habits/']
 ];
 const expectedPublicUrls = [
   'https://habitbuilding.xyz/',
   ...authorityRoutes.map(([, canonical]) => canonical),
+  ...indexRoutes.map(([, canonical]) => canonical),
   ...decisionRoutes.map(([, canonical]) => canonical),
   ...guideRoutes.map(([, canonical]) => canonical),
   'https://habitbuilding.xyz/compare/',
@@ -99,6 +109,7 @@ test('every Ascent install link uses Apple\'s canonical product URL', () => {
   const pages = [
     'index.html',
     'ascent/index.html',
+    ...indexRoutes.map(([page]) => page),
     ...decisionRoutes.map(([page]) => page),
     ...guideRoutes.map(([page]) => page),
     'compare/index.html',
@@ -246,7 +257,7 @@ test('comparison page is a dated, canonical, structured article', () => {
   assert.ok(existsSync(join(root, 'compare/index.html')), 'comparison page is missing');
   const html = read('compare/index.html');
   assert.match(html, /<link rel="canonical" href="https:\/\/habitbuilding\.xyz\/compare\/">/);
-  assert.match(html, /Last reviewed July 22, 2026/);
+  assert.match(html, /Last reviewed July 23, 2026/);
   assert.match(html, /"@type"\s*:\s*"Article"/);
   assert.match(html, /"headline"\s*:\s*"18 iPhone habit apps compared honestly"/);
   assert.match(html, /"@type"\s*:\s*"ItemList"/);
@@ -350,7 +361,7 @@ test('authority foundation pages are canonical static documents', () => {
     assert.match(html, /<meta name="description" content="[^"]{100,170}">/);
     assert.ok(html.includes('<link rel="canonical" href="' + canonical + '">'));
     assert.equal((html.match(/<h1\b/gi) || []).length, 1, page + ' needs one H1');
-    assert.match(html, /Updated July 22, 2026|Effective July 22, 2026/);
+    assert.match(html, /Updated July 22, 2026|Effective July (?:22|23), 2026/);
     parseJsonLd(html, page);
   }
 });
@@ -483,6 +494,7 @@ test('key pages contain no missing local href targets', () => {
     'compare/ascent-vs-routinery/index.html',
     'ascent/index.html',
     'methodology/index.html',
+    ...indexRoutes.map(([page]) => page),
     ...decisionRoutes.map(([page]) => page),
     ...guideRoutes.map(([page]) => page),
     'science/index.html',
@@ -516,7 +528,7 @@ function assertDecisionPage(spec) {
   assert.ok(html.includes('<title>' + spec.title + '</title>'));
   assert.ok(html.includes('<link rel="canonical" href="' + spec.canonical + '">'));
   assert.ok(html.includes('<h1>' + spec.h1 + '</h1>'));
-  assert.match(html, /Updated July 22, 2026/);
+  assert.match(html, /Updated July (?:22|23), 2026/);
   assert.match(html, /There is no universally best|There is no single best/i);
   assert.match(html, /document-based editorial research/i);
   assert.match(html, /published by the maker of Ascent/i);
@@ -1234,9 +1246,22 @@ test('sitemap discovers all comparison pages exactly once with current lastmod',
   for (const url of [
     'https://habitbuilding.xyz/',
     'https://habitbuilding.xyz/compare/',
+    'https://habitbuilding.xyz/methodology/',
     'https://habitbuilding.xyz/science/',
-    ...guideRoutes.map(([, canonical]) => canonical)
+    'https://habitbuilding.xyz/habit-apps/',
+    'https://habitbuilding.xyz/best/app-blockers-iphone/',
+    'https://habitbuilding.xyz/best/habit-apps-executive-function/',
+    'https://habitbuilding.xyz/best/morning-routine-apps-iphone/',
+    'https://habitbuilding.xyz/best/guided-routine-apps-iphone/',
+    'https://habitbuilding.xyz/best/gamified-habit-apps/',
+    'https://habitbuilding.xyz/guides/habit-app-for-low-motivation/',
+    'https://habitbuilding.xyz/guides/do-streaks-build-habits/'
   ]) {
+    const matches = entries.filter((entry) => entry.loc === url);
+    assert.equal(matches.length, 1, 'sitemap mismatch for ' + url);
+    assert.equal(matches[0].lastmod, '2026-07-23', 'stale lastmod for ' + url);
+  }
+  for (const url of guideRoutes.slice(0, 5).map(([, canonical]) => canonical)) {
     const matches = entries.filter((entry) => entry.loc === url);
     assert.equal(matches.length, 1, 'sitemap mismatch for ' + url);
     assert.equal(matches[0].lastmod, '2026-07-22', 'stale lastmod for ' + url);
@@ -1255,6 +1280,7 @@ test('all public HTML uses current Ascent duration and App Store identity', () =
     'index.html',
     'ascent/index.html',
     'methodology/index.html',
+    ...indexRoutes.map(([page]) => page),
     ...decisionRoutes.map(([page]) => page),
     ...guideRoutes.map(([page]) => page),
     'compare/index.html',
