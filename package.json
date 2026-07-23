@@ -7,7 +7,7 @@
     "node": ">=22"
   },
   "scripts": {
-    "build": "tsc --noEmit",
+    "build": "tsc --noEmit && node scripts/build-site.mjs",
     "test": "tsx --test tests/*.test.ts tests/*.test.mjs",
     "test:site": "node --test tests/site.test.mjs",
     "verify:mcp": "tsx scripts/verify-mcp.ts"
