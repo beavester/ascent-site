@@ -1,7 +1,11 @@
+import atexit
 import base64
+from functools import partial
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
 import os
 import tempfile
+import threading
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
@@ -10,6 +14,16 @@ from playwright.sync_api import sync_playwright
 BASE_URL = os.environ.get("ASCENT_SITE_URL", "http://127.0.0.1:4173").rstrip("/")
 OUTPUT_DIR = Path(tempfile.gettempdir()) / "ascent-chatgpt-visual"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+if BASE_URL == "http://127.0.0.1:4173":
+    handler = partial(SimpleHTTPRequestHandler, directory=str(Path.cwd()))
+    preview_server = ThreadingHTTPServer(("127.0.0.1", 4173), handler)
+    preview_thread = threading.Thread(
+        target=preview_server.serve_forever,
+        daemon=True,
+    )
+    preview_thread.start()
+    atexit.register(preview_server.shutdown)
 
 envelope = {
     "version": 1,
@@ -34,7 +48,7 @@ fragment = base64.urlsafe_b64encode(
 pages = [
     (
         "/",
-        "Build habits on iPhone. Block the apps that get in the way.",
+        "Build the habit before distraction wins.",
         "home",
     ),
     (
@@ -91,6 +105,34 @@ with sync_playwright() as playwright:
     )
     page.on("pageerror", lambda error: page_errors.append(str(error)))
 
+    def reveal_full_page():
+        page.evaluate(
+            """
+            async () => {
+              document.querySelectorAll('img[loading="lazy"]').forEach(image => {
+                image.loading = 'eager';
+              });
+              const step = Math.max(240, window.innerHeight * 0.7);
+              for (let y = 0; y < document.documentElement.scrollHeight; y += step) {
+                window.scrollTo(0, y);
+                await new Promise(resolve => setTimeout(resolve, 35));
+              }
+              document.querySelectorAll('.reveal').forEach(element => {
+                element.classList.add('in');
+              });
+              window.scrollTo(0, 0);
+              await Promise.all(Array.from(document.images).map(image => {
+                if (image.complete) return Promise.resolve();
+                return new Promise(resolve => {
+                  image.addEventListener('load', resolve, { once: true });
+                  image.addEventListener('error', resolve, { once: true });
+                });
+              }));
+              await new Promise(resolve => setTimeout(resolve, 550));
+            }
+            """
+        )
+
     for path, heading, slug in pages:
         response = page.goto(f"{BASE_URL}{path}", wait_until="networkidle")
         assert response is not None and response.status == 200, path
@@ -99,6 +141,7 @@ with sync_playwright() as playwright:
             "() => document.documentElement.scrollWidth <= "
             "document.documentElement.clientWidth + 1"
         ), f"horizontal overflow on {path}"
+        reveal_full_page()
         page.screenshot(path=str(OUTPUT_DIR / f"{slug}-desktop.png"), full_page=True)
 
     assert page.locator("#plan").is_visible()
@@ -123,6 +166,7 @@ with sync_playwright() as playwright:
             "() => document.documentElement.scrollWidth <= "
             "document.documentElement.clientWidth + 1"
         ), f"mobile horizontal overflow on {path}"
+        reveal_full_page()
         page.screenshot(path=str(OUTPUT_DIR / f"{slug}-mobile.png"), full_page=True)
 
     browser.close()
