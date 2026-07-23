@@ -14,9 +14,9 @@ export interface FocusWindow {
 export interface AttentionPlanInput {
   goal: string;
   distracting_behavior: string;
-  available_minutes?: number;
-  focus_windows?: string[];
-  reminder_style?: ReminderStyle;
+  available_minutes?: number | undefined;
+  focus_windows?: string[] | undefined;
+  reminder_style?: ReminderStyle | undefined;
 }
 
 export interface AttentionPlan {
@@ -33,8 +33,8 @@ export interface AttentionPlan {
 
 export interface TwoMinuteActionInput {
   action: string;
-  obstacle?: string;
-  context?: string;
+  obstacle?: string | undefined;
+  context?: string | undefined;
 }
 
 export interface TwoMinuteAction {
@@ -50,7 +50,7 @@ export interface TwoMinuteAction {
 export interface FocusSessionInput {
   goal: string;
   duration_minutes: number;
-  distracting_apps?: string[];
+  distracting_apps?: string[] | undefined;
 }
 
 export interface FocusSession {
@@ -78,8 +78,8 @@ export interface AttentionReviewInput {
   total_focus_minutes: number;
   distraction_openings: number;
   motivation_battery_avg: number;
-  failure_windows?: string[];
-  reflection_note?: string;
+  failure_windows?: string[] | undefined;
+  reflection_note?: string | undefined;
 }
 
 export interface AttentionReview {
