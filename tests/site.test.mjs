@@ -178,6 +178,61 @@ test('habit app data contains 19 sourced records with controlled capability valu
   }
 });
 
+test('habit app index renders every sourced app as static citation-ready content', () => {
+  const page = 'habit-apps/index.html';
+  const canonical = 'https://habitbuilding.xyz/habit-apps/';
+  const apps = JSON.parse(read('data/habit-apps.json'));
+  assert.ok(existsSync(join(root, page)), 'habit app index is missing');
+  const html = read(page);
+  assert.match(html, /<title>iOS Habit App Index: 19 Apps Compared by Features \| HabitBuilding\.xyz<\/title>/);
+  assert.ok(html.includes('<link rel="canonical" href="' + canonical + '">'));
+  assert.equal((html.match(/<h1\b/gi) || []).length, 1);
+  assert.match(html, /<h1>iOS Habit App Index: 19 apps compared by documented features<\/h1>/);
+  assert.match(html, /There is no universally best habit app/i);
+  assert.match(html, /Document-based editorial research/i);
+  assert.match(html, /Last verified July 23, 2026/i);
+  assert.match(html, /HabitBuilding\.xyz is published by the maker of Ascent/i);
+  assert.match(html, /Not confirmed means/i);
+  assert.equal((html.match(/class="app-record"/g) || []).length, 19);
+
+  for (const app of apps) {
+    assert.ok(html.includes(`data-app-slug="${app.slug}"`), `missing static record for ${app.name}`);
+    assert.ok(html.includes(`>${app.name.replaceAll('&', '&amp;')}<`), `missing visible name for ${app.name}`);
+    for (const source of app.sources) assert.ok(html.includes(source.url.replaceAll('&', '&amp;')));
+  }
+
+  const itemList = parseJsonLd(html, page)
+    .find((entry) => entry['@type'] === 'ItemList');
+  assert.ok(itemList, 'habit app index needs ItemList JSON-LD');
+  assert.deepEqual(
+    itemList.itemListElement.map((item) => item.name),
+    apps.map((app) => app.name)
+  );
+  for (const type of ['Article', 'BreadcrumbList', 'FAQPage', 'SoftwareApplication']) {
+    assert.ok(parseJsonLd(html, page).some((entry) => entry['@type'] === type), `missing ${type}`);
+  }
+  assert.equal((html.match(/<details\b/g) || []).length, 3);
+  assert.match(html, /href="\.\.\/methodology\/"/);
+  assert.match(html, /href="\.\.\/compare\/"/);
+  assert.match(html, /href="\.\.\/ascent\/"/);
+});
+
+test('habit app index filter is progressive, private, and accessible', () => {
+  const html = read('habit-apps/index.html');
+  const css = read('habit-apps/index.css');
+  const js = read('habit-apps/index.js');
+  assert.match(html, /<input[^>]+id="app-search"[^>]+aria-controls="app-ledger"/);
+  assert.match(html, /<select[^>]+id="category-filter"[^>]+aria-controls="app-ledger"/);
+  assert.match(html, /id="filter-status"[^>]+aria-live="polite"/);
+  assert.match(html, /<button[^>]+id="reset-filters"[^>]*>Reset filters<\/button>/);
+  assert.match(css, /min-height:\s*44px/);
+  assert.match(css, /@media\s*\(max-width:\s*720px\)[\s\S]*\.capability-grid/);
+  assert.match(css, /:focus-visible/);
+  assert.match(js, /\.hidden\s*=/);
+  assert.match(js, /resultCount/);
+  assert.doesNotMatch(js, /gtag|fetch|XMLHttpRequest|sendBeacon|localStorage|sessionStorage/);
+});
+
 test('comparison page contains every named competitor and category', () => {
   assert.ok(existsSync(join(root, 'compare/index.html')), 'comparison page is missing');
   const html = read('compare/index.html');
