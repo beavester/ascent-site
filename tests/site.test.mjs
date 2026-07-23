@@ -272,12 +272,59 @@ test('comparison page is a dated, canonical, structured article', () => {
   assert.ok(html.includes(`"downloadUrl": "${canonicalAppStoreUrl}"`));
 });
 
-test('homepage owns the iPhone habit-builder and app-blocker intent', () => {
+test('homepage leads with the conversion-first Ascent promise', () => {
   const html = read('index.html');
   assert.match(html, /<title>Ascent: iPhone Habit Builder &amp; App Blocker<\/title>/);
-  assert.match(html, /<h1 class="display">Build habits on iPhone\. Block the apps that get in the way\.<\/h1>/);
-  assert.match(html, /70-day daily plan/i);
+  assert.match(html, /<h1 class="display">Build the habit before distraction wins\.<\/h1>/);
+  assert.match(html, /one meaningful goal into a guided 70-day progression/i);
   assert.match(html, /optional Screen Time/i);
+  assert.match(html, /Download free/);
+  assert.match(html, /See how it works/);
+});
+
+test('homepage hero screenshots reinforce the product promise', () => {
+  const html = read('index.html');
+  const hero = html.match(/<section class="hero">[\s\S]*?<\/section>/)?.[0] ?? '';
+  assert.match(hero, /screen-delay\.webp/);
+  assert.match(hero, /screen-curriculum\.webp/);
+  assert.match(hero, /screen-widgets\.webp/);
+  assert.doesNotMatch(hero, /screen-today\.webp/);
+});
+
+test('homepage explains the one-goal and supporting-habits model', () => {
+  const html = read('index.html');
+  assert.match(html, /Ascent centers one meaningful goal/i);
+  assert.match(html, /several supporting habits/i);
+  assert.match(html, /one next step prominent/i);
+  assert.doesNotMatch(html, /one goal, one curriculum, one daily action/i);
+});
+
+test('homepage presents the four connected mechanisms without AI-first copy', () => {
+  const html = read('index.html');
+  for (const phrase of [
+    'Know what to do today',
+    'See it before the feed',
+    'Pause the distracting default',
+    'Shrink the task instead of quitting'
+  ]) {
+    assert.ok(html.includes(phrase), 'homepage is missing mechanism: ' + phrase);
+  }
+  assert.doesNotMatch(html, /AI-generated daily plan|AI-generated curriculum/i);
+});
+
+test('homepage navigation prioritizes the product journey', () => {
+  const html = read('index.html');
+  const header = html.match(/<header id="hdr">[\s\S]*?<\/header>/)?.[0] ?? '';
+  for (const label of ['How it works', 'Screens', 'Compare', 'Research', 'Get the App']) {
+    assert.ok(header.includes(label), 'header is missing ' + label);
+  }
+  assert.doesNotMatch(header, />Blog</);
+});
+
+test('homepage states the app-index and alternative counts without drift', () => {
+  const html = read('index.html');
+  assert.match(html, /maintained 19-app index, including Ascent/i);
+  assert.match(html, /18 specialist alternatives/i);
 });
 
 test('comparison hub owns the best iPhone habit-app intent', () => {
