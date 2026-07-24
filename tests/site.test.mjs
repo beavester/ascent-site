@@ -102,13 +102,44 @@ test('homepage states the verified trust boundaries', () => {
 test('homepage declares the exact official Ascent app identity', () => {
   const html = read('index.html');
   assert.match(html, /<meta name="apple-itunes-app" content="app-id=6756843194, app-argument=https:\/\/habitbuilding\.xyz\/">/);
-  assert.match(html, /"@id"\s*:\s*"https:\/\/habitbuilding\.xyz\/#ascent-app"/);
-  assert.match(html, /"name"\s*:\s*"Ascent: Habit Builder & Focus"/);
-  assert.match(html, /"propertyID"\s*:\s*"Apple App Store ID"/);
-  assert.match(html, /"value"\s*:\s*"6756843194"/);
-  assert.ok(html.includes(`"downloadUrl": "${canonicalAppStoreUrl}"`));
-  assert.ok(html.includes(`"sameAs": ["${canonicalAppStoreUrl}"]`));
+  const app = parseJsonLd(html, 'index.html').find((item) => item['@id'] === 'https://habitbuilding.xyz/#ascent-app');
+  assert.ok(app, 'homepage needs canonical SoftwareApplication schema');
+  assert.equal(app.name, 'Ascent: Habit Builder & Focus');
+  assert.equal(app.identifier.propertyID, 'Apple App Store ID');
+  assert.equal(app.identifier.value, '6756843194');
+  assert.equal(app.downloadUrl, canonicalAppStoreUrl);
+  assert.deepEqual(app.sameAs, [canonicalAppStoreUrl]);
+  const publisher = parseJsonLd(html, 'index.html').find((item) => item['@id'] === 'https://habitbuilding.xyz/#ascent-publisher');
+  assert.equal(publisher?.founder?.name, 'Michael Beaver');
   assert.match(html, />Official App Store listing<\/a>/);
+});
+
+test('versioned product facts drive the canonical Ascent entity and plan boundaries', () => {
+  const facts = JSON.parse(read('data/ascent-product.json'));
+  assert.equal(facts.schemaVersion, '2026-07-24');
+  assert.equal(facts.identity.appStoreId, '6756843194');
+  assert.equal(facts.identity.appStoreUrl, canonicalAppStoreUrl);
+  assert.deepEqual(facts.availability.platforms, ['iPhone']);
+  assert.equal(facts.productModel.programLengthDays, 70);
+  assert.deepEqual(facts.plans.map((plan) => plan.habitLimit), [
+    'Up to 3 habits',
+    'Up to 15 habits',
+    'Unlimited habits'
+  ]);
+
+  const guide = read('ascent/index.html');
+  for (const phrase of [
+    'Plans and availability',
+    'Up to 3 habits',
+    'Up to 15 habits',
+    'Unlimited habits',
+    'View the versioned product facts record'
+  ]) {
+    assert.ok(guide.includes(phrase), `canonical guide is missing ${phrase}`);
+  }
+  const app = parseJsonLd(guide, 'ascent/index.html').find((item) => item['@id'] === 'https://habitbuilding.xyz/#ascent-app');
+  assert.equal(app?.operatingSystem, facts.availability.minimumOperatingSystem);
+  assert.equal(app?.url, facts.identity.canonicalProductPage);
 });
 
 test('every Ascent install link uses Apple\'s canonical product URL', () => {
@@ -178,7 +209,7 @@ test('habit app data contains 19 sourced records with controlled capability valu
     assert.ok(app.mainLimitation.length >= 30, `${app.name} needs a specific limitation`);
     assert.ok(Array.isArray(app.platforms) && app.platforms.includes('iPhone'));
     assert.ok(pricingModels.has(app.pricingModel), `${app.name} has an invalid pricing model`);
-    assert.equal(app.verifiedDate, '2026-07-23');
+    assert.equal(app.verifiedDate, app.slug === 'ascent' ? '2026-07-24' : '2026-07-23');
     assert.equal(app.researchMode, 'document-based editorial research');
     assert.deepEqual(
       Object.keys(app.capabilities).sort(),
@@ -207,7 +238,8 @@ test('habit app index renders every sourced app as static citation-ready content
   assert.match(html, /<h1>iOS Habit App Index: 19 apps compared by documented features<\/h1>/);
   assert.match(html, /There is no universally best habit app/i);
   assert.match(html, /Document-based editorial research/i);
-  assert.match(html, /Last verified July 23, 2026/i);
+  assert.match(html, /Last verified July 24, 2026/i);
+  assert.match(html, /Records are listed alphabetically, not ranked/i);
   assert.match(html, /HabitBuilding\.xyz is published by the maker of Ascent/i);
   assert.match(html, /Not confirmed means/i);
   assert.equal((html.match(/class="app-record"/g) || []).length, 19);
@@ -221,9 +253,10 @@ test('habit app index renders every sourced app as static citation-ready content
   const itemList = parseJsonLd(html, page)
     .find((entry) => entry['@type'] === 'ItemList');
   assert.ok(itemList, 'habit app index needs ItemList JSON-LD');
+  assert.equal(itemList.itemListOrder, 'https://schema.org/ItemListUnordered');
   assert.deepEqual(
     itemList.itemListElement.map((item) => item.name),
-    apps.map((app) => app.name)
+    apps.map((app) => app.name).sort((left, right) => left.localeCompare(right))
   );
   for (const type of ['Article', 'BreadcrumbList', 'FAQPage', 'SoftwareApplication']) {
     assert.ok(parseJsonLd(html, page).some((entry) => entry['@type'] === type), `missing ${type}`);
@@ -263,13 +296,14 @@ test('comparison page is a dated, canonical, structured article', () => {
   assert.ok(existsSync(join(root, 'compare/index.html')), 'comparison page is missing');
   const html = read('compare/index.html');
   assert.match(html, /<link rel="canonical" href="https:\/\/habitbuilding\.xyz\/compare\/">/);
-  assert.match(html, /Last reviewed July 23, 2026/);
+  assert.match(html, /Last reviewed July 24, 2026/);
   assert.match(html, /"@type"\s*:\s*"Article"/);
   assert.match(html, /"headline"\s*:\s*"18 iPhone habit apps compared honestly"/);
   assert.match(html, /"@type"\s*:\s*"ItemList"/);
   assert.match(html, /"@type"\s*:\s*"SoftwareApplication"/);
   assert.match(html, /"@id"\s*:\s*"https:\/\/habitbuilding\.xyz\/#ascent-app"/);
-  assert.ok(html.includes(`"downloadUrl": "${canonicalAppStoreUrl}"`));
+  const app = parseJsonLd(html, 'compare/index.html').find((item) => item['@id'] === 'https://habitbuilding.xyz/#ascent-app');
+  assert.equal(app?.downloadUrl, canonicalAppStoreUrl);
 });
 
 test('homepage leads with the conversion-first Ascent promise', () => {
@@ -414,7 +448,7 @@ test('authority foundation pages are canonical static documents', () => {
     assert.match(html, /<meta name="description" content="[^"]{100,170}">/);
     assert.ok(html.includes('<link rel="canonical" href="' + canonical + '">'));
     assert.equal((html.match(/<h1\b/gi) || []).length, 1, page + ' needs one H1');
-    assert.match(html, /Updated July (?:22|23), 2026|Effective July (?:22|23), 2026/);
+    assert.match(html, /Updated July (?:22|23|24), 2026|Effective July (?:22|23|24), 2026/);
     parseJsonLd(html, page);
   }
 });
@@ -639,7 +673,8 @@ function parseJsonLd(html, page) {
   assert.ok(blocks.length > 0, page + ' has no JSON-LD');
   return blocks.flatMap((match) => {
     const value = JSON.parse(match[1]);
-    return Array.isArray(value) ? value : [value];
+    const entries = Array.isArray(value) ? value : [value];
+    return entries.flatMap((entry) => Array.isArray(entry['@graph']) ? entry['@graph'] : [entry]);
   });
 }
 
@@ -723,7 +758,7 @@ function assertAuthorityIntentPage(spec) {
   assert.ok(html.includes('<link rel="canonical" href="' + spec.canonical + '">'));
   assert.ok(html.includes('<h1>' + spec.h1 + '</h1>'));
   assert.equal((html.match(/<h1\b/gi) || []).length, 1, spec.page + ' needs one H1');
-  assert.match(html, /Updated July 23, 2026/);
+  assert.match(html, /Updated July 24, 2026/);
   assert.match(html, /document-based editorial research/i);
   assert.match(html, /published by the maker of Ascent/i);
   assert.match(html, /There is no universally best|There is no single best|not a universal/i);
@@ -741,7 +776,7 @@ function assertAuthorityIntentPage(spec) {
   }
   if (spec.kind === 'decision') assert.ok(entities.some((item) => item['@type'] === 'ItemList'));
   const article = entities.find((item) => item['@type'] === 'Article');
-  assert.equal(article.dateModified, '2026-07-23');
+  assert.equal(article.dateModified, '2026-07-24');
   assert.equal(article.mainEntityOfPage, spec.canonical);
   const faq = entities.find((item) => item['@type'] === 'FAQPage');
   const visibleFaqs = [...html.matchAll(/<details\b[^>]*>[\s\S]*?<summary>([^<]+)<\/summary>[\s\S]*?<p>([^<]+)<\/p>[\s\S]*?<\/details>/g)]
@@ -1354,6 +1389,19 @@ test('Opal comparison satisfies the editorial contract', () => {
 test('sitemap discovers all comparison pages exactly once with current lastmod', () => {
   const entries = parseSitemapEntries(read('sitemap.xml'));
   const urls = entries.map((entry) => entry.loc);
+  const productFactUpdatedUrls = new Set([
+    'https://habitbuilding.xyz/',
+    'https://habitbuilding.xyz/ascent/',
+    'https://habitbuilding.xyz/methodology/',
+    'https://habitbuilding.xyz/habit-apps/',
+    'https://habitbuilding.xyz/best/habit-apps-executive-function/',
+    'https://habitbuilding.xyz/best/morning-routine-apps-iphone/',
+    'https://habitbuilding.xyz/best/guided-routine-apps-iphone/',
+    'https://habitbuilding.xyz/best/gamified-habit-apps/',
+    'https://habitbuilding.xyz/guides/habit-app-for-low-motivation/',
+    'https://habitbuilding.xyz/guides/do-streaks-build-habits/',
+    'https://habitbuilding.xyz/compare/'
+  ]);
   assert.equal(entries.length, expectedPublicUrls.length);
   assert.equal(urls.length, expectedPublicUrls.length);
   assert.equal(new Set(urls).size, urls.length);
@@ -1384,7 +1432,7 @@ test('sitemap discovers all comparison pages exactly once with current lastmod',
   ]) {
     const matches = entries.filter((entry) => entry.loc === url);
     assert.equal(matches.length, 1, 'sitemap mismatch for ' + url);
-    assert.equal(matches[0].lastmod, '2026-07-23', 'stale lastmod for ' + url);
+    assert.equal(matches[0].lastmod, productFactUpdatedUrls.has(url) ? '2026-07-24' : '2026-07-23', 'stale lastmod for ' + url);
   }
   for (const url of guideRoutes.slice(0, 5).map(([, canonical]) => canonical)) {
     const matches = entries.filter((entry) => entry.loc === url);

@@ -1,9 +1,22 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  ascentOrganizationSchema,
+  ascentSoftwareSchema,
+  assertAscentProductFacts
+} from './ascent-product-facts.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const appStore = 'https://apps.apple.com/us/app/ascent-habit-builder-focus/id6756843194';
+const product = assertAscentProductFacts();
+const appStore = product.identity.appStoreUrl;
+const [verificationYear, verificationMonth, verificationDay] = product.lastVerified.split('-').map(Number);
+const displayLastVerified = new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+  timeZone: 'UTC'
+}).format(new Date(Date.UTC(verificationYear, verificationMonth - 1, verificationDay)));
 
 const pages = [
   {
@@ -326,14 +339,18 @@ function renderPage(page) {
   const schemas = [
     {
       '@context': 'https://schema.org',
+      ...ascentOrganizationSchema(product)
+    },
+    {
+      '@context': 'https://schema.org',
       '@type': 'Article',
       headline: page.h1,
       description: page.description,
       datePublished: '2026-07-23',
-      dateModified: '2026-07-23',
+      dateModified: product.lastVerified,
       mainEntityOfPage: page.canonical,
-      author: { '@type': 'Organization', name: 'HabitBuilding.xyz', url: 'https://habitbuilding.xyz/' },
-      publisher: { '@type': 'Organization', name: 'HabitBuilding.xyz', url: 'https://habitbuilding.xyz/' }
+      author: { '@id': 'https://habitbuilding.xyz/#ascent-publisher' },
+      publisher: { '@id': 'https://habitbuilding.xyz/#ascent-publisher' }
     },
     {
       '@context': 'https://schema.org',
@@ -355,15 +372,7 @@ function renderPage(page) {
     },
     {
       '@context': 'https://schema.org',
-      '@type': 'SoftwareApplication',
-      '@id': 'https://habitbuilding.xyz/#ascent-app',
-      name: 'Ascent: Habit Builder & Focus',
-      operatingSystem: 'iOS',
-      applicationCategory: 'LifestyleApplication',
-      url: 'https://habitbuilding.xyz/ascent/',
-      downloadUrl: appStore,
-      sameAs: [appStore],
-      identifier: { '@type': 'PropertyValue', propertyID: 'Apple App Store ID', value: '6756843194' }
+      ...ascentSoftwareSchema(product)
     }
   ];
   if (page.kind === 'decision') {
@@ -446,7 +455,7 @@ ${schemaHtml}
     <span class="kicker">${escapeHtml(page.kicker)}</span>
     <h1>${escapeHtml(page.h1)}</h1>
     <p class="lede">${escapeHtml(page.lede)}</p>
-    <p class="review-date"><time datetime="2026-07-23">Updated July 23, 2026</time></p>
+    <p class="review-date"><time datetime="${product.lastVerified}">Updated ${displayLastVerified}</time></p>
   </div>
 </section>
 
