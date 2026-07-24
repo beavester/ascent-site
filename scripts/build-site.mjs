@@ -32,6 +32,7 @@ const publicDirectories = [
   "habit-apps",
   "img",
   "methodology",
+  "pebbo",
   "science",
 ];
 
