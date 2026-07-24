@@ -11,6 +11,7 @@
     "build": "npm run render:content && tsc --noEmit && node scripts/build-site.mjs",
     "test": "npm run render:content && tsx --test tests/*.test.ts tests/*.test.mjs",
     "test:site": "node --test tests/site.test.mjs",
+    "verify:live-discovery": "node scripts/verify-live-discovery-contract.mjs",
     "verify:mcp": "tsx scripts/verify-mcp.ts"
   },
   "dependencies": {

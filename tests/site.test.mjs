@@ -426,6 +426,26 @@ test('every sitemap HTML document declares its own canonical URL', () => {
   }
 });
 
+test('every sitemap HTML document permits indexing', () => {
+  const xml = read('sitemap.xml');
+  const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+
+  for (const canonical of urls) {
+    const { pathname } = new URL(canonical);
+    const page = pathname === '/'
+      ? 'index.html'
+      : pathname.endsWith('/')
+        ? pathname.slice(1) + 'index.html'
+        : pathname.slice(1);
+    const html = read(page);
+    assert.doesNotMatch(
+      html,
+      /<meta\b[^>]*(?:name=["'](?:robots|googlebot)["'][^>]*content=["'][^"']*\bnoindex\b|content=["'][^"']*\bnoindex\b[^"']*["'][^>]*name=["'](?:robots|googlebot)["'])[^>]*>/i,
+      page + ' must not opt out of indexing while listed in sitemap.xml',
+    );
+  }
+});
+
 test('blog post is present in static markup', () => {
   const html = read('blog/index.html');
   assert.match(html, /<div class="post-list"[\s\S]*href="youre-not-unmotivated\/"/);
@@ -595,6 +615,17 @@ test('IndexNow support contains a valid root key and safe submission utility', (
   assert.match(script, /api\.indexnow\.org\/indexnow/);
   assert.match(script, /https:\/\/habitbuilding\.xyz\//);
   assert.match(script, /process\.argv\.slice\(2\)/);
+});
+
+test('post-deploy discovery verifier checks the public indexing contract', () => {
+  const script = read('scripts/verify-live-discovery-contract.mjs');
+  assert.match(script, /https:\/\/habitbuilding\.xyz/);
+  assert.match(script, /robots\.txt/);
+  assert.match(script, /sitemap\.xml/);
+  assert.match(script, /redirect: 'manual'/);
+  assert.match(script, /x-robots-tag/);
+  assert.match(script, /marked noindex/);
+  assert.match(script, /canonical !== url/);
 });
 
 test('secondary navigation points to the live homepage workflow section', () => {
