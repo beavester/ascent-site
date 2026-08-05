@@ -1,8 +1,15 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  ascentIndexRecord,
+  ascentOrganizationSchema,
+  ascentSoftwareSchema,
+  assertAscentProductFacts
+} from './ascent-product-facts.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const product = assertAscentProductFacts();
 const capabilityKeys = [
   ['tracking', 'Habit tracking'],
   ['guidedRoutines', 'Guided routines'],
@@ -94,12 +101,17 @@ const renderApp = (app, index) => {
 };
 
 export function renderHabitAppIndex(rawApps) {
-  const apps = validateApps(rawApps);
+  const apps = rawApps.map((app) => ({ ...app, sources: [...app.sources] }));
+  const ascentPosition = apps.findIndex((app) => app.slug === 'ascent');
+  if (ascentPosition < 0) throw new Error('Missing Ascent product record');
+  Object.assign(apps[ascentPosition], ascentIndexRecord(product));
+  validateApps(apps);
+  apps.sort((left, right) => left.name.localeCompare(right.name));
   const itemList = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: 'iOS Habit App Index',
-    itemListOrder: 'https://schema.org/ItemListOrderAscending',
+    itemListOrder: 'https://schema.org/ItemListUnordered',
     numberOfItems: apps.length,
     itemListElement: apps.map((app, index) => ({
       '@type': 'ListItem',
@@ -114,10 +126,10 @@ export function renderHabitAppIndex(rawApps) {
     headline: 'iOS Habit App Index: 19 apps compared by documented features',
     description: 'A maintained, source-linked index of iPhone habit trackers, routine apps, gamified systems, and app blockers.',
     datePublished: '2026-07-23',
-    dateModified: '2026-07-23',
+    dateModified: product.lastVerified,
     mainEntityOfPage: 'https://habitbuilding.xyz/habit-apps/',
-    author: { '@type': 'Organization', name: 'HabitBuilding.xyz', url: 'https://habitbuilding.xyz/' },
-    publisher: { '@type': 'Organization', name: 'HabitBuilding.xyz', url: 'https://habitbuilding.xyz/' }
+    author: { '@id': 'https://habitbuilding.xyz/#ascent-publisher' },
+    publisher: { '@id': 'https://habitbuilding.xyz/#ascent-publisher' }
   };
   const breadcrumb = {
     '@context': 'https://schema.org',
@@ -157,18 +169,13 @@ export function renderHabitAppIndex(rawApps) {
       }
     ]
   };
+  const publisher = {
+    '@context': 'https://schema.org',
+    ...ascentOrganizationSchema(product)
+  };
   const ascent = {
     '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    '@id': 'https://habitbuilding.xyz/#ascent-app',
-    name: 'Ascent: Habit Builder & Focus',
-    alternateName: 'Ascent',
-    applicationCategory: 'ProductivityApplication',
-    operatingSystem: 'iOS 15.1 or later',
-    url: 'https://habitbuilding.xyz/ascent/',
-    downloadUrl: 'https://apps.apple.com/us/app/ascent-habit-builder-focus/id6756843194',
-    sameAs: ['https://apps.apple.com/us/app/ascent-habit-builder-focus/id6756843194'],
-    identifier: { '@type': 'PropertyValue', propertyID: 'Apple App Store ID', value: '6756843194' }
+    ...ascentSoftwareSchema(product)
   };
 
   return `<!DOCTYPE html>
@@ -199,6 +206,7 @@ export function renderHabitAppIndex(rawApps) {
 <script type="application/ld+json">${jsonLd(breadcrumb)}</script>
 <script type="application/ld+json">${jsonLd(itemList)}</script>
 <script type="application/ld+json">${jsonLd(faq)}</script>
+<script type="application/ld+json">${jsonLd(publisher)}</script>
 <script type="application/ld+json">${jsonLd(ascent)}</script>
 <script defer src="index.js"></script>
 </head>
@@ -226,7 +234,8 @@ export function renderHabitAppIndex(rawApps) {
       <p class="kicker">Maintained reference · Document-based editorial research</p>
       <h1>iOS Habit App Index: 19 apps compared by documented features</h1>
       <p class="lede">There is no universally best habit app. The useful choice depends on whether you need a record, a routine guide, an emotional reward loop, an attention intervention, or several of those mechanisms connected together.</p>
-      <p class="review-date"><time datetime="2026-07-23">Last verified July 23, 2026</time></p>
+      <p>Records are listed alphabetically, not ranked.</p>
+      <p class="review-date"><time datetime="${product.lastVerified}">Last verified July 24, 2026</time></p>
     </div>
   </section>
 
@@ -348,4 +357,3 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   const apps = JSON.parse(readFileSync(resolve(root, 'data/habit-apps.json'), 'utf8'));
   writeFileSync(resolve(root, 'habit-apps/index.html'), renderHabitAppIndex(apps));
 }
-

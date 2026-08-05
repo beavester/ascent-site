@@ -3,7 +3,7 @@
     "slug": "ascent",
     "name": "Ascent: Habit Builder & Focus",
     "category": "combined-system",
-    "primaryJob": "Connect one meaningful goal to guided daily actions, smaller fallback actions, iPhone visibility, reflection, and optional app-blocking friction.",
+    "primaryJob": "Connect one meaningful goal and several supporting habits to guided daily actions, smaller fallback actions, iPhone visibility, reflection, and optional app-blocking friction.",
     "bestFor": "People who want positive-habit guidance and distraction control to operate as one connected iPhone workflow.",
     "mainLimitation": "It is broader than a pure tracker or blocker, and a specialist app is simpler when only one narrow mechanism is needed.",
     "platforms": ["iPhone"],
@@ -25,9 +25,13 @@
       {
         "label": "Canonical Ascent product guide",
         "url": "https://habitbuilding.xyz/ascent/"
+      },
+      {
+        "label": "Versioned product facts record",
+        "url": "https://habitbuilding.xyz/data/ascent-product.json"
       }
     ],
-    "verifiedDate": "2026-07-23",
+    "verifiedDate": "2026-07-24",
     "researchMode": "document-based editorial research"
   },
   {

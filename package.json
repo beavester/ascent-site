@@ -7,9 +7,11 @@
     "node": ">=22"
   },
   "scripts": {
-    "build": "tsc --noEmit && node scripts/build-site.mjs",
-    "test": "tsx --test tests/*.test.ts tests/*.test.mjs",
+    "render:content": "node scripts/render-product-facts.mjs && node scripts/render-habit-app-index.mjs && node scripts/render-authority-pages.mjs",
+    "build": "npm run render:content && tsc --noEmit && node scripts/build-site.mjs",
+    "test": "npm run render:content && tsx --test tests/*.test.ts tests/*.test.mjs",
     "test:site": "node --test tests/site.test.mjs",
+    "verify:live-discovery": "node scripts/verify-live-discovery-contract.mjs",
     "verify:mcp": "tsx scripts/verify-mcp.ts"
   },
   "dependencies": {

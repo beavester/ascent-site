@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "2026-07-24",
+  "lastVerified": "2026-07-24",
+  "identity": {
+    "name": "Ascent: Habit Builder & Focus",
+    "shortName": "Ascent",
+    "publisher": "Ascent",
+    "developer": "Michael Beaver",
+    "website": "https://habitbuilding.xyz/",
+    "canonicalProductPage": "https://habitbuilding.xyz/ascent/",
+    "appStoreUrl": "https://apps.apple.com/us/app/ascent-habit-builder-focus/id6756843194",
+    "appStoreId": "6756843194",
+    "appleDeveloperUrl": "https://apps.apple.com/us/developer/michael-beaver/id1863228316",
+    "privacyPolicyUrl": "https://habitbuilding.xyz/privacy.html",
+    "supportEmail": "hello@habitbuilding.xyz"
+  },
+  "availability": {
+    "platforms": ["iPhone"],
+    "minimumOperatingSystem": "iOS 15.1 or later",
+    "appStorePrice": "Free",
+    "iPadSupport": "not-offered",
+    "macSupport": "not-offered"
+  },
+  "productModel": {
+    "programLengthDays": 70,
+    "goalModel": "Ascent centers one meaningful goal. That goal can include several supporting habits, while the app keeps one next step prominent.",
+    "summary": "An iPhone habit system that combines a 70-day goal progression, visible next steps, two-minute fallback actions, reflection, and optional Screen Time friction before selected distracting apps.",
+    "mechanisms": [
+      "guided 70-day goal progression",
+      "Home Screen widgets",
+      "two-minute fallback actions",
+      "daily reflection and visible progress",
+      "optional Screen Time app-blocking friction"
+    ],
+    "screenTime": "Screen Time access is optional. The goal plan, daily actions, two-minute fallback, widgets, and reflection work without app-blocking features.",
+    "ai": "AI-assisted features can generate plan content, smaller fallback actions, and in-app coaching. Availability and usage limits vary by plan."
+  },
+  "plans": [
+    {
+      "name": "Standard",
+      "priceModel": "Free",
+      "habitLimit": "Up to 3 habits",
+      "curriculumAccess": "Basic features"
+    },
+    {
+      "name": "Subscriber",
+      "priceModel": "Auto-renewing subscription",
+      "habitLimit": "Up to 15 habits",
+      "curriculumAccess": "Full curriculum"
+    },
+    {
+      "name": "Architect",
+      "priceModel": "Auto-renewing subscription",
+      "habitLimit": "Unlimited habits",
+      "curriculumAccess": "Full curriculum and premium AI access"
+    }
+  ],
+  "sources": [
+    {
+      "label": "Apple App Store listing",
+      "url": "https://apps.apple.com/us/app/ascent-habit-builder-focus/id6756843194",
+      "verified": "2026-07-24"
+    },
+    {
+      "label": "Ascent iOS source and current subscription configuration",
+      "url": "https://habitbuilding.xyz/ascent/",
+      "verified": "2026-07-24"
+    }
+  ]
+}
