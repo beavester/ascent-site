@@ -22,6 +22,7 @@ const publicFiles = [
 ];
 
 const publicDirectories = [
+  ".well-known",
   "ascent",
   "attention-management-iphone",
   "best",

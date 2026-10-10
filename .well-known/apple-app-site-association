@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["DWWF59A7U2.com.michaelbeaver.islandpets"],
+        "components": [
+          { "/": "/pebbo/invite", "comment": "Pebbo referral invite" },
+          { "/": "/pebbo/invite/", "comment": "Pebbo referral invite" }
+        ]
+      }
+    ]
+  }
+}
